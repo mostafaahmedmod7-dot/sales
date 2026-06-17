@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بوابة السيلز</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:    #2563eb;
+  --blue-dk: #1d4ed8;
+  --blue-lt: #eff6ff;
+  --green:   #16a34a;
+  --green-lt:#f0fdf4;
+  --red:     #ef4444;
+  --orange:  #d97706;
+  --purple:  #7c3aed;
+  --bg:      #f0f4ff;
+  --card:    #ffffff;
+  --text:    #111827;
+  --muted:   #6b7280;
+  --border:  #dbe2ea;
+  --chat-bg: #efeae4;
+}
+
+body {
+  font-family: 'Cairo', Tahoma, Arial, sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text);
+}
+
+/* ══ SCREENS ══ */
+.screen { display: none; }
+.screen.active { display: block; }
+
+#loginScreen {
+  min-height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #7c3aed 100%);
+}
+#loginScreen.active { display: flex; }
+
+.login-wrap { width: 100%; max-width: 400px; }
+
+.logo-area { text-align: center; margin-bottom: 28px; }
+.logo-icon {
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.logo-area h1 { font-size: 28px; font-weight: 900; color: #fff; }
+.logo-area p  { color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 5px; }
+
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.field { margin-bottom: 20px; }
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+input[type=text], input[type=password], input[type=date] {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: #f8faff;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+  background: #fff;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+}
+.btn-primary:hover  { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(37,99,235,0.4); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: none;
+  text-align: center;
+}
+
+/* ══ DASHBOARD ══ */
+#dashScreen { min-height: 100vh; display: flex; flex-direction: column; }
+
+.header {
+  background: linear-gradient(135deg, #075E54, #128C7E);
+  color: #fff;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 14px rgba(7,94,84,0.4);
+}
+.header-info h2  { font-size: 17px; font-weight: 900; }
+.header-info .sub{ font-size: 12px; opacity: .75; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.conn-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  transition: background .3s, box-shadow .3s;
+  flex-shrink: 0;
+}
+.conn-dot.offline { background: #6b7280; box-shadow: none; }
+
+.logout-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+.logout-btn:hover { background: rgba(255,255,255,0.3); }
+
+.tab-bar {
+  display: flex;
+  background: #075E54;
+  border-bottom: none;
+  position: sticky;
+  top: 54px;
+  z-index: 199;
+}
+.tab-btn {
+  flex: 1;
+  padding: 12px 6px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color .2s, border-color .2s, background .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.tab-btn.active {
+  color: #fff;
+  border-bottom-color: #25D366;
+  background: rgba(255,255,255,0.08);
+}
+
+.unread-badge {
+  background: #25D366;
+  color: #fff;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 900;
+  min-width: 20px;
+  text-align: center;
+  display: none;
+  animation: pulse-badge 1.5s infinite;
+}
+@keyframes pulse-badge {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.15); }
+}
+
+.page { display: none; padding: 16px; }
+.page.active { display: block; }
+
+/* ══ STATS ══ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 11px;
+  margin-bottom: 18px;
+}
+.stat-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 15px 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.stat-card .snum { font-size: 30px; font-weight: 900; line-height: 1; }
+.stat-card .slbl { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+.stat-card.c-blue   .snum { color: var(--blue); }
+.stat-card.c-green  .snum { color: var(--green); }
+.stat-card.c-orange .snum { color: var(--orange); }
+.stat-card.c-purple .snum { color: var(--purple); }
+
+/* ══ FILTERS ══ */
+.filter-bar { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.filter-bar input[type=text],
+.filter-bar select {
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  background: var(--card);
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+  color: var(--text);
+  width: auto;
+}
+.filter-bar input[type=text]:focus { border-color: var(--blue); }
+.date-filter-bar {
+  display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+  align-items: center; background: var(--card);
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+}
+.date-filter-bar label { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 0; white-space: nowrap; }
+.date-filter-bar input[type=date] {
+  padding: 7px 10px; border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: inherit; font-size: 13px; background: #f8faff; outline: none;
+  color: var(--text); flex: 1; min-width: 130px; width: auto;
+}
+.date-filter-bar input[type=date]:focus { border-color: var(--blue); }
+.date-quick-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.quick-btn {
+  padding: 6px 12px; border: 1.5px solid var(--border); border-radius: 20px;
+  background: #f8faff; font-family: inherit; font-size: 12px; font-weight: 700;
+  color: var(--text); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.quick-btn:hover, .quick-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn-reset-date {
+  padding: 7px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+  background: #f3f4f6; font-family: inherit; font-size: 12px; font-weight: 700;
+  color: var(--muted); cursor: pointer; white-space: nowrap;
+}
+.btn-reset-date:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* ══ TABLE ══ */
+.results-count { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 8px; padding: 0 2px; }
+.section-title { font-size: 15px; font-weight: 900; margin-bottom: 10px; }
+.nums-wrap {
+  background: var(--card); border-radius: 14px; border: 1px solid var(--border);
+  overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  background: #f8faff; padding: 11px 8px; text-align: center;
+  font-weight: 700; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border);
+}
+tbody tr { border-bottom: 1px solid #f3f4f6; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:nth-child(even) { background: #fafbff; }
+tbody td { padding: 10px 8px; text-align: center; }
+.num-cell { font-size: 14px; font-weight: 700; }
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.tag-vf  { background: #fef2f2; color: #dc2626; }
+.tag-et  { background: #fff7ed; color: #c2410c; }
+.tag-or  { background: #fff7ed; color: #ea580c; }
+.tag-we  { background: #f0fdf4; color: #16a34a; }
+.tag-ot  { background: #f3f4f6; color: #6b7280; }
+.tag-dt  { background: #eff6ff; color: #2563eb; }
+.date-cell { color: var(--muted); font-size: 12px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty-state .eicon { font-size: 42px; margin-bottom: 10px; }
+.empty-state p { font-size: 14px; }
+.load-more {
+  width: 100%; padding: 12px; background: #f8faff; border: none;
+  border-top: 1px solid var(--border); font-family: inherit; font-size: 13px;
+  font-weight: 700; color: var(--blue); cursor: pointer; display: none;
+}
+
+/* ══ CHAT — WhatsApp Style ══ */
+#page-chat {
+  padding: 0;
+  display: none;
+  flex-direction: column;
+  height: calc(100vh - 110px);
+  background: var(--chat-bg);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+#page-chat.active { display: flex; }
+
+.chat-date-divider {
+  text-align: center;
+  margin: 10px 0;
+  position: relative;
+}
+.chat-date-divider span {
+  background: rgba(225,245,254,0.92);
+  color: #54656f;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+
+.msg-row { display: flex; align-items: flex-end; gap: 6px; }
+.msg-row.mine  { flex-direction: row-reverse; }
+.msg-row.other { flex-direction: row; }
+
+.msg-bubble {
+  max-width: 75%;
+  padding: 8px 12px 4px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  word-break: break-word;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.msg-row.mine .msg-bubble {
+  background: #d9fdd3;
+  color: #111;
+  border-bottom-left-radius: 3px;
+}
+.msg-row.other .msg-bubble {
+  background: #fff;
+  color: var(--text);
+  border-bottom-right-radius: 3px;
+}
+
+/* Tail */
+.msg-row.mine .msg-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 10px 10px;
+  border-color: transparent transparent #d9fdd3 transparent;
+}
+.msg-row.other .msg-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 10px 10px 0;
+  border-color: transparent transparent #fff transparent;
+}
+
+.msg-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 3px;
+}
+.msg-time { font-size: 11px; color: #667781; }
+.read-tick { font-size: 13px; color: #667781; }
+.read-tick.seen { color: #53bdeb; }
+
+/* Typing indicator */
+.typing-indicator {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background: #fff;
+  border-radius: 12px;
+  border-bottom-right-radius: 3px;
+  width: fit-content;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin: 4px 10px;
+}
+.typing-indicator.show { display: flex; }
+.typing-dot {
+  width: 8px; height: 8px;
+  background: #aaa;
+  border-radius: 50%;
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: .2s; }
+.typing-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .4; }
+  30%            { transform: translateY(-6px); opacity: 1; }
+}
+
+.chat-input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  align-items: flex-end;
+  background: #f0f2f5;
+  border-top: 1px solid #d1d7db;
+}
+.chat-textarea {
+  flex: 1;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 22px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  background: #fff;
+  max-height: 120px;
+  overflow-y: auto;
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  line-height: 1.5;
+}
+.send-btn {
+  width: 48px; height: 48px;
+  background: #25D366;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 2px 8px rgba(37,211,102,0.4);
+}
+.send-btn:hover    { background: #1da851; transform: scale(1.05); }
+.send-btn:disabled { background: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Notification toast */
+.notif-toast {
+  position: fixed;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #075E54;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  z-index: 9999;
+  transition: top .4s cubic-bezier(.34,1.56,.64,1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 90vw;
+  cursor: pointer;
+}
+.notif-toast.show { top: 16px; }
+.notif-icon { font-size: 22px; }
+
+/* Spinner */
+.spinner { display: inline-block; width: 22px; height: 22px; border: 2.5px solid #dbe2ea; border-top-color: var(--blue); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-center { text-align: center; padding: 36px; }
+
+/* Connection status bar */
+.status-bar {
+  display: none;
+  background: #d1fae5;
+  color: #065f46;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px;
+}
+.status-bar.offline { background: #fee2e2; color: #991b1b; display: block; }
+</style>
+</head>
+<body>
+
+<!-- Notification Toast -->
+<div class="notif-toast" id="notifToast" onclick="handleToastClick()">
+  <div class="notif-icon">💬</div>
+  <div id="notifText">رسالة جديدة</div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="active">
+  <div class="login-wrap">
+    <div class="logo-area">
+      <div class="logo-icon">💬</div>
+      <h1>بوابة السيلز</h1>
+      <p>سجّل دخولك لمتابعة أرقامك ومحادثاتك</p>
+    </div>
+    <div class="card">
+      <div class="error-box" id="loginErr"></div>
+      <div class="field">
+        <label for="nameInp">اسم السيلز</label>
+        <input type="text" id="nameInp" placeholder="اكتب اسمك كما هو في النظام" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="passInp">كلمة المرور</label>
+        <input type="password" id="passInp" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn-primary" id="loginBtn" onclick="doLogin()">دخول</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashScreen" class="screen">
+
+  <div class="header">
+    <div class="header-info">
+      <h2 id="helloName">أهلاً 👋</h2>
+      <div class="sub" id="connStatus">جاري الاتصال...</div>
+    </div>
+    <div class="header-right">
+      <div class="conn-dot offline" id="connDot" title="حالة الاتصال"></div>
+      <button class="logout-btn" onclick="doLogout()">خروج ↩</button>
+    </div>
+  </div>
+
+  <div class="status-bar" id="statusBar"></div>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-nums" onclick="switchTab('nums')">📋 أرقامي</button>
+    <button class="tab-btn" id="tab-chat" onclick="switchTab('chat')">
+      💬 المحادثة
+      <span class="unread-badge" id="unreadBadge">0</span>
+    </button>
+  </div>
+
+  <!-- NUMBERS PAGE -->
+  <div class="page active" id="page-nums">
+    <div class="stats-grid">
+      <div class="stat-card c-blue">
+        <div class="snum" id="stTotal">—</div>
+        <div class="slbl">إجمالي الأرقام</div>
+      </div>
+      <div class="stat-card c-green">
+        <div class="snum" id="stToday">—</div>
+        <div class="slbl">اليوم</div>
+      </div>
+      <div class="stat-card c-orange">
+        <div class="snum" id="stWeek">—</div>
+        <div class="slbl">هذا الأسبوع</div>
+      </div>
+      <div class="stat-card c-purple">
+        <div class="snum" id="stTypes">—</div>
+        <div class="slbl">أنواع الداتا</div>
+      </div>
+    </div>
+
+    <div class="section-title">📞 سجل الأرقام</div>
+
+    <div class="filter-bar">
+      <input type="text" id="searchInp" placeholder="🔍 بحث برقم..." oninput="filterTable()">
+      <select id="typeFilter" onchange="filterTable()">
+        <option value="">كل الأنواع</option>
+      </select>
+    </div>
+
+    <div class="date-filter-bar">
+      <label>📅 من:</label>
+      <input type="date" id="dateFrom" onchange="filterTable()">
+      <label>إلى:</label>
+      <input type="date" id="dateTo" onchange="filterTable()">
+      <button class="btn-reset-date" onclick="resetDates()">✕ مسح</button>
+    </div>
+
+    <div class="date-quick-btns">
+      <button class="quick-btn" onclick="setQuick('today',event)">اليوم</button>
+      <button class="quick-btn" onclick="setQuick('yesterday',event)">أمس</button>
+      <button class="quick-btn" onclick="setQuick('week',event)">آخر 7 أيام</button>
+      <button class="quick-btn" onclick="setQuick('month',event)">هذا الشهر</button>
+      <button class="quick-btn" onclick="setQuick('all',event)">الكل</button>
+    </div>
+
+    <div class="results-count" id="resultsCount"></div>
+
+    <div class="nums-wrap">
+      <div class="loading-center" id="numsLoading"><div class="spinner"></div></div>
+      <table id="numsTable" style="display:none">
+        <thead>
+          <tr><th>#</th><th>الرقم</th><th>الشركة</th><th>نوع الداتا</th><th>التاريخ</th></tr>
+        </thead>
+        <tbody id="numsBody"></tbody>
+      </table>
+      <div class="empty-state" id="numsEmpty" style="display:none">
+        <div class="eicon">📭</div>
+        <p>لا يوجد أرقام في هذه الفترة</p>
+      </div>
+    </div>
+    <button class="load-more" id="loadMoreBtn" onclick="loadMore()">⬇ تحميل المزيد</button>
+  </div>
+
+  <!-- CHAT PAGE -->
+  <div class="page" id="page-chat">
+    <div class="chat-messages" id="chatMsgs">
+      <div class="loading-center"><div class="spinner"></div></div>
+    </div>
+    <div class="typing-indicator" id="typingIndicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+    <div class="chat-input-bar">
+      <textarea class="chat-textarea" id="chatInp" rows="1" placeholder="اكتب رسالة..."></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">➤</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+'use strict';
+
+const SB_URL = "https://fyjiizuumgoeuxppdect.supabase.co";
+const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5amlpenV1bWdvZXV4cHBkZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTg4MjgsImV4cCI6MjA5NDY5NDgyOH0.M8BvjRYszipT-JNOMwcOhQkWT2g8yTLXHuAeuuMscbs";
+const HDR    = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, "Content-Type": "application/json" };
+
+let currentUser   = sessionStorage.getItem("sales_name") || null;
+let allNums       = [], filteredNums = [], displayedCount = 0;
+let lastMsgId     = 0, unreadCount = 0;
+let realtimeWS    = null, wsReconnectTimer = null;
+let isConnected   = false;
+let lastDateLabel = "";
+let toastTimer    = null;
+const PAGE_SZ     = 50;
+
+// ── Audio context for notification sound ──
+let audioCtx = null;
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+function playNotifSound() {
+  try {
+    ensureAudio();
+    const osc  = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = 'sine';
+
+    // WhatsApp-like double beep
+    const t = audioCtx.currentTime;
+    osc.frequency.setValueAtTime(880, t);
+    osc.frequency.setValueAtTime(1100, t + 0.12);
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.3, t + 0.01);
+    gain.gain.linearRampToValueAtTime(0, t + 0.1);
+    gain.gain.linearRampToValueAtTime(0.25, t + 0.13);
+    gain.gain.linearRampToValueAtTime(0, t + 0.25);
+
+    osc.start(t);
+    osc.stop(t + 0.3);
+  } catch(e) {}
+}
+
+// ── Toast Notification ──
+function showToast(text) {
+  const toast = document.getElementById("notifToast");
+  document.getElementById("notifText").textContent = text;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 4000);
+}
+function handleToastClick() {
+  document.getElementById("notifToast").classList.remove("show");
+  if (currentUser) switchTab('chat');
+}
+
+// ── Connection UI ──
+function setConnected(online) {
+  isConnected = online;
+  const dot = document.getElementById("connDot");
+  const sub = document.getElementById("connStatus");
+  const bar = document.getElementById("statusBar");
+  if (online) {
+    dot.classList.remove("offline");
+    sub.textContent = `متصل — ${currentUser}`;
+    bar.className   = "status-bar";
+  } else {
+    dot.classList.add("offline");
+    sub.textContent = "غير متصل — إعادة الاتصال...";
+    bar.className   = "status-bar offline";
+    bar.textContent = "⚠️ انقطع الاتصال — جاري إعادة المحاولة...";
+  }
+}
+
+if (currentUser) showDash();
+
+async function api(path, opts={}) {
+  const r = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HDR, ...opts });
+  if (!r.ok) throw new Error(await r.text());
+  if (r.status === 204 || opts.method === "PATCH" || opts.method === "DELETE") return null;
+  return r.json();
+}
+
+// ══ LOGIN ══
+document.getElementById("passInp").addEventListener("keydown", e => { if (e.key==="Enter") doLogin(); });
+
+async function doLogin() {
+  const name = document.getElementById("nameInp").value.trim();
+  const pass = document.getElementById("passInp").value.trim();
+  const btn  = document.getElementById("loginBtn");
+  document.getElementById("loginErr").style.display = "none";
+  if (!name||!pass) { showErr("من فضلك ادخل الاسم وكلمة المرور"); return; }
+  btn.disabled = true;
+  btn.innerHTML = 'جاري التحقق <span style="display:inline-block;width:16px;height:16px;border:2px solid #ffffff55;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>';
+  try {
+    const data = await api(`sales?name=eq.${enc(name)}&select=name,password`);
+    if (!data||!data.length)     { showErr("❌ الاسم غير موجود في النظام"); return; }
+    if (data[0].password !== pass) { showErr("❌ كلمة المرور غلط");          return; }
+    sessionStorage.setItem("sales_name", name);
+    currentUser = name;
+    // unlock audio on user gesture
+    ensureAudio();
+    showDash();
+  } catch(e) { showErr("خطأ في الاتصال، حاول تاني"); }
+  finally { btn.disabled=false; btn.innerHTML="دخول"; }
+}
+function showErr(msg) {
+  const el = document.getElementById("loginErr");
+  el.textContent=msg; el.style.display="block";
+}
+
+// ══ DASHBOARD ══
+function showDash() {
+  document.getElementById("loginScreen").classList.remove("active");
+  document.getElementById("dashScreen").classList.add("active");
+  document.getElementById("helloName").textContent = `أهلاً ${currentUser} 👋`;
+  loadNums();
+  loadMessages();
+  startRealtime();
+  startFallbackPolling();
+}
+
+function doLogout() {
+  disconnectRealtime();
+  sessionStorage.clear();
+  currentUser = null;
+  allNums=[]; filteredNums=[]; lastMsgId=0; unreadCount=0; lastDateLabel="";
+  document.getElementById("dashScreen").classList.remove("active");
+  document.getElementById("loginScreen").classList.add("active");
+  document.getElementById("nameInp").value="";
+  document.getElementById("passInp").value="";
+  document.getElementById("loginErr").style.display="none";
+  setConnected(false);
+}
+
+function switchTab(t) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(`tab-${t}`).classList.add("active");
+  document.getElementById(`page-${t}`).classList.add("active");
+  if (t==="chat") {
+    unreadCount=0; updateBadge(); markSeen();
+    setTimeout(scrollChat, 100);
+  }
+}
+
+// ══ NUMBERS ══
+async function loadNums() {
+  try {
+    const rows = await api(`numbers?salesperson=eq.${enc(currentUser)}&distributed=eq.true&order=distributed_at.desc&select=number,data_type,distributed_at&limit=5000`);
+    allNums = rows||[];
+    renderStats(); buildTypeFilter(); filterTable();
+    document.getElementById("numsLoading").style.display="none";
+    if (allNums.length===0) {
+      document.getElementById("numsEmpty").style.display="block";
+    } else {
+      document.getElementById("numsTable").style.display="table";
+    }
+  } catch(e) {
+    document.getElementById("numsLoading").innerHTML=`<p style="color:var(--red)">خطأ في التحميل</p>`;
+  }
+}
+
+function renderStats() {
+  const now=new Date(), todayStr=now.toDateString(), weekAgo=new Date(now-7*864e5);
+  const types=new Set(allNums.map(r=>r.data_type).filter(Boolean));
+  const today=allNums.filter(r=>r.distributed_at&&new Date(r.distributed_at).toDateString()===todayStr).length;
+  const week =allNums.filter(r=>r.distributed_at&&new Date(r.distributed_at)>=weekAgo).length;
+  document.getElementById("stTotal").textContent=allNums.length.toLocaleString("ar-EG");
+  document.getElementById("stToday").textContent=today;
+  document.getElementById("stWeek").textContent=week;
+  document.getElementById("stTypes").textContent=types.size;
+}
+
+function buildTypeFilter() {
+  const sel=document.getElementById("typeFilter");
+  const types=[...new Set(allNums.map(r=>r.data_type).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">كل الأنواع</option>';
+  types.forEach(t=>{ const o=document.createElement("option"); o.value=t; o.textContent=t; sel.appendChild(o); });
+}
+
+function toLocalDateStr(d) { return d.toISOString().split("T")[0]; }
+
+function setQuick(range, ev) {
+  document.querySelectorAll(".quick-btn").forEach(b=>b.classList.remove("active"));
+  if (ev && ev.target) ev.target.classList.add("active");
+  const now=new Date(), today=toLocalDateStr(now);
+  if (range==="today") { document.getElementById("dateFrom").value=today; document.getElementById("dateTo").value=today; }
+  else if (range==="yesterday") { const y=toLocalDateStr(new Date(now-864e5)); document.getElementById("dateFrom").value=y; document.getElementById("dateTo").value=y; }
+  else if (range==="week") { document.getElementById("dateFrom").value=toLocalDateStr(new Date(now-6*864e5)); document.getElementById("dateTo").value=today; }
+  else if (range==="month") { document.getElementById("dateFrom").value=toLocalDateStr(new Date(now.getFullYear(),now.getMonth(),1)); document.getElementById("dateTo").value=today; }
+  else if (range==="all") { document.getElementById("dateFrom").value=""; document.getElementById("dateTo").value=""; }
+  filterTable();
+}
+
+function resetDates() {
+  document.getElementById("dateFrom").value="";
+  document.getElementById("dateTo").value="";
+  document.querySelectorAll(".quick-btn").forEach(b=>b.classList.remove("active"));
+  filterTable();
+}
+
+function filterTable() {
+  const q=document.getElementById("searchInp").value.trim();
+  const tp=document.getElementById("typeFilter").value;
+  const df=document.getElementById("dateFrom").value;
+  const dt=document.getElementById("dateTo").value;
+  filteredNums=allNums.filter(r=>{
+    if (q&&!r.number.includes(q)) return false;
+    if (tp&&r.data_type!==tp) return false;
+    if (r.distributed_at) {
+      const d=r.distributed_at.split("T")[0];
+      if (df&&d<df) return false;
+      if (dt&&d>dt) return false;
+    } else { if (df||dt) return false; }
+    return true;
+  });
+  displayedCount=0;
+  document.getElementById("numsBody").innerHTML="";
+  renderChunk();
+}
+
+function renderChunk() {
+  const tbody=document.getElementById("numsBody");
+  const empty=document.getElementById("numsEmpty");
+  const tbl=document.getElementById("numsTable");
+  const rc=document.getElementById("resultsCount");
+  if (filteredNums.length===0) {
+    empty.style.display="block"; tbl.style.display="none";
+    document.getElementById("loadMoreBtn").style.display="none";
+    rc.textContent="لا يوجد نتائج"; return;
+  }
+  empty.style.display="none"; tbl.style.display="table";
+  rc.textContent=`عدد النتائج: ${filteredNums.length.toLocaleString("ar-EG")} رقم`;
+  const chunk=filteredNums.slice(displayedCount, displayedCount+PAGE_SZ);
+  chunk.forEach((r,i)=>{
+    const co=getCompany(r.number);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${displayedCount+i+1}</td><td class="num-cell">${r.number}</td><td>${companyTag(co)}</td><td><span class="tag tag-dt">${r.data_type||"—"}</span></td><td class="date-cell">${fmtDate(r.distributed_at)}</td>`;
+    tbody.appendChild(tr);
+  });
+  displayedCount+=chunk.length;
+  document.getElementById("loadMoreBtn").style.display=displayedCount<filteredNums.length?"block":"none";
+}
+function loadMore() { renderChunk(); }
+
+// ══ CHAT ══
+async function loadMessages() {
+  try {
+    const rows=await api(`messages?salesperson=eq.${enc(currentUser)}&order=created_at.asc&limit=300`);
+    const container=document.getElementById("chatMsgs");
+    container.innerHTML="";
+    lastDateLabel="";
+    (rows||[]).forEach(m=>appendBubble(m, false));
+    if (rows&&rows.length) lastMsgId=rows[rows.length-1].id;
+    scrollChat();
+    markSeen();
+  } catch(e) {
+    document.getElementById("chatMsgs").innerHTML=`<p style="color:var(--red);text-align:center;padding:20px">خطأ في التحميل</p>`;
+  }
+}
+
+function getDateLabel(iso) {
+  if (!iso) return "";
+  const d=new Date(iso), now=new Date();
+  const diff=Math.floor((now-d)/(864e5));
+  if (diff===0) return "اليوم";
+  if (diff===1) return "أمس";
+  return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+}
+
+// بعد
+function appendBubble(m, doScroll=true) {
+  const isMine = m.sender === currentUser;
+  const container = document.getElementById("chatMsgs");
+
+  const dateLabel = getDateLabel(m.created_at);
+  if (dateLabel && dateLabel !== lastDateLabel) {
+    lastDateLabel = dateLabel;
+    const div = document.createElement("div");
+    div.className = "chat-date-divider";
+    div.innerHTML = `<span>${dateLabel}</span>`;
+    container.appendChild(div);
+  }
+
+  const t = m.created_at ? new Date(m.created_at) : new Date();
+  const timeStr = `${pad(t.getHours())}:${pad(t.getMinutes())}`;
+  const tick = isMine
+    ? `<span class="read-tick ${m.seen ? 'seen' : ''}">✓✓</span>`
+    : '';
+
+  const imageHtml = m.image_url
+    ? `<img src="${m.image_url}" loading="lazy" onclick="openImageFull('${m.image_url}')"
+         style="max-width:220px;border-radius:8px;display:block;margin-bottom:${m.content ? '6px' : '0'};cursor:pointer;">`
+    : '';
+
+  const row = document.createElement("div");
+  row.className = `msg-row ${isMine ? "mine" : "other"}`;
+  row.dataset.msgId = m.id || "";
+  row.innerHTML = `
+    <div class="msg-bubble">
+      ${imageHtml}${m.content ? esc(m.content) : ''}
+      <div class="msg-meta">
+        <span class="msg-time">${timeStr}</span>
+        ${tick}
+      </div>
+    </div>`;
+  container.appendChild(row);
+  if (doScroll) scrollChat();
+}
+
+function openImageFull(url) {
+  window.open(url, "_blank");
+}
+
+function scrollChat() {
+  const c=document.getElementById("chatMsgs");
+  c.scrollTop=c.scrollHeight;
+}
+
+async function sendMsg() {
+  const inp=document.getElementById("chatInp");
+  const content=inp.value.trim();
+  if (!content) return;
+  const btn=document.getElementById("sendBtn");
+  btn.disabled=true; inp.value=""; inp.style.height="auto";
+  try {
+    await fetch(`${SB_URL}/rest/v1/messages`, {
+      method:"POST",
+      headers:{...HDR, Prefer:"return=minimal"},
+      body: JSON.stringify({ salesperson:currentUser, sender:currentUser, content, seen:false })
+    });
+    // optimistic bubble
+    appendBubble({ sender:currentUser, content, created_at:new Date().toISOString(), seen:false });
+  } catch(e) { inp.value=content; }
+  finally { btn.disabled=false; inp.focus(); }
+}
+
+async function markSeen() {
+  try {
+    await fetch(
+      `${SB_URL}/rest/v1/messages?salesperson=eq.${enc(currentUser)}&sender=eq.admin&seen=eq.false`,
+      { method:"PATCH", headers:{...HDR, Prefer:"return=minimal"}, body: JSON.stringify({seen:true}) }
+    );
+  } catch(e) {}
+}
+
+function updateBadge() {
+  const badge=document.getElementById("unreadBadge");
+  if (unreadCount>0) { badge.style.display="inline"; badge.textContent=unreadCount; }
+  else badge.style.display="none";
+}
+
+// ══ REALTIME WebSocket ══
+function startRealtime() {
+  disconnectRealtime();
+  connectWS();
+}
+
+function connectWS() {
+  if (!currentUser) return;
+  try {
+    const wsUrl = `wss://fyjiizuumgoeuxppdect.supabase.co/realtime/v1/websocket?apikey=${SB_KEY}&vsn=1.0.0`;
+    realtimeWS = new WebSocket(wsUrl);
+
+    realtimeWS.onopen = () => {
+      setConnected(true);
+      clearTimeout(wsReconnectTimer);
+
+      // Join messages channel
+      realtimeWS.send(JSON.stringify({
+        topic:   "realtime:public:messages",
+        event:   "phx_join",
+        payload: {
+          config: {
+            broadcast: { self: false },
+            postgres_changes: [{ event: "INSERT", schema: "public", table: "messages" }]
+          }
+        },
+        ref: "join-1"
+      }));
+    };
+
+    realtimeWS.onmessage = e => {
+      try {
+        const msg = JSON.parse(e.data);
+
+        // Heartbeat reply
+        if (msg.event === "phx_reply" && msg.ref === "heartbeat") return;
+
+        // Handle INSERT
+        if (
+          (msg.event === "INSERT" || (msg.payload && msg.payload.data && msg.payload.data.type === "INSERT")) &&
+          (msg.topic === "realtime:public:messages")
+        ) {
+          const rec = msg.payload?.record || msg.payload?.data?.record;
+          if (!rec) return;
+          if (rec.salesperson !== currentUser) return;
+          if (rec.id && rec.id <= lastMsgId) return;
+          if (rec.id) lastMsgId = rec.id;
+
+          // Only show admin messages as incoming
+          if (rec.sender === "admin") {
+            const onChat = document.getElementById("tab-chat")?.classList.contains("active");
+            appendBubble(rec);
+            if (!onChat) {
+              unreadCount++;
+              updateBadge();
+              playNotifSound();
+              showToast(`رسالة جديدة من الأدمن: ${rec.content.slice(0, 40)}${rec.content.length > 40 ? "..." : ""}`);
+            } else {
+              markSeen();
+            }
+          }
+        }
+      } catch(e2) {}
+    };
+
+    realtimeWS.onclose = () => {
+      setConnected(false);
+      if (currentUser) {
+        wsReconnectTimer = setTimeout(connectWS, 4000);
+      }
+    };
+
+    realtimeWS.onerror = () => {
+      setConnected(false);
+      realtimeWS.close();
+    };
+
+    // Heartbeat every 25s
+    const heartbeat = setInterval(() => {
+      if (realtimeWS && realtimeWS.readyState === WebSocket.OPEN) {
+        realtimeWS.send(JSON.stringify({ topic:"phoenix", event:"heartbeat", payload:{}, ref:"heartbeat" }));
+      } else {
+        clearInterval(heartbeat);
+      }
+    }, 25000);
+
+  } catch(e) {
+    setConnected(false);
+    wsReconnectTimer = setTimeout(connectWS, 5000);
+  }
+}
+
+function disconnectRealtime() {
+  clearTimeout(wsReconnectTimer);
+  if (realtimeWS) {
+    realtimeWS.onclose = null;
+    realtimeWS.close();
+    realtimeWS = null;
+  }
+}
+
+// ── Fallback polling (backup if WS fails) ──
+function startFallbackPolling() {
+  setInterval(async () => {
+    if (!currentUser) return;
+    // Only poll if WS is down
+    if (isConnected) return;
+    try {
+      const rows = await api(`messages?salesperson=eq.${enc(currentUser)}&id=gt.${lastMsgId}&order=created_at.asc`);
+      if (!rows||!rows.length) return;
+      rows.forEach(m => {
+        if (m.sender==="admin") {
+          appendBubble(m);
+          const onChat=document.getElementById("tab-chat")?.classList.contains("active");
+          if (!onChat) { unreadCount++; updateBadge(); playNotifSound(); showToast(`رسالة من الأدمن`); }
+          else markSeen();
+        }
+      });
+      lastMsgId=rows[rows.length-1].id;
+    } catch(e) {}
+  }, 8000);
+}
+
+// ── Auto-resize textarea ──
+document.addEventListener("DOMContentLoaded", () => {
+  const ta = document.getElementById("chatInp");
+  if (ta) {
+    ta.addEventListener("input", () => {
+      ta.style.height = "auto";
+      ta.style.height = Math.min(ta.scrollHeight, 120) + "px";
+    });
+    ta.addEventListener("keydown", e => {
+      if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+    });
+  }
+});
+
+// ══ UTILS ══
+function enc(s)  { return encodeURIComponent(s); }
+function esc(s)  { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+function pad(n)  { return String(n).padStart(2,"0"); }
+function fmtDate(iso) {
+  if (!iso) return "—";
+  const d=new Date(iso);
+  return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`;
+}
+function getCompany(num) {
+  if (num.startsWith("2010")||num.startsWith("010")) return "فودافون";
+  if (num.startsWith("2011")||num.startsWith("011")) return "اتصالات";
+  if (num.startsWith("2012")||num.startsWith("012")) return "أورانج";
+  if (num.startsWith("2015")||num.startsWith("015")) return "WE";
+  return "أخرى";
+}
+function companyTag(co) {
+  const map={"فودافون":"vf","اتصالات":"et","أورانج":"or","WE":"we"};
+  return `<span class="tag tag-${map[co]||'ot'}">${co}</span>`;
+}
+</script>
+</body>
+</html>

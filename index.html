@@ -132,7 +132,7 @@ input:focus {
 }
 
 /* ══ DASHBOARD ══ */
-#dashScreen { min-height: 100vh; display: flex; flex-direction: column; }
+#dashScreen { min-height: 100vh; display: none; flex-direction: column; }
 
 .header {
   background: linear-gradient(135deg, #075E54, #128C7E);
@@ -553,7 +553,7 @@ tbody td { padding: 10px 8px; text-align: center; }
       <div class="error-box" id="loginErr"></div>
       <div class="field">
         <label for="nameInp">اسم السيلز</label>
-        <input type="text" id="nameInp" placeholder="اكتب اسمك كما هو في النظام" autocomplete="username">
+        <input type="text" id="nameInp" placeholder="اكتب اسمك اللي موجود ف ال Odoo" autocomplete="username">
       </div>
       <div class="field">
         <label for="passInp">كلمة المرور</label>
@@ -786,24 +786,37 @@ function showErr(msg) {
 // ══ DASHBOARD ══
 function showDash() {
   document.getElementById("loginScreen").classList.remove("active");
-  document.getElementById("dashScreen").classList.add("active");
+  document.getElementById("loginScreen").style.display = "none";
+
+  const dash = document.getElementById("dashScreen");
+  dash.style.display = "flex";
+
   document.getElementById("helloName").textContent = `أهلاً ${currentUser} 👋`;
   loadNums();
   loadMessages();
   startRealtime();
   startFallbackPolling();
 }
-
 function doLogout() {
   disconnectRealtime();
   sessionStorage.clear();
   currentUser = null;
   allNums=[]; filteredNums=[]; lastMsgId=0; unreadCount=0; lastDateLabel="";
-  document.getElementById("dashScreen").classList.remove("active");
-  document.getElementById("loginScreen").classList.add("active");
-  document.getElementById("nameInp").value="";
-  document.getElementById("passInp").value="";
-  document.getElementById("loginErr").style.display="none";
+
+  document.getElementById("dashScreen").style.display = "none";
+
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("tab-nums").classList.add("active");
+  document.getElementById("page-nums").classList.add("active");
+  unreadCount = 0;
+  updateBadge();
+
+  const login = document.getElementById("loginScreen");
+  login.style.display = "flex";
+  document.getElementById("nameInp").value = "";
+  document.getElementById("passInp").value = "";
+  document.getElementById("loginErr").style.display = "none";
   setConnected(false);
 }
 

@@ -72,7 +72,6 @@ input:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12)
 .filter-bar input[type=text],.filter-bar select { padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--card);outline:none;flex:1;min-width:120px;color:var(--text);width:auto; }
 .filter-bar input[type=text]:focus { border-color:var(--blue); }
 
-/* Date filter row — today/yesterday buttons + calendar trigger */
 .date-filter-row { display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap; }
 .quick-btn { padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap; }
 .quick-btn:hover,.quick-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
@@ -124,8 +123,8 @@ tbody td { padding:10px 8px;text-align:center; }
 .admin-header h2 { font-size:18px;font-weight:900; }
 .admin-header .sub { font-size:12px;opacity:.75;margin-top:2px; }
 .admin-badge { background:#fbbf24;color:#78350f;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:900; }
-.admin-tabs { display:flex;background:#1e3a8a; }
-.admin-tab { flex:1;padding:13px 6px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px; }
+.admin-tabs { display:flex;background:#1e3a8a;overflow-x:auto; }
+.admin-tab { flex:1;min-width:80px;padding:13px 6px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap; }
 .admin-tab.active { color:#fff;border-bottom-color:#fbbf24;background:rgba(255,255,255,0.08); }
 .admin-page { display:none;padding:16px; }
 .admin-page.active { display:block; }
@@ -139,7 +138,6 @@ tbody td { padding:10px 8px;text-align:center; }
 .admin-stat-card.c-green  .snum { color:var(--green); }
 .admin-stat-card.c-purple .snum { color:var(--purple); }
 
-/* Today/Yesterday row */
 .day-row { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px; }
 .day-card { background:#fff;border-radius:12px;padding:13px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,.04); }
 .day-icon { font-size:26px;line-height:1; }
@@ -148,10 +146,6 @@ tbody td { padding:10px 8px;text-align:center; }
 .day-card.today .day-num { color:var(--green); }
 .day-card.yest .day-num { color:var(--blue); }
 
-/* Overview filter row */
-.overview-filter-row { display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap; }
-
-/* Sales cards */
 .sales-cards-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
 .sales-mini-card { background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,0.04); }
 .sales-mini-card:hover { border-color:var(--blue);box-shadow:0 4px 16px rgba(37,99,235,0.15);transform:translateY(-1px); }
@@ -180,23 +174,19 @@ tbody td { padding:10px 8px;text-align:center; }
 .sales-item .ic { font-size:14px; }
 .sales-item .cnt { margin-right:auto;font-size:11px;color:var(--muted);font-weight:600; }
 
-/* Transfer numbers section */
 .transfer-nums-section { background:#fff;border-radius:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden; }
 .transfer-nums-header { padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbff;display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
 .transfer-nums-header h4 { font-size:13px;font-weight:900;flex:1; }
 .tr-filter-inp { padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;background:#f8faff;outline:none;color:var(--text);width:150px; }
 .tr-filter-inp:focus { border-color:var(--blue); }
-/* Multi-select for data type */
 .type-multi { display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--border);background:#f8faff; }
 .type-chip { padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--text);transition:all .2s; }
 .type-chip.active { background:var(--blue);color:#fff;border-color:var(--blue); }
 
-/* Transfer day filters */
 .tr-day-bar { display:flex;gap:7px;padding:10px 16px;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap; }
 .tr-day-btn { padding:5px 13px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-family:inherit;font-size:11px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s; }
 .tr-day-btn:hover,.tr-day-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
 
-/* Select bar */
 .select-bar { display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border); }
 .sel-btn { padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s; }
 .sel-btn:hover { background:var(--blue);color:#fff;border-color:var(--blue); }
@@ -213,14 +203,230 @@ tbody td { padding:10px 8px;text-align:center; }
 .btn-confirm:hover { transform:translateY(-1px); }
 .btn-confirm:disabled { opacity:.5;cursor:not-allowed;transform:none; }
 
-/* Toast */
+/* ══ REPORT TAB ══ */
+#apage-report { padding:16px; }
+
+.report-toolbar {
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+  align-items:center;
+  background:#fff;
+  border-radius:14px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.report-toolbar input[type=text] {
+  padding:8px 12px;
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  font-family:inherit;
+  font-size:13px;
+  background:#f8faff;
+  outline:none;
+  color:var(--text);
+  flex:1;
+  min-width:140px;
+}
+.report-toolbar input[type=text]:focus { border-color:var(--blue); }
+.report-toolbar .rq-btn {
+  padding:7px 13px;
+  border:1.5px solid var(--border);
+  border-radius:20px;
+  background:#f8faff;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:700;
+  color:var(--text);
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.report-toolbar .rq-btn:hover,
+.report-toolbar .rq-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
+
+.report-summary-row {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+  gap:10px;
+  margin-bottom:16px;
+}
+.report-summary-card {
+  background:#fff;
+  border-radius:12px;
+  padding:14px 12px;
+  text-align:center;
+  border:1px solid var(--border);
+  box-shadow:0 2px 6px rgba(0,0,0,0.04);
+}
+.report-summary-card .rsnum { font-size:24px;font-weight:900;color:var(--blue); }
+.report-summary-card .rslbl { font-size:11px;color:var(--muted);font-weight:600;margin-top:3px; }
+
+/* Responsive report table wrapper */
+.report-table-wrap {
+  background:#fff;
+  border-radius:14px;
+  border:1px solid var(--border);
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  overflow:hidden;
+}
+.report-table-scroll {
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.report-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  min-width:400px;
+}
+.report-table thead tr:first-child th {
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  color:#fff;
+  padding:11px 10px;
+  font-weight:700;
+  font-size:12px;
+  text-align:center;
+  white-space:nowrap;
+}
+.report-table thead tr:first-child th:first-child {
+  text-align:right;
+  padding-right:16px;
+  position:sticky;
+  right:0;
+  z-index:2;
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+}
+.report-table thead tr.type-header th {
+  background:#f0f4ff;
+  color:var(--blue);
+  padding:7px 10px;
+  font-weight:700;
+  font-size:11px;
+  text-align:center;
+  border-bottom:2px solid var(--border);
+  white-space:nowrap;
+}
+.report-table thead tr.type-header th:first-child {
+  text-align:right;
+  padding-right:16px;
+  position:sticky;
+  right:0;
+  z-index:2;
+  background:#f0f4ff;
+}
+
+.report-table tbody tr {
+  border-bottom:1px solid #f0f4ff;
+  transition:background .15s;
+}
+.report-table tbody tr:last-child { border-bottom:none; }
+.report-table tbody tr:hover { background:#f8faff; }
+.report-table tbody td {
+  padding:11px 10px;
+  text-align:center;
+  vertical-align:middle;
+}
+.report-table tbody td:first-child {
+  text-align:right;
+  font-weight:900;
+  font-size:13px;
+  padding-right:16px;
+  background:#fff;
+  position:sticky;
+  right:0;
+  z-index:1;
+  border-left:2px solid var(--border);
+  white-space:nowrap;
+}
+.report-table tbody tr:hover td:first-child { background:#f8faff; }
+
+.r-cell-val {
+  font-weight:700;
+  color:var(--blue);
+  font-size:14px;
+}
+.r-cell-zero {
+  color:#d1d5db;
+  font-size:13px;
+}
+.r-total-col {
+  background:#eff6ff;
+  font-weight:900;
+  color:var(--blue-dk);
+  font-size:14px;
+}
+.report-table tfoot td {
+  padding:11px 10px;
+  text-align:center;
+  font-weight:900;
+  background:#1e3a8a;
+  color:#fff;
+  font-size:13px;
+  border-top:2px solid #2563eb;
+}
+.report-table tfoot td:first-child {
+  text-align:right;
+  padding-right:16px;
+  position:sticky;
+  right:0;
+  z-index:1;
+  background:#1e3a8a;
+  white-space:nowrap;
+}
+
+.report-total-badge {
+  display:inline-block;
+  background:rgba(255,255,255,0.2);
+  border-radius:20px;
+  padding:2px 10px;
+  font-size:13px;
+}
+.report-export-btn {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .2s;
+  white-space:nowrap;
+  box-shadow:0 2px 8px rgba(22,163,74,0.3);
+}
+.report-export-btn:hover { transform:translateY(-1px);box-shadow:0 4px 14px rgba(22,163,74,0.4); }
+
+/* ══ Toast ══ */
 .toast-msg { position:fixed;top:-70px;left:50%;transform:translateX(-50%);background:#065f46;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);transition:top .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap; }
 .toast-msg.show { top:16px; }
 .toast-msg.error { background:#991b1b; }
 
-/* Cal popup overlay close */
 .cal-overlay { display:none;position:fixed;inset:0;z-index:50; }
 .cal-overlay.open { display:block; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 600px) {
+  .transfer-top { grid-template-columns:1fr; }
+  .admin-stats-grid { grid-template-columns:1fr 1fr; }
+  .report-summary-row { grid-template-columns:1fr 1fr; }
+  .admin-tab { font-size:11px;padding:11px 4px;gap:3px; }
+  .report-toolbar { padding:10px; }
+  .cal-popup { right:auto;left:0; }
+}
+@media (min-width: 1024px) {
+  .admin-page, #apage-report { max-width:1200px;margin:0 auto; }
+  .stats-grid { grid-template-columns:repeat(4,1fr); }
+  .report-summary-row { grid-template-columns:repeat(4,1fr); }
+  .sales-cards-grid { grid-template-columns:repeat(4,1fr); }
+}
 </style>
 </head>
 <body>
@@ -274,7 +480,6 @@ tbody td { padding:10px 8px;text-align:center; }
       <input type="text" id="searchInp" placeholder="🔍 بحث برقم..." oninput="filterTable()">
       <select id="typeFilter" onchange="filterTable()"><option value="">كل الأنواع</option></select>
     </div>
-    <!-- Date filter: quick buttons + calendar popup -->
     <div class="date-filter-row">
       <button class="quick-btn active" onclick="setQuick('all',this)">الكل</button>
       <button class="quick-btn" onclick="setQuick('today',this)">اليوم</button>
@@ -320,9 +525,10 @@ tbody td { padding:10px 8px;text-align:center; }
     </div>
   </div>
   <div class="admin-tabs">
-    <button class="admin-tab active" id="atab-overview" onclick="switchAdminTab('overview')">📊 نظرة عامة</button>
-    <button class="admin-tab" id="atab-numbers"  onclick="switchAdminTab('numbers')">📞 كل الأرقام</button>
-    <button class="admin-tab" id="atab-transfer" onclick="switchAdminTab('transfer')">🔄 نقل الأرقام</button>
+    <button class="admin-tab active" id="atab-overview"  onclick="switchAdminTab('overview')">📊 نظرة عامة</button>
+    <button class="admin-tab"        id="atab-report"    onclick="switchAdminTab('report')">📈 ريبورت</button>
+    <button class="admin-tab"        id="atab-numbers"   onclick="switchAdminTab('numbers')">📞 كل الأرقام</button>
+    <button class="admin-tab"        id="atab-transfer"  onclick="switchAdminTab('transfer')">🔄 نقل الأرقام</button>
   </div>
 
   <!-- ══ OVERVIEW ══ -->
@@ -332,8 +538,6 @@ tbody td { padding:10px 8px;text-align:center; }
       <div class="admin-stat-card c-green"> <div class="snum" id="aStSales">—</div><div class="slbl">عدد السيلز</div></div>
       <div class="admin-stat-card c-purple"><div class="snum" id="aStTypes">—</div><div class="slbl">أنواع الداتا</div></div>
     </div>
-
-    <!-- Today / Yesterday (shown always, no filter) -->
     <div class="day-row">
       <div class="day-card today">
         <div class="day-icon">☀️</div>
@@ -350,11 +554,8 @@ tbody td { padding:10px 8px;text-align:center; }
         </div>
       </div>
     </div>
-
-    <!-- Sales cards + filter row above them -->
     <div class="section-card">
       <div class="section-card-title">👥 السيلز وأرقامهم</div>
-      <!-- Filter row: search + day quick + calendar -->
       <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
         <input type="text" class="admin-filter-select" style="flex:1;min-width:160px;" id="ovSearchInp" placeholder="🔍 ابحث عن سيلز..." oninput="renderSalesCards()">
         <button class="quick-btn active" id="ovAll"  onclick="setOvQuick('all',this)">الكل</button>
@@ -376,6 +577,47 @@ tbody td { padding:10px 8px;text-align:center; }
       <div class="sales-cards-grid" id="salesCardsArea">
         <div class="loading-center" style="grid-column:span 2"><div class="spinner"></div></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ══ REPORT ══ -->
+  <div class="admin-page" id="apage-report">
+    <div class="report-toolbar">
+      <input type="text" id="repSearchInp" placeholder="🔍 ابحث عن سيلز..." oninput="renderReport()">
+      <button class="rq-btn active" onclick="setRepQuick('all',this)">الكل</button>
+      <button class="rq-btn" onclick="setRepQuick('today',this)">اليوم</button>
+      <button class="rq-btn" onclick="setRepQuick('yesterday',this)">أمس</button>
+      <button class="rq-btn" onclick="setRepQuick('week',this)">آخر 7 أيام</button>
+      <button class="rq-btn" onclick="setRepQuick('month',this)">هذا الشهر</button>
+      <div class="calendar-trigger">
+        <button class="cal-btn" id="repCalBtn" onclick="toggleCal('repCal','repCalBtn')">📅 فترة</button>
+        <div class="cal-popup" id="repCal">
+          <div class="cal-popup-title">اختر الفترة</div>
+          <div class="cal-row"><label>من:</label><input type="date" id="repDateFrom" onchange="renderReport()"></div>
+          <div class="cal-row"><label>إلى:</label><input type="date" id="repDateTo" onchange="renderReport()"></div>
+          <div class="cal-actions">
+            <button class="cal-apply" onclick="closeAllCals();renderReport()">تطبيق ✓</button>
+            <button class="cal-reset" onclick="resetRepDates()">مسح</button>
+          </div>
+        </div>
+      </div>
+      <button class="report-export-btn" onclick="exportReportCSV()">📥 تصدير CSV</button>
+    </div>
+
+    <div class="report-summary-row" id="repSummaryRow">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="report-table-wrap">
+      <div class="loading-center" id="repLoading"><div class="spinner"></div></div>
+      <div class="report-table-scroll" id="repTableScroll" style="display:none">
+        <table class="report-table" id="repTable">
+          <thead id="repThead"></thead>
+          <tbody id="repTbody"></tbody>
+          <tfoot id="repTfoot"></tfoot>
+        </table>
+      </div>
+      <div class="empty-state" id="repEmpty" style="display:none"><div class="eicon">📊</div><p>لا يوجد بيانات</p></div>
     </div>
   </div>
 
@@ -419,10 +661,7 @@ tbody td { padding:10px 8px;text-align:center; }
 
   <!-- ══ TRANSFER ══ -->
   <div class="admin-page" id="apage-transfer">
-
-    <!-- من / إلى جنب بعض -->
     <div class="transfer-top">
-      <!-- من -->
       <div class="transfer-box">
         <h4>👤 من السيلز</h4>
         <input type="text" class="transfer-search" id="tFromSearch" placeholder="🔍 ابحث..." oninput="filterFromList()">
@@ -430,7 +669,6 @@ tbody td { padding:10px 8px;text-align:center; }
           <div style="text-align:center;padding:20px;color:var(--muted);font-size:12px;">جاري التحميل...</div>
         </div>
       </div>
-      <!-- إلى -->
       <div class="transfer-box">
         <h4>📥 إلى السيلز</h4>
         <input type="text" class="transfer-search" id="tToSearch" placeholder="🔍 ابحث..." oninput="filterToList()">
@@ -439,16 +677,12 @@ tbody td { padding:10px 8px;text-align:center; }
         </div>
       </div>
     </div>
-
-    <!-- الأرقام تحت -->
     <div class="transfer-nums-section">
       <div class="transfer-nums-header">
         <h4>📋 الأرقام المراد نقلها</h4>
         <input type="text" class="tr-filter-inp" id="trNumSearch" placeholder="🔍 بحث برقم..." oninput="filterTransferNums()">
       </div>
-      <!-- نوع الداتا multi-select -->
       <div class="type-multi" id="typeChipsArea"></div>
-      <!-- اليوم / أمس + calendar -->
       <div class="tr-day-bar">
         <button class="tr-day-btn active" onclick="setTrQuick('all',this)">الكل</button>
         <button class="tr-day-btn" onclick="setTrQuick('today',this)">اليوم</button>
@@ -467,7 +701,6 @@ tbody td { padding:10px 8px;text-align:center; }
           </div>
         </div>
       </div>
-      <!-- select all bar -->
       <div class="select-bar">
         <button class="sel-btn" onclick="selectAllTr()">تحديد الكل</button>
         <button class="sel-btn" onclick="deselectAllTr()">إلغاء الكل</button>
@@ -495,8 +728,11 @@ let adminAllNums = [], adminFiltered = [], adminDisplayed = 0;
 let allSalesList = [];
 let selectedFromSales = null, selectedToSales = null;
 let transferRawNums   = [], transferFiltered = [];
-let activeTypeChips   = new Set(); // "all" means show all
+let activeTypeChips   = new Set();
 const PAGE_SZ = 50;
+
+// Report state
+let repDateFrom = "", repDateTo = "";
 
 // ── API ──
 async function api(path, opts={}) {
@@ -689,6 +925,7 @@ function switchAdminTab(t) {
   document.querySelectorAll(".admin-page").forEach(p=>p.classList.remove("active"));
   document.getElementById(`atab-${t}`).classList.add("active");
   document.getElementById(`apage-${t}`).classList.add("active");
+  if (t === "report") renderReport();
 }
 
 // ══ ADMIN DATA LOAD ══
@@ -719,8 +956,13 @@ async function loadAdminData() {
     buildTransferLists();
     buildTypeChips();
     document.getElementById("aNumsLoading").style.display="none";
+
+    // Show report loading done
+    document.getElementById("repLoading").style.display="none";
   } catch(e) {
     document.getElementById("aNumsLoading").innerHTML=`<p style="color:var(--red);text-align:center;padding:20px">خطأ في التحميل</p>`;
+    document.getElementById("repLoading").style.display="none";
+    document.getElementById("repEmpty").style.display="block";
   }
 }
 
@@ -758,6 +1000,186 @@ function renderSalesCards() {
     card.onclick=()=>{ switchAdminTab('numbers'); document.getElementById("aSalesFilter").value=name; adminFilterTable(); };
     area.appendChild(card);
   });
+}
+
+// ══ REPORT ══
+function setRepQuick(range, btn) {
+  document.querySelectorAll("#apage-report .rq-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  applyQuick(range, "repDateFrom", "repDateTo");
+  renderReport();
+}
+function resetRepDates() {
+  document.getElementById("repDateFrom").value="";
+  document.getElementById("repDateTo").value="";
+  document.querySelectorAll("#apage-report .rq-btn").forEach((b,i)=>b.classList.toggle("active",i===0));
+  closeAllCals(); renderReport();
+}
+
+function getRepFiltered() {
+  const df = document.getElementById("repDateFrom").value;
+  const dt = document.getElementById("repDateTo").value;
+  return adminAllNums.filter(r=>{
+    if(r.distributed_at){ const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
+    else if(df||dt) return false;
+    return true;
+  });
+}
+
+function renderReport() {
+  if (!adminAllNums.length) return;
+
+  const q = (document.getElementById("repSearchInp")||{}).value || "";
+  const filtered = getRepFiltered();
+
+  // Get unique types and sales
+  const allTypes = [...new Set(filtered.map(r=>r.data_type).filter(Boolean))].sort();
+  let salesInScope = [...new Set(filtered.map(r=>r.salesperson).filter(Boolean))].sort();
+  if (q.trim()) salesInScope = salesInScope.filter(n=>n.toLowerCase().includes(q.toLowerCase()));
+
+  const repLoading = document.getElementById("repLoading");
+  const repScroll  = document.getElementById("repTableScroll");
+  const repEmpty   = document.getElementById("repEmpty");
+  repLoading.style.display = "none";
+
+  if (!salesInScope.length || !allTypes.length) {
+    repScroll.style.display="none"; repEmpty.style.display="block"; return;
+  }
+  repEmpty.style.display="none"; repScroll.style.display="block";
+
+  // Build pivot: { salesperson -> { dataType -> count } }
+  const pivot = {};
+  salesInScope.forEach(s=>{ pivot[s]={}; allTypes.forEach(t=>{ pivot[s][t]=0; }); });
+  filtered.forEach(r=>{
+    if(pivot[r.salesperson] && r.data_type && pivot[r.salesperson][r.data_type]!==undefined)
+      pivot[r.salesperson][r.data_type]++;
+  });
+
+  // Column totals
+  const colTotals = {};
+  allTypes.forEach(t=>{ colTotals[t]=salesInScope.reduce((s,sp)=>s+(pivot[sp][t]||0),0); });
+  const grandTotal = salesInScope.reduce((s,sp)=>s+allTypes.reduce((ss,t)=>ss+(pivot[sp][t]||0),0),0);
+
+  // Summary cards
+  const summaryRow = document.getElementById("repSummaryRow");
+  summaryRow.innerHTML = "";
+  // Total card
+  const totCard = document.createElement("div");
+  totCard.className = "report-summary-card";
+  totCard.innerHTML = `<div class="rsnum">${grandTotal.toLocaleString("ar-EG")}</div><div class="rslbl">إجمالي الأرقام</div>`;
+  summaryRow.appendChild(totCard);
+  // Sales count
+  const salesCard = document.createElement("div");
+  salesCard.className = "report-summary-card";
+  salesCard.innerHTML = `<div class="rsnum">${salesInScope.length}</div><div class="rslbl">عدد السيلز</div>`;
+  summaryRow.appendChild(salesCard);
+  // Types count
+  const typesCard = document.createElement("div");
+  typesCard.className = "report-summary-card";
+  typesCard.innerHTML = `<div class="rsnum">${allTypes.length}</div><div class="rslbl">أنواع الداتا</div>`;
+  summaryRow.appendChild(typesCard);
+  // Top salesperson
+  let topSales="—", topCount=0;
+  salesInScope.forEach(sp=>{ const c=allTypes.reduce((s,t)=>s+(pivot[sp][t]||0),0); if(c>topCount){topCount=c;topSales=sp;} });
+  const topCard = document.createElement("div");
+  topCard.className = "report-summary-card";
+  topCard.innerHTML = `<div class="rsnum" style="font-size:15px;line-height:1.4;">${topSales}</div><div class="rslbl">الأعلى (${topCount.toLocaleString("ar-EG")})</div>`;
+  summaryRow.appendChild(topCard);
+
+  // Build thead — two rows: (1) main headers, (2) type columns
+  const thead = document.getElementById("repThead");
+  thead.innerHTML = "";
+
+  // Row 1: "السيلز" + colspan for types + "الإجمالي"
+  const r1 = document.createElement("tr");
+  const th1 = document.createElement("th");
+  th1.textContent = "السيلز";
+  th1.rowSpan = 1;
+  r1.appendChild(th1);
+  allTypes.forEach(t=>{
+    const th=document.createElement("th");
+    th.textContent=t;
+    r1.appendChild(th);
+  });
+  const thTot = document.createElement("th");
+  thTot.textContent="الإجمالي";
+  r1.appendChild(thTot);
+  thead.appendChild(r1);
+
+  // Build tbody
+  const tbody = document.getElementById("repTbody");
+  tbody.innerHTML = "";
+  salesInScope.forEach(sp=>{
+    const tr = document.createElement("tr");
+    const tdName = document.createElement("td");
+    tdName.textContent = sp;
+    tr.appendChild(tdName);
+    let rowTotal = 0;
+    allTypes.forEach(t=>{
+      const cnt = pivot[sp][t]||0;
+      rowTotal += cnt;
+      const td = document.createElement("td");
+      td.innerHTML = cnt > 0
+        ? `<span class="r-cell-val">${cnt.toLocaleString("ar-EG")}</span>`
+        : `<span class="r-cell-zero">—</span>`;
+      tr.appendChild(td);
+    });
+    const tdTotal = document.createElement("td");
+    tdTotal.className="r-total-col";
+    tdTotal.textContent=rowTotal.toLocaleString("ar-EG");
+    tr.appendChild(tdTotal);
+    tbody.appendChild(tr);
+  });
+
+  // Build tfoot (column totals)
+  const tfoot = document.getElementById("repTfoot");
+  tfoot.innerHTML = "";
+  const tfr = document.createElement("tr");
+  const tdLabel = document.createElement("td");
+  tdLabel.innerHTML = `<span>الإجمالي</span>`;
+  tfr.appendChild(tdLabel);
+  allTypes.forEach(t=>{
+    const td=document.createElement("td");
+    td.innerHTML=`<span class="report-total-badge">${(colTotals[t]||0).toLocaleString("ar-EG")}</span>`;
+    tfr.appendChild(td);
+  });
+  const tdGrand = document.createElement("td");
+  tdGrand.innerHTML=`<span class="report-total-badge">${grandTotal.toLocaleString("ar-EG")}</span>`;
+  tfr.appendChild(tdGrand);
+  tfoot.appendChild(tfr);
+}
+
+// ══ EXPORT CSV ══
+function exportReportCSV() {
+  const filtered = getRepFiltered();
+  const allTypes = [...new Set(filtered.map(r=>r.data_type).filter(Boolean))].sort();
+  const salesInScope = [...new Set(filtered.map(r=>r.salesperson).filter(Boolean))].sort();
+  const pivot = {};
+  salesInScope.forEach(s=>{ pivot[s]={}; allTypes.forEach(t=>{ pivot[s][t]=0; }); });
+  filtered.forEach(r=>{
+    if(pivot[r.salesperson] && r.data_type && pivot[r.salesperson][r.data_type]!==undefined)
+      pivot[r.salesperson][r.data_type]++;
+  });
+  let csv = "\uFEFF"; // BOM for Arabic
+  csv += ["السيلز", ...allTypes, "الإجمالي"].join(",") + "\n";
+  salesInScope.forEach(sp=>{
+    let row = [sp];
+    let total = 0;
+    allTypes.forEach(t=>{ const c=pivot[sp][t]||0; row.push(c); total+=c; });
+    row.push(total);
+    csv += row.join(",") + "\n";
+  });
+  // totals row
+  const colTotals = allTypes.map(t=>salesInScope.reduce((s,sp)=>s+(pivot[sp][t]||0),0));
+  const grand = colTotals.reduce((a,b)=>a+b,0);
+  csv += ["الإجمالي",...colTotals,grand].join(",") + "\n";
+
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href=url; a.download="report.csv"; a.click();
+  URL.revokeObjectURL(url);
+  showToast("✅ تم تصدير الريبورت");
 }
 
 // ══ ADMIN NUMBERS FILTERS ══
@@ -843,7 +1265,6 @@ function buildTypeChips() {
   const types=[...new Set(adminAllNums.map(r=>r.data_type).filter(Boolean))].sort();
   const area=document.getElementById("typeChipsArea");
   area.innerHTML="";
-  // "الكل" chip
   const allChip=document.createElement("button");
   allChip.className="type-chip active"; allChip.textContent="الكل"; allChip.dataset.type="__all__";
   allChip.onclick=()=>{ activeTypeChips.clear(); document.querySelectorAll(".type-chip").forEach(c=>c.classList.remove("active")); allChip.classList.add("active"); filterTransferNums(); };
@@ -852,7 +1273,6 @@ function buildTypeChips() {
     const chip=document.createElement("button");
     chip.className="type-chip"; chip.textContent=t; chip.dataset.type=t;
     chip.onclick=()=>{
-      // deactivate "الكل"
       document.querySelector(".type-chip[data-type='__all__']").classList.remove("active");
       if(activeTypeChips.has(t)){ activeTypeChips.delete(t); chip.classList.remove("active"); }
       else { activeTypeChips.add(t); chip.classList.add("active"); }

@@ -6,331 +6,127 @@
 <title>بوابة السيلز</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --blue:    #2563eb;
-  --blue-dk: #1d4ed8;
-  --blue-lt: #eff6ff;
-  --green:   #16a34a;
-  --green-lt:#f0fdf4;
-  --red:     #ef4444;
-  --orange:  #d97706;
-  --purple:  #7c3aed;
-  --bg:      #f0f4ff;
-  --card:    #ffffff;
-  --text:    #111827;
-  --muted:   #6b7280;
-  --border:  #dbe2ea;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563eb;--blue-dk:#1d4ed8;--blue-lt:#eff6ff;
+  --green:#16a34a;--green-lt:#f0fdf4;
+  --red:#ef4444;--orange:#d97706;--purple:#7c3aed;
+  --bg:#f0f4ff;--card:#fff;--text:#111827;--muted:#6b7280;--border:#dbe2ea;
 }
+body{font-family:'Cairo',Tahoma,Arial,sans-serif;background:var(--bg);min-height:100vh;color:var(--text)}
 
-body { font-family: 'Cairo', Tahoma, Arial, sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); }
+/* LOGIN */
+#loginScreen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#7c3aed 100%)}
+#loginScreen.active{display:flex}
+.login-wrap{width:100%;max-width:400px}
+.logo-area{text-align:center;margin-bottom:28px}
+.logo-icon{width:80px;height:80px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.3);border-radius:24px;display:inline-flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.logo-area h1{font-size:28px;font-weight:900;color:#fff}
+.logo-area p{color:rgba(255,255,255,.7);font-size:14px;margin-top:5px}
+.card{background:#fff;border-radius:24px;padding:36px 32px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.field{margin-bottom:20px}
+label{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+input[type=text],input[type=password]{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:15px;color:var(--text);background:#f8faff;transition:border-color .2s,box-shadow .2s;outline:none}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12);background:#fff}
+.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(37,99,235,.35)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(37,99,235,.4)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:11px 14px;color:var(--red);font-size:13px;font-weight:600;margin-bottom:16px;display:none;text-align:center}
 
-/* ══ LOGIN ══ */
-#loginScreen { min-height:100vh; display:none; align-items:center; justify-content:center; padding:20px; background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#7c3aed 100%); }
-#loginScreen.active { display:flex; }
-.login-wrap { width:100%; max-width:400px; }
-.logo-area { text-align:center; margin-bottom:28px; }
-.logo-icon { width:80px;height:80px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.3);border-radius:24px;display:inline-flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,0.2); }
-.logo-area h1 { font-size:28px;font-weight:900;color:#fff; }
-.logo-area p  { color:rgba(255,255,255,0.7);font-size:14px;margin-top:5px; }
-.card { background:#fff;border-radius:24px;padding:36px 32px;box-shadow:0 20px 60px rgba(0,0,0,0.25); }
-.field { margin-bottom:20px; }
-label { display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px; }
-input[type=text],input[type=password] { width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:15px;color:var(--text);background:#f8faff;transition:border-color .2s,box-shadow .2s;outline:none; }
-input:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12);background:#fff; }
-.btn-primary { width:100%;padding:14px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(37,99,235,0.35); }
-.btn-primary:hover { transform:translateY(-1px);box-shadow:0 6px 22px rgba(37,99,235,0.4); }
-.btn-primary:active { transform:translateY(0); }
-.btn-primary:disabled { opacity:.6;cursor:not-allowed;transform:none; }
-.error-box { background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:11px 14px;color:var(--red);font-size:13px;font-weight:600;margin-bottom:16px;display:none;text-align:center; }
+/* ADMIN SHELL */
+#adminScreen{min-height:100vh;display:none;flex-direction:column;background:#f0f4ff}
+.admin-header{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(30,58,138,.4)}
+.admin-header h2{font-size:17px;font-weight:900}
+.admin-header .sub{font-size:12px;opacity:.75;margin-top:2px}
+.admin-badge{background:#fbbf24;color:#78350f;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:900}
+.logout-btn{background:rgba(255,255,255,.2);border:none;color:#fff;padding:7px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s}
+.logout-btn:hover{background:rgba(255,255,255,.3)}
 
-/* ══ SALES DASHBOARD ══ */
-#dashScreen { min-height:100vh;display:none;flex-direction:column; }
-.header { background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 14px rgba(7,94,84,0.4); }
-.header-info h2 { font-size:17px;font-weight:900; }
-.header-info .sub { font-size:12px;opacity:.75;margin-top:2px; }
-.header-right { display:flex;align-items:center;gap:10px; }
-.logout-btn { background:rgba(255,255,255,0.2);border:none;color:#fff;padding:7px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s; }
-.logout-btn:hover { background:rgba(255,255,255,0.3); }
-.page { display:none;padding:16px; }
-.page.active { display:block; }
+/* TABS */
+.admin-tabs{display:flex;background:#1e3a8a;overflow-x:auto;flex-shrink:0}
+.admin-tab{flex:1;min-width:90px;padding:13px 8px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.admin-tab.active{color:#fff;border-bottom-color:#fbbf24;background:rgba(255,255,255,.08)}
+.admin-page{display:none;padding:16px}
+.admin-page.active{display:block}
 
-/* ══ STATS ══ */
-.stats-grid { display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:18px; }
-.stat-card { background:var(--card);border-radius:14px;padding:15px 12px;text-align:center;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.stat-card .snum { font-size:30px;font-weight:900;line-height:1; }
-.stat-card .slbl { font-size:12px;color:var(--muted);margin-top:4px;font-weight:600; }
-.stat-card.c-blue   .snum { color:var(--blue); }
-.stat-card.c-green  .snum { color:var(--green); }
-.stat-card.c-orange .snum { color:var(--orange); }
-.stat-card.c-purple .snum { color:var(--purple); }
+/* REPORT TAB */
+.report-toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;background:#fff;border-radius:14px;padding:12px 14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.report-toolbar input[type=text]{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:#f8faff;outline:none;color:var(--text);flex:1;min-width:140px}
+.report-toolbar input[type=text]:focus{border-color:var(--blue)}
+.rq-btn{padding:7px 13px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
+.rq-btn:hover,.rq-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* ══ FILTERS ══ */
-.filter-bar { display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap; }
-.filter-bar input[type=text],.filter-bar select { padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--card);outline:none;flex:1;min-width:120px;color:var(--text);width:auto; }
-.filter-bar input[type=text]:focus { border-color:var(--blue); }
+.report-summary-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.report-summary-card{background:#fff;border-radius:12px;padding:14px 12px;text-align:center;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.report-summary-card .rsnum{font-size:24px;font-weight:900;color:var(--blue)}
+.report-summary-card .rslbl{font-size:11px;color:var(--muted);font-weight:600;margin-top:3px}
 
-.date-filter-row { display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap; }
-.quick-btn { padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap; }
-.quick-btn:hover,.quick-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
-.calendar-trigger { position:relative;display:inline-block; }
-.cal-btn { padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:5px; }
-.cal-btn:hover,.cal-btn.active { background:var(--purple);color:#fff;border-color:var(--purple); }
-.cal-popup { display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,0.15);z-index:100;min-width:240px; }
-.cal-popup.open { display:block; }
-.cal-popup-title { font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px; }
-.cal-row { display:flex;gap:8px;align-items:center;margin-bottom:8px; }
-.cal-row label { font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;min-width:28px; }
-.cal-row input[type=date] { flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;color:var(--text);background:#f8faff;outline:none; }
-.cal-row input[type=date]:focus { border-color:var(--blue); }
-.cal-actions { display:flex;gap:6px;margin-top:10px; }
-.cal-apply { flex:1;padding:8px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer; }
-.cal-reset { padding:8px 12px;background:#f3f4f6;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer; }
-.cal-reset:hover { background:var(--red);color:#fff;border-color:var(--red); }
-
-/* ══ TABLE ══ */
-.results-count { font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;padding:0 2px; }
-.section-title { font-size:15px;font-weight:900;margin-bottom:10px; }
-.nums-wrap { background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-table { width:100%;border-collapse:collapse;font-size:13px; }
-thead th { background:#f8faff;padding:11px 8px;text-align:center;font-weight:700;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border); }
-tbody tr { border-bottom:1px solid #f3f4f6; }
-tbody tr:last-child { border-bottom:none; }
-tbody tr:nth-child(even) { background:#fafbff; }
-tbody td { padding:10px 8px;text-align:center; }
-.num-cell { font-size:14px;font-weight:700; }
-.tag { display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700; }
-.tag-vf  { background:#fef2f2;color:#dc2626; }
-.tag-et  { background:#fff7ed;color:#c2410c; }
-.tag-or  { background:#fff7ed;color:#ea580c; }
-.tag-we  { background:#f0fdf4;color:#16a34a; }
-.tag-ot  { background:#f3f4f6;color:#6b7280; }
-.tag-dt  { background:#eff6ff;color:#2563eb; }
-.date-cell { color:var(--muted);font-size:12px; }
-.empty-state { text-align:center;padding:40px 20px;color:var(--muted); }
-.empty-state .eicon { font-size:42px;margin-bottom:10px; }
-.empty-state p { font-size:14px; }
-.load-more { width:100%;padding:12px;background:#f8faff;border:none;border-top:1px solid var(--border);font-family:inherit;font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;display:none; }
-.spinner { display:inline-block;width:22px;height:22px;border:2.5px solid #dbe2ea;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.loading-center { text-align:center;padding:36px; }
-
-/* ══ ADMIN DASHBOARD ══ */
-#adminScreen { min-height:100vh;display:none;flex-direction:column;background:#f8faff; }
-.admin-header { background:linear-gradient(135deg,#1e3a8a,#7c3aed);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(30,58,138,0.4); }
-.admin-header h2 { font-size:18px;font-weight:900; }
-.admin-header .sub { font-size:12px;opacity:.75;margin-top:2px; }
-.admin-badge { background:#fbbf24;color:#78350f;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:900; }
-.admin-tabs { display:flex;background:#1e3a8a;overflow-x:auto; }
-.admin-tab { flex:1;min-width:80px;padding:13px 6px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap; }
-.admin-tab.active { color:#fff;border-bottom-color:#fbbf24;background:rgba(255,255,255,0.08); }
-.admin-page { display:none;padding:16px; }
-.admin-page.active { display:block; }
-
-/* ══ ADMIN OVERVIEW ══ */
-.admin-stats-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px; }
-.admin-stat-card { background:#fff;border-radius:14px;padding:14px 10px;text-align:center;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.admin-stat-card .snum { font-size:26px;font-weight:900; }
-.admin-stat-card .slbl { font-size:11px;color:var(--muted);margin-top:3px;font-weight:600; }
-.admin-stat-card.c-blue   .snum { color:var(--blue); }
-.admin-stat-card.c-green  .snum { color:var(--green); }
-.admin-stat-card.c-purple .snum { color:var(--purple); }
-
-.day-row { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px; }
-.day-card { background:#fff;border-radius:12px;padding:13px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:0 2px 6px rgba(0,0,0,.04); }
-.day-icon { font-size:26px;line-height:1; }
-.day-num { font-size:24px;font-weight:900; }
-.day-lbl { font-size:11px;color:var(--muted);font-weight:600; }
-.day-card.today .day-num { color:var(--green); }
-.day-card.yest .day-num { color:var(--blue); }
-
-.sales-cards-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
-.sales-mini-card { background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,0.04); }
-.sales-mini-card:hover { border-color:var(--blue);box-shadow:0 4px 16px rgba(37,99,235,0.15);transform:translateY(-1px); }
-.sales-mini-card .s-name { font-size:13px;font-weight:900;margin-bottom:4px; }
-.sales-mini-card .s-count { font-size:22px;font-weight:900;color:var(--blue); }
-.sales-mini-card .s-lbl { font-size:11px;color:var(--muted);font-weight:600; }
-
-.section-card { background:#fff;border-radius:16px;padding:16px;border:1px solid var(--border);margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.section-card-title { font-size:14px;font-weight:900;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px; }
-
-/* ══ ALL NUMBERS ══ */
-.admin-filter-select { padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:#fff;outline:none;color:var(--text); }
-.admin-filter-select:focus { border-color:var(--blue); }
-
-/* ══ TRANSFER ══ */
-.transfer-top { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px; }
-.transfer-box { background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.04); }
-.transfer-box h4 { font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:6px; }
-.transfer-search { width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:#f8faff;outline:none;color:var(--text);margin-bottom:8px; }
-.transfer-search:focus { border-color:var(--blue); }
-.sales-scroll { max-height:200px;overflow-y:auto;border:1.5px solid var(--border);border-radius:10px;background:#f8faff; }
-.sales-item { padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0f4ff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;transition:background .15s; }
-.sales-item:last-child { border-bottom:none; }
-.sales-item:hover { background:#eff6ff; }
-.sales-item.selected { background:linear-gradient(135deg,#eff6ff,#e0e7ff);color:var(--blue); }
-.sales-item .ic { font-size:14px; }
-.sales-item .cnt { margin-right:auto;font-size:11px;color:var(--muted);font-weight:600; }
-
-.transfer-nums-section { background:#fff;border-radius:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden; }
-.transfer-nums-header { padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbff;display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
-.transfer-nums-header h4 { font-size:13px;font-weight:900;flex:1; }
-.tr-filter-inp { padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;background:#f8faff;outline:none;color:var(--text);width:150px; }
-.tr-filter-inp:focus { border-color:var(--blue); }
-.type-multi { display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--border);background:#f8faff; }
-.type-chip { padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--text);transition:all .2s; }
-.type-chip.active { background:var(--blue);color:#fff;border-color:var(--blue); }
-
-.tr-day-bar { display:flex;gap:7px;padding:10px 16px;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap; }
-.tr-day-btn { padding:5px 13px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-family:inherit;font-size:11px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s; }
-.tr-day-btn:hover,.tr-day-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
-
-.select-bar { display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border); }
-.sel-btn { padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s; }
-.sel-btn:hover { background:var(--blue);color:#fff;border-color:var(--blue); }
-.sel-count { margin-right:auto;font-size:12px;font-weight:700;color:var(--purple); }
-
-.transfer-list { max-height:320px;overflow-y:auto; }
-.tr-item { display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid #f3f4f6;font-size:12px;cursor:pointer; }
-.tr-item:last-child { border-bottom:none; }
-.tr-item:hover { background:#f8faff; }
-.tr-item input[type=checkbox] { width:15px;height:15px;cursor:pointer;accent-color:var(--blue); }
-.tr-num { font-weight:700;flex:1; }
-
-.btn-confirm { width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,0.35);transition:all .2s;margin-top:12px; }
-.btn-confirm:hover { transform:translateY(-1px); }
-.btn-confirm:disabled { opacity:.5;cursor:not-allowed;transform:none; }
-
-/* ══ REPORT TAB ══ */
-#apage-report { padding:16px; }
-
-.report-toolbar {
-  display:flex;
-  gap:8px;
-  margin-bottom:12px;
-  flex-wrap:wrap;
-  align-items:center;
-  background:#fff;
-  border-radius:14px;
-  padding:12px 14px;
-  border:1px solid var(--border);
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.report-toolbar input[type=text] {
-  padding:8px 12px;
-  border:1.5px solid var(--border);
-  border-radius:8px;
-  font-family:inherit;
-  font-size:13px;
-  background:#f8faff;
-  outline:none;
-  color:var(--text);
-  flex:1;
-  min-width:140px;
-}
-.report-toolbar input[type=text]:focus { border-color:var(--blue); }
-.report-toolbar .rq-btn {
-  padding:7px 13px;
-  border:1.5px solid var(--border);
-  border-radius:20px;
-  background:#f8faff;
-  font-family:inherit;
-  font-size:12px;
-  font-weight:700;
-  color:var(--text);
-  cursor:pointer;
-  transition:all .2s;
-  white-space:nowrap;
-}
-.report-toolbar .rq-btn:hover,
-.report-toolbar .rq-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
-
-.report-summary-row {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-  gap:10px;
-  margin-bottom:16px;
-}
-.report-summary-card {
-  background:#fff;
-  border-radius:12px;
-  padding:14px 12px;
-  text-align:center;
-  border:1px solid var(--border);
-  box-shadow:0 2px 6px rgba(0,0,0,0.04);
-}
-.report-summary-card .rsnum { font-size:24px;font-weight:900;color:var(--blue); }
-.report-summary-card .rslbl { font-size:11px;color:var(--muted);font-weight:600;margin-top:3px; }
-
-/* Responsive report table wrapper */
-.report-table-wrap {
+/* FULL-WIDTH REPORT TABLE */
+.report-table-wrap{
   background:#fff;
   border-radius:14px;
   border:1px solid var(--border);
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
   overflow:hidden;
 }
-.report-table-scroll {
+
+.report-table-scroll{
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
+  width:100%;
 }
 
-.report-table {
-  width:100%;
+.report-table{
   border-collapse:collapse;
-  font-size:13px;
-  min-width:400px;
+  font-size:14px;
+  width:100%;
+  min-width:500px;
+  border:1px solid #e5e7eb;
 }
-.report-table thead tr:first-child th {
-  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+
+.report-table thead tr:first-child th{
+  background:#1e3a8a;
   color:#fff;
-  padding:11px 10px;
+  padding:12px 10px;
   font-weight:700;
   font-size:12px;
   text-align:center;
   white-space:nowrap;
-}
-.report-table thead tr:first-child th:first-child {
-  text-align:right;
-  padding-right:16px;
-  position:sticky;
-  right:0;
-  z-index:2;
-  background:linear-gradient(135deg,#1e3a8a,#2563eb);
-}
-.report-table thead tr.type-header th {
-  background:#f0f4ff;
-  color:var(--blue);
-  padding:7px 10px;
-  font-weight:700;
-  font-size:11px;
-  text-align:center;
-  border-bottom:2px solid var(--border);
-  white-space:nowrap;
-}
-.report-table thead tr.type-header th:first-child {
-  text-align:right;
-  padding-right:16px;
-  position:sticky;
-  right:0;
-  z-index:2;
-  background:#f0f4ff;
+  border:1px solid #1d4ed8;
 }
 
-.report-table tbody tr {
-  border-bottom:1px solid #f0f4ff;
+.report-table thead tr:first-child th:first-child{
+  text-align:right;
+  padding-right:16px;
+  position:sticky;
+  right:0;
+  z-index:2;
+  background:#1e3a8a;
+}
+
+.report-table tbody tr{
+  border-bottom:1px solid #e5e7eb;
   transition:background .15s;
 }
-.report-table tbody tr:last-child { border-bottom:none; }
-.report-table tbody tr:hover { background:#f8faff; }
-.report-table tbody td {
-  padding:11px 10px;
+
+.report-table tbody tr:nth-child(even){
+  background:#f8fafc;
+}
+
+.report-table tbody tr:hover{
+  background:#eff6ff;
+}
+
+.report-table tbody td{
+  padding:12px 10px;
   text-align:center;
   vertical-align:middle;
+  white-space:nowrap;
+  border:1px solid #e5e7eb;
 }
-.report-table tbody td:first-child {
+
+.report-table tbody td:first-child{
   text-align:right;
   font-weight:900;
   font-size:13px;
@@ -340,52 +136,60 @@ tbody td { padding:10px 8px;text-align:center; }
   right:0;
   z-index:1;
   border-left:2px solid var(--border);
-  white-space:nowrap;
 }
-.report-table tbody tr:hover td:first-child { background:#f8faff; }
 
-.r-cell-val {
+.report-table tbody tr:hover td:first-child{
+  background:#eff6ff;
+}
+
+.r-cell-val{
   font-weight:700;
   color:var(--blue);
-  font-size:14px;
+  font-size:13px;
 }
-.r-cell-zero {
+
+.r-cell-zero{
   color:#d1d5db;
   font-size:13px;
 }
-.r-total-col {
+
+.r-total-col{
   background:#eff6ff;
   font-weight:900;
   color:var(--blue-dk);
-  font-size:14px;
+  font-size:13px;
 }
-.report-table tfoot td {
+
+.report-table tfoot td{
   padding:11px 10px;
   text-align:center;
   font-weight:900;
   background:#1e3a8a;
   color:#fff;
-  font-size:13px;
+  font-size:12px;
   border-top:2px solid #2563eb;
+  border:1px solid #1d4ed8;
+  white-space:nowrap;
 }
-.report-table tfoot td:first-child {
+
+.report-table tfoot td:first-child{
   text-align:right;
   padding-right:16px;
   position:sticky;
   right:0;
   z-index:1;
   background:#1e3a8a;
-  white-space:nowrap;
 }
 
-.report-total-badge {
+.report-total-badge{
   display:inline-block;
-  background:rgba(255,255,255,0.2);
+  background:rgba(255,255,255,.2);
   border-radius:20px;
   padding:2px 10px;
-  font-size:13px;
+  font-size:12px;
 }
-.report-export-btn {
+
+.report-export-btn{
   display:flex;
   align-items:center;
   gap:6px;
@@ -400,32 +204,120 @@ tbody td { padding:10px 8px;text-align:center; }
   cursor:pointer;
   transition:all .2s;
   white-space:nowrap;
-  box-shadow:0 2px 8px rgba(22,163,74,0.3);
+  box-shadow:0 2px 8px rgba(22,163,74,.3);
 }
-.report-export-btn:hover { transform:translateY(-1px);box-shadow:0 4px 14px rgba(22,163,74,0.4); }
 
-/* ══ Toast ══ */
-.toast-msg { position:fixed;top:-70px;left:50%;transform:translateX(-50%);background:#065f46;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);transition:top .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap; }
-.toast-msg.show { top:16px; }
-.toast-msg.error { background:#991b1b; }
-
-.cal-overlay { display:none;position:fixed;inset:0;z-index:50; }
-.cal-overlay.open { display:block; }
-
-/* ══ RESPONSIVE ══ */
-@media (max-width: 600px) {
-  .transfer-top { grid-template-columns:1fr; }
-  .admin-stats-grid { grid-template-columns:1fr 1fr; }
-  .report-summary-row { grid-template-columns:1fr 1fr; }
-  .admin-tab { font-size:11px;padding:11px 4px;gap:3px; }
-  .report-toolbar { padding:10px; }
-  .cal-popup { right:auto;left:0; }
+.report-export-btn:hover{
+  transform:translateY(-1px);
 }
-@media (min-width: 1024px) {
-  .admin-page, #apage-report { max-width:1200px;margin:0 auto; }
-  .stats-grid { grid-template-columns:repeat(4,1fr); }
-  .report-summary-row { grid-template-columns:repeat(4,1fr); }
-  .sales-cards-grid { grid-template-columns:repeat(4,1fr); }
+
+/* NUMBERS TAB (per-salesperson) */
+.sales-picker-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
+.sp-chip{padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sp-chip:hover,.sp-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* FILTERS */
+.filter-bar{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.filter-bar input[type=text],.filter-bar select{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--card);outline:none;flex:1;min-width:120px;color:var(--text);width:auto}
+.filter-bar input[type=text]:focus{border-color:var(--blue)}
+.date-filter-row{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap}
+.quick-btn{padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap}
+.quick-btn:hover,.quick-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.calendar-trigger{position:relative;display:inline-block}
+.cal-btn{padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.cal-btn:hover,.cal-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.cal-popup{display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:100;min-width:240px}
+.cal-popup.open{display:block}
+.cal-popup-title{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px}
+.cal-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.cal-row label{font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;min-width:28px}
+.cal-row input[type=date]{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;color:var(--text);background:#f8faff;outline:none}
+.cal-row input[type=date]:focus{border-color:var(--blue)}
+.cal-actions{display:flex;gap:6px;margin-top:10px}
+.cal-apply{flex:1;padding:8px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.cal-reset{padding:8px 12px;background:#f3f4f6;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}
+.cal-reset:hover{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* TABLE */
+.results-count{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;padding:0 2px}
+.section-title{font-size:15px;font-weight:900;margin-bottom:10px}
+.nums-wrap{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:#f8faff;padding:11px 8px;text-align:center;font-weight:700;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid #f3f4f6}
+tbody tr:last-child{border-bottom:none}
+tbody tr:nth-child(even){background:#fafbff}
+tbody td{padding:10px 8px;text-align:center}
+.num-cell{font-size:14px;font-weight:700}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.tag-vf{background:#fef2f2;color:#dc2626}
+.tag-et{background:#fff7ed;color:#c2410c}
+.tag-or{background:#fff7ed;color:#ea580c}
+.tag-we{background:#f0fdf4;color:#16a34a}
+.tag-ot{background:#f3f4f6;color:#6b7280}
+.tag-dt{background:#eff6ff;color:#2563eb}
+.date-cell{color:var(--muted);font-size:12px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state .eicon{font-size:42px;margin-bottom:10px}
+.empty-state p{font-size:14px}
+.load-more{width:100%;padding:12px;background:#f8faff;border:none;border-top:1px solid var(--border);font-family:inherit;font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;display:none}
+.spinner{display:inline-block;width:22px;height:22px;border:2.5px solid #dbe2ea;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-center{text-align:center;padding:36px}
+
+/* TRANSFER */
+.transfer-top{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.transfer-box{background:#fff;border-radius:14px;border:1px solid var(--border);padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.transfer-box h4{font-size:13px;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.transfer-search{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:#f8faff;outline:none;color:var(--text);margin-bottom:8px}
+.transfer-search:focus{border-color:var(--blue)}
+.sales-scroll{max-height:200px;overflow-y:auto;border:1.5px solid var(--border);border-radius:10px;background:#f8faff}
+.sales-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0f4ff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;transition:background .15s}
+.sales-item:last-child{border-bottom:none}
+.sales-item:hover{background:#eff6ff}
+.sales-item.selected{background:linear-gradient(135deg,#eff6ff,#e0e7ff);color:var(--blue)}
+.sales-item .ic{font-size:14px}
+.sales-item .cnt{margin-right:auto;font-size:11px;color:var(--muted);font-weight:600}
+.transfer-nums-section{background:#fff;border-radius:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden}
+.transfer-nums-header{padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbff;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.transfer-nums-header h4{font-size:13px;font-weight:900;flex:1}
+.tr-filter-inp{padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;background:#f8faff;outline:none;color:var(--text);width:150px}
+.tr-filter-inp:focus{border-color:var(--blue)}
+.type-multi{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--border);background:#f8faff}
+.type-chip{padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--text);transition:all .2s}
+.type-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tr-day-bar{display:flex;gap:7px;padding:10px 16px;border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap}
+.tr-day-btn{padding:5px 13px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-family:inherit;font-size:11px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s}
+.tr-day-btn:hover,.tr-day-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.select-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--border)}
+.sel-btn{padding:5px 12px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.sel-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sel-count{margin-right:auto;font-size:12px;font-weight:700;color:var(--purple)}
+.transfer-list{max-height:320px;overflow-y:auto}
+.tr-item{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid #f3f4f6;font-size:12px;cursor:pointer}
+.tr-item:last-child{border-bottom:none}
+.tr-item:hover{background:#f8faff}
+.tr-item input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:var(--blue)}
+.tr-num{font-weight:700;flex:1}
+.btn-confirm{width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,.35);transition:all .2s;margin-top:12px}
+.btn-confirm:hover{transform:translateY(-1px)}
+.btn-confirm:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* TOAST */
+.toast-msg{position:fixed;top:-70px;left:50%;transform:translateX(-50%);background:#065f46;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:top .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+.toast-msg.show{top:16px}
+.toast-msg.error{background:#991b1b}
+.cal-overlay{display:none;position:fixed;inset:0;z-index:50}
+.cal-overlay.open{display:block}
+
+@media(max-width:600px){
+  .transfer-top{grid-template-columns:1fr}
+  .admin-tab{font-size:11px;padding:11px 4px;gap:3px}
+  .cal-popup{right:auto;left:0}
+}
+@media(min-width:1024px){
+  .admin-page{max-width:1400px;margin:0 auto}
+  .report-summary-row{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
@@ -457,62 +349,7 @@ tbody td { padding:10px 8px;text-align:center; }
   </div>
 </div>
 
-<!-- SALES DASHBOARD -->
-<div id="dashScreen" style="display:none;flex-direction:column;">
-  <div class="header">
-    <div class="header-info">
-      <h2 id="helloName">أهلاً 👋</h2>
-      <div class="sub" id="connStatus">—</div>
-    </div>
-    <div class="header-right">
-      <button class="logout-btn" onclick="doLogout()">خروج ↩</button>
-    </div>
-  </div>
-  <div class="page active" id="page-nums">
-    <div class="stats-grid">
-      <div class="stat-card c-blue">  <div class="snum" id="stTotal">—</div><div class="slbl">إجمالي الأرقام</div></div>
-      <div class="stat-card c-green"> <div class="snum" id="stToday">—</div><div class="slbl">اليوم</div></div>
-      <div class="stat-card c-orange"><div class="snum" id="stWeek">—</div> <div class="slbl">هذا الأسبوع</div></div>
-      <div class="stat-card c-purple"><div class="snum" id="stTypes">—</div><div class="slbl">أنواع الداتا</div></div>
-    </div>
-    <div class="section-title">📞 سجل الأرقام</div>
-    <div class="filter-bar">
-      <input type="text" id="searchInp" placeholder="🔍 بحث برقم..." oninput="filterTable()">
-      <select id="typeFilter" onchange="filterTable()"><option value="">كل الأنواع</option></select>
-    </div>
-    <div class="date-filter-row">
-      <button class="quick-btn active" onclick="setQuick('all',this)">الكل</button>
-      <button class="quick-btn" onclick="setQuick('today',this)">اليوم</button>
-      <button class="quick-btn" onclick="setQuick('yesterday',this)">أمس</button>
-      <button class="quick-btn" onclick="setQuick('week',this)">آخر 7 أيام</button>
-      <button class="quick-btn" onclick="setQuick('month',this)">هذا الشهر</button>
-      <div class="calendar-trigger">
-        <button class="cal-btn" id="dashCalBtn" onclick="toggleCal('dashCal','dashCalBtn')">📅 تاريخ محدد</button>
-        <div class="cal-popup" id="dashCal">
-          <div class="cal-popup-title">اختر الفترة</div>
-          <div class="cal-row"><label>من:</label><input type="date" id="dateFrom" onchange="filterTable()"></div>
-          <div class="cal-row"><label>إلى:</label><input type="date" id="dateTo" onchange="filterTable()"></div>
-          <div class="cal-actions">
-            <button class="cal-apply" onclick="closeAllCals();filterTable()">تطبيق ✓</button>
-            <button class="cal-reset" onclick="resetDates()">مسح</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="results-count" id="resultsCount"></div>
-    <div class="nums-wrap">
-      <div class="loading-center" id="numsLoading"><div class="spinner"></div></div>
-      <table id="numsTable" style="display:none">
-        <thead><tr><th>#</th><th>الرقم</th><th>الشركة</th><th>نوع الداتا</th><th>التاريخ</th></tr></thead>
-        <tbody id="numsBody"></tbody>
-      </table>
-      <div class="empty-state" id="numsEmpty" style="display:none"><div class="eicon">📭</div><p>لا يوجد أرقام في هذه الفترة</p></div>
-    </div>
-    <button class="load-more" id="loadMoreBtn" onclick="loadMore()">⬇ تحميل المزيد</button>
-  </div>
-</div>
-
-<!-- ADMIN DASHBOARD -->
+<!-- ADMIN SCREEN -->
 <div id="adminScreen" style="display:none;flex-direction:column;">
   <div class="admin-header">
     <div>
@@ -525,70 +362,20 @@ tbody td { padding:10px 8px;text-align:center; }
     </div>
   </div>
   <div class="admin-tabs">
-    <button class="admin-tab active" id="atab-overview"  onclick="switchAdminTab('overview')">📊 نظرة عامة</button>
-    <button class="admin-tab"        id="atab-report"    onclick="switchAdminTab('report')">📈 ريبورت</button>
-    <button class="admin-tab"        id="atab-numbers"   onclick="switchAdminTab('numbers')">📞 كل الأرقام</button>
-    <button class="admin-tab"        id="atab-transfer"  onclick="switchAdminTab('transfer')">🔄 نقل الأرقام</button>
+    <button class="admin-tab active" id="atab-report"   onclick="switchAdminTab('report')">📈 ريبورت</button>
+    <button class="admin-tab"        id="atab-numbers"  onclick="switchAdminTab('numbers')">📞 أرقام السيلز</button>
+    <button class="admin-tab"        id="atab-transfer" onclick="switchAdminTab('transfer')">🔄 نقل الأرقام</button>
   </div>
 
-  <!-- ══ OVERVIEW ══ -->
-  <div class="admin-page active" id="apage-overview">
-    <div class="admin-stats-grid">
-      <div class="admin-stat-card c-blue">  <div class="snum" id="aStTotal">—</div><div class="slbl">إجمالي الأرقام</div></div>
-      <div class="admin-stat-card c-green"> <div class="snum" id="aStSales">—</div><div class="slbl">عدد السيلز</div></div>
-      <div class="admin-stat-card c-purple"><div class="snum" id="aStTypes">—</div><div class="slbl">أنواع الداتا</div></div>
-    </div>
-    <div class="day-row">
-      <div class="day-card today">
-        <div class="day-icon">☀️</div>
-        <div>
-          <div class="day-num" id="aStToday">—</div>
-          <div class="day-lbl">توزيع اليوم</div>
-        </div>
-      </div>
-      <div class="day-card yest">
-        <div class="day-icon">🌙</div>
-        <div>
-          <div class="day-num" id="aStYest">—</div>
-          <div class="day-lbl">توزيع أمس</div>
-        </div>
-      </div>
-    </div>
-    <div class="section-card">
-      <div class="section-card-title">👥 السيلز وأرقامهم</div>
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
-        <input type="text" class="admin-filter-select" style="flex:1;min-width:160px;" id="ovSearchInp" placeholder="🔍 ابحث عن سيلز..." oninput="renderSalesCards()">
-        <button class="quick-btn active" id="ovAll"  onclick="setOvQuick('all',this)">الكل</button>
-        <button class="quick-btn" id="ovToday" onclick="setOvQuick('today',this)">اليوم</button>
-        <button class="quick-btn" id="ovYest"  onclick="setOvQuick('yesterday',this)">أمس</button>
-        <div class="calendar-trigger">
-          <button class="cal-btn" id="ovCalBtn" onclick="toggleCal('ovCal','ovCalBtn')">📅 فترة</button>
-          <div class="cal-popup" id="ovCal">
-            <div class="cal-popup-title">اختر الفترة</div>
-            <div class="cal-row"><label>من:</label><input type="date" id="ovDateFrom" onchange="renderSalesCards()"></div>
-            <div class="cal-row"><label>إلى:</label><input type="date" id="ovDateTo" onchange="renderSalesCards()"></div>
-            <div class="cal-actions">
-              <button class="cal-apply" onclick="closeAllCals();renderSalesCards()">تطبيق ✓</button>
-              <button class="cal-reset" onclick="resetOvDates()">مسح</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sales-cards-grid" id="salesCardsArea">
-        <div class="loading-center" style="grid-column:span 2"><div class="spinner"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ REPORT ══ -->
-  <div class="admin-page" id="apage-report">
+  <!-- ══ REPORT TAB ══ -->
+  <div class="admin-page active" id="apage-report">
     <div class="report-toolbar">
       <input type="text" id="repSearchInp" placeholder="🔍 ابحث عن سيلز..." oninput="renderReport()">
-      <button class="rq-btn active" onclick="setRepQuick('all',this)">الكل</button>
-      <button class="rq-btn" onclick="setRepQuick('today',this)">اليوم</button>
-      <button class="rq-btn" onclick="setRepQuick('yesterday',this)">أمس</button>
-      <button class="rq-btn" onclick="setRepQuick('week',this)">آخر 7 أيام</button>
-      <button class="rq-btn" onclick="setRepQuick('month',this)">هذا الشهر</button>
+      <button class="rq-btn" id="rqAll"   onclick="setRepQuick('all',this)">الكل</button>
+      <button class="rq-btn active" id="rqToday" onclick="setRepQuick('today',this)">اليوم</button>
+      <button class="rq-btn" id="rqYest"  onclick="setRepQuick('yesterday',this)">أمس</button>
+      <button class="rq-btn" id="rqWeek"  onclick="setRepQuick('week',this)">آخر 7 أيام</button>
+      <button class="rq-btn" id="rqMonth" onclick="setRepQuick('month',this)">هذا الشهر</button>
       <div class="calendar-trigger">
         <button class="cal-btn" id="repCalBtn" onclick="toggleCal('repCal','repCalBtn')">📅 فترة</button>
         <div class="cal-popup" id="repCal">
@@ -604,9 +391,7 @@ tbody td { padding:10px 8px;text-align:center; }
       <button class="report-export-btn" onclick="exportReportCSV()">📥 تصدير CSV</button>
     </div>
 
-    <div class="report-summary-row" id="repSummaryRow">
-      <!-- filled by JS -->
-    </div>
+    <div class="report-summary-row" id="repSummaryRow"></div>
 
     <div class="report-table-wrap">
       <div class="loading-center" id="repLoading"><div class="spinner"></div></div>
@@ -621,45 +406,49 @@ tbody td { padding:10px 8px;text-align:center; }
     </div>
   </div>
 
-  <!-- ══ ALL NUMBERS ══ -->
+  <!-- ══ NUMBERS TAB ══ -->
   <div class="admin-page" id="apage-numbers">
-    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
-      <input type="text" class="admin-filter-select" style="flex:2;min-width:150px;" id="aSearchInp" placeholder="🔍 بحث برقم أو سيلز..." oninput="adminFilterTable()">
-      <select class="admin-filter-select" style="flex:1;min-width:120px;" id="aSalesFilter" onchange="adminFilterTable()"><option value="">كل السيلز</option></select>
-      <select class="admin-filter-select" style="flex:1;min-width:110px;" id="aTypeFilter"  onchange="adminFilterTable()"><option value="">كل الأنواع</option></select>
+    <div class="sales-picker-bar" id="salesPickerBar">
+      <div class="loading-center"><div class="spinner"></div></div>
     </div>
-    <div class="date-filter-row">
-      <button class="quick-btn active" onclick="setAQuick('all',this)">الكل</button>
-      <button class="quick-btn" onclick="setAQuick('today',this)">اليوم</button>
-      <button class="quick-btn" onclick="setAQuick('yesterday',this)">أمس</button>
-      <button class="quick-btn" onclick="setAQuick('week',this)">آخر 7 أيام</button>
-      <button class="quick-btn" onclick="setAQuick('month',this)">هذا الشهر</button>
-      <div class="calendar-trigger">
-        <button class="cal-btn" id="aCalBtn" onclick="toggleCal('aCal','aCalBtn')">📅 فترة</button>
-        <div class="cal-popup" id="aCal">
-          <div class="cal-popup-title">اختر الفترة</div>
-          <div class="cal-row"><label>من:</label><input type="date" id="aDateFrom" onchange="adminFilterTable()"></div>
-          <div class="cal-row"><label>إلى:</label><input type="date" id="aDateTo"   onchange="adminFilterTable()"></div>
-          <div class="cal-actions">
-            <button class="cal-apply" onclick="closeAllCals();adminFilterTable()">تطبيق ✓</button>
-            <button class="cal-reset" onclick="resetAdminDates()">مسح</button>
+    <div id="numsFiltersArea" style="display:none">
+      <div class="filter-bar">
+        <input type="text" id="nSearchInp" placeholder="🔍 بحث برقم..." oninput="numsFilterTable()">
+        <select id="nTypeFilter" onchange="numsFilterTable()"><option value="">كل الأنواع</option></select>
+      </div>
+      <div class="date-filter-row">
+        <button class="quick-btn active" onclick="setNQuick('all',this)">الكل</button>
+        <button class="quick-btn" onclick="setNQuick('today',this)">اليوم</button>
+        <button class="quick-btn" onclick="setNQuick('yesterday',this)">أمس</button>
+        <button class="quick-btn" onclick="setNQuick('week',this)">آخر 7 أيام</button>
+        <button class="quick-btn" onclick="setNQuick('month',this)">هذا الشهر</button>
+        <div class="calendar-trigger">
+          <button class="cal-btn" id="nCalBtn" onclick="toggleCal('nCal','nCalBtn')">📅 تاريخ محدد</button>
+          <div class="cal-popup" id="nCal">
+            <div class="cal-popup-title">اختر الفترة</div>
+            <div class="cal-row"><label>من:</label><input type="date" id="nDateFrom" onchange="numsFilterTable()"></div>
+            <div class="cal-row"><label>إلى:</label><input type="date" id="nDateTo" onchange="numsFilterTable()"></div>
+            <div class="cal-actions">
+              <button class="cal-apply" onclick="closeAllCals();numsFilterTable()">تطبيق ✓</button>
+              <button class="cal-reset" onclick="resetNDates()">مسح</button>
+            </div>
           </div>
         </div>
       </div>
+      <div class="results-count" id="nResultsCount"></div>
     </div>
-    <div class="results-count" id="aResultsCount"></div>
-    <div class="nums-wrap">
-      <div class="loading-center" id="aNumsLoading"><div class="spinner"></div></div>
-      <table id="aNumsTable" style="display:none">
-        <thead><tr><th>#</th><th>الرقم</th><th>الشركة</th><th>نوع الداتا</th><th>السيلز</th><th>التاريخ</th></tr></thead>
-        <tbody id="aNumsBody"></tbody>
+    <div class="nums-wrap" id="numsWrap" style="display:none">
+      <table id="nNumsTable">
+        <thead><tr><th>#</th><th>الرقم</th><th>الشركة</th><th>نوع الداتا</th><th>التاريخ</th></tr></thead>
+        <tbody id="nNumsBody"></tbody>
       </table>
-      <div class="empty-state" id="aNumsEmpty" style="display:none"><div class="eicon">📭</div><p>لا يوجد أرقام</p></div>
+      <div class="empty-state" id="nNumsEmpty" style="display:none"><div class="eicon">📭</div><p>لا يوجد أرقام</p></div>
     </div>
-    <button class="load-more" id="aLoadMoreBtn" onclick="adminLoadMore()">⬇ تحميل المزيد</button>
+    <div class="empty-state" id="nPickPrompt" style="display:block;padding:40px 20px"><div class="eicon">👆</div><p>اختر سيلز من فوق لعرض أرقامه</p></div>
+    <button class="load-more" id="nLoadMoreBtn" onclick="numsLoadMore()">⬇ تحميل المزيد</button>
   </div>
 
-  <!-- ══ TRANSFER ══ -->
+  <!-- ══ TRANSFER TAB ══ -->
   <div class="admin-page" id="apage-transfer">
     <div class="transfer-top">
       <div class="transfer-box">
@@ -693,7 +482,7 @@ tbody td { padding:10px 8px;text-align:center; }
           <div class="cal-popup" id="trCal">
             <div class="cal-popup-title">اختر الفترة</div>
             <div class="cal-row"><label>من:</label><input type="date" id="trDateFrom" onchange="filterTransferNums()"></div>
-            <div class="cal-row"><label>إلى:</label><input type="date" id="trDateTo"   onchange="filterTransferNums()"></div>
+            <div class="cal-row"><label>إلى:</label><input type="date" id="trDateTo" onchange="filterTransferNums()"></div>
             <div class="cal-actions">
               <button class="cal-apply" onclick="closeAllCals();filterTransferNums()">تطبيق ✓</button>
               <button class="cal-reset" onclick="resetTrDates()">مسح</button>
@@ -716,661 +505,459 @@ tbody td { padding:10px 8px;text-align:center; }
 
 <script>
 'use strict';
+const SB_URL="https://fyjiizuumgoeuxppdect.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5amlpenV1bWdvZXV4cHBkZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTg4MjgsImV4cCI6MjA5NDY5NDgyOH0.M8BvjRYszipT-JNOMwcOhQkWT2g8yTLXHuAeuuMscbs";
+const HDR={apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,"Content-Type":"application/json"};
 
-const SB_URL = "https://fyjiizuumgoeuxppdect.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5amlpenV1bWdvZXV4cHBkZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTg4MjgsImV4cCI6MjA5NDY5NDgyOH0.M8BvjRYszipT-JNOMwcOhQkWT2g8yTLXHuAeuuMscbs";
-const HDR    = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, "Content-Type": "application/json" };
+let currentUser=sessionStorage.getItem("sales_name")||null;
+let isAdmin=sessionStorage.getItem("is_admin")==="true";
+let adminAllNums=[],allSalesList=[];
+let selectedFromSales=null,selectedToSales=null;
+let transferRawNums=[],transferFiltered=[];
+let activeTypeChips=new Set();
+// Numbers tab
+let numsCurrentSales=null,numsRaw=[],numsFiltered=[],numsDisplayed=0;
+const PAGE_SZ=50;
 
-let currentUser  = sessionStorage.getItem("sales_name") || null;
-let isAdmin      = sessionStorage.getItem("is_admin") === "true";
-let allNums      = [], filteredNums = [], displayedCount = 0;
-let adminAllNums = [], adminFiltered = [], adminDisplayed = 0;
-let allSalesList = [];
-let selectedFromSales = null, selectedToSales = null;
-let transferRawNums   = [], transferFiltered = [];
-let activeTypeChips   = new Set();
-const PAGE_SZ = 50;
-
-// Report state
-let repDateFrom = "", repDateTo = "";
-
-// ── API ──
-async function api(path, opts={}) {
-  const r = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HDR, ...opts });
-  if (!r.ok) throw new Error(await r.text());
-  if (r.status === 204 || opts.method === "PATCH" || opts.method === "DELETE") return null;
+async function api(path,opts={}){
+  const r=await fetch(`${SB_URL}/rest/v1/${path}`,{headers:HDR,...opts});
+  if(!r.ok) throw new Error(await r.text());
+  if(r.status===204||opts.method==="PATCH"||opts.method==="DELETE") return null;
   return r.json();
 }
 
-// ── Toast ──
-let toastTimer = null;
-function showToast(msg, isError=false) {
-  const el = document.getElementById("toastMsg");
-  el.textContent = msg;
-  el.className = "toast-msg" + (isError ? " error" : "") + " show";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove("show"), 3000);
+let toastTimer=null;
+function showToast(msg,isError=false){
+  const el=document.getElementById("toastMsg");
+  el.textContent=msg;el.className="toast-msg"+(isError?" error":"")+" show";
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),3000);
 }
 
-// ── Calendar popup ──
-function toggleCal(calId, btnId) {
-  const cal = document.getElementById(calId);
-  const btn = document.getElementById(btnId);
-  const isOpen = cal.classList.contains("open");
+function toggleCal(calId,btnId){
+  const cal=document.getElementById(calId),btn=document.getElementById(btnId);
+  const isOpen=cal.classList.contains("open");
   closeAllCals();
-  if (!isOpen) {
-    cal.classList.add("open");
-    btn.classList.add("active");
-    document.getElementById("calOverlay").classList.add("open");
-  }
+  if(!isOpen){cal.classList.add("open");btn.classList.add("active");document.getElementById("calOverlay").classList.add("open");}
 }
-function closeAllCals() {
-  document.querySelectorAll(".cal-popup").forEach(c => c.classList.remove("open"));
-  document.querySelectorAll(".cal-btn").forEach(b => b.classList.remove("active"));
+function closeAllCals(){
+  document.querySelectorAll(".cal-popup").forEach(c=>c.classList.remove("open"));
+  document.querySelectorAll(".cal-btn").forEach(b=>b.classList.remove("active"));
   document.getElementById("calOverlay").classList.remove("open");
 }
 
-// ── Init ──
-if (currentUser) {
-  if (isAdmin) showAdmin();
-  else showDash();
+if(currentUser){if(isAdmin)showAdmin();else showDash();}
+
+document.getElementById("passInp").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+
+async function doLogin(){
+  const name=document.getElementById("nameInp").value.trim();
+  const pass=document.getElementById("passInp").value.trim();
+  const btn=document.getElementById("loginBtn");
+  document.getElementById("loginErr").style.display="none";
+  if(!name||!pass){showErr("من فضلك ادخل الاسم وكلمة المرور");return;}
+  btn.disabled=true;btn.innerHTML='جاري التحقق <span style="display:inline-block;width:16px;height:16px;border:2px solid #ffffff55;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>';
+  try{
+    const data=await api(`sales?name=eq.${enc(name)}&select=name,password`);
+    if(!data||!data.length){showErr("❌ الاسم غير موجود في النظام");return;}
+    if(data[0].password!==pass){showErr("❌ كلمة المرور غلط");return;}
+    sessionStorage.setItem("sales_name",name);currentUser=name;
+    if(name.toLowerCase()==="admin"){sessionStorage.setItem("is_admin","true");isAdmin=true;showAdmin();}
+    else{sessionStorage.setItem("is_admin","false");isAdmin=false;showDash();}
+  }catch(e){showErr("خطأ في الاتصال، حاول تاني");}
+  finally{btn.disabled=false;btn.innerHTML="دخول";}
 }
+function showErr(msg){const el=document.getElementById("loginErr");el.textContent=msg;el.style.display="block";}
 
-// ══ LOGIN ══
-document.getElementById("passInp").addEventListener("keydown", e => { if (e.key==="Enter") doLogin(); });
-
-async function doLogin() {
-  const name = document.getElementById("nameInp").value.trim();
-  const pass = document.getElementById("passInp").value.trim();
-  const btn  = document.getElementById("loginBtn");
-  document.getElementById("loginErr").style.display = "none";
-  if (!name||!pass) { showErr("من فضلك ادخل الاسم وكلمة المرور"); return; }
-  btn.disabled = true;
-  btn.innerHTML = 'جاري التحقق <span style="display:inline-block;width:16px;height:16px;border:2px solid #ffffff55;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>';
-  try {
-    const data = await api(`sales?name=eq.${enc(name)}&select=name,password`);
-    if (!data||!data.length)       { showErr("❌ الاسم غير موجود في النظام"); return; }
-    if (data[0].password !== pass) { showErr("❌ كلمة المرور غلط");           return; }
-    sessionStorage.setItem("sales_name", name);
-    currentUser = name;
-    if (name.toLowerCase() === "admin") {
-      sessionStorage.setItem("is_admin", "true"); isAdmin = true; showAdmin();
-    } else {
-      sessionStorage.setItem("is_admin", "false"); isAdmin = false; showDash();
-    }
-  } catch(e) { showErr("خطأ في الاتصال، حاول تاني"); }
-  finally { btn.disabled=false; btn.innerHTML="دخول"; }
+function showDash(){
+  // Non-admin users: show simple view — redirect to report tab filtered by their name
+  // For now show a message (same as original flow)
+  showErr("هذا الحساب غير مسموح له بالوصول للوحة التحكم");
+  doLogout();
 }
-
-function showErr(msg) {
-  const el = document.getElementById("loginErr");
-  el.textContent=msg; el.style.display="block";
-}
-
-// ══ SHOW/HIDE ══
-function showDash() {
+function showAdmin(){
   document.getElementById("loginScreen").classList.remove("active");
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("adminScreen").style.display = "none";
-  const dash = document.getElementById("dashScreen");
-  dash.style.display = "flex";
-  document.getElementById("helloName").textContent = `أهلاً ${currentUser} 👋`;
-  document.getElementById("connStatus").textContent = currentUser;
-  loadNums();
-}
-function showAdmin() {
-  document.getElementById("loginScreen").classList.remove("active");
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("dashScreen").style.display = "none";
-  document.getElementById("adminScreen").style.display = "flex";
+  document.getElementById("loginScreen").style.display="none";
+  const adm=document.getElementById("adminScreen");
+  adm.style.display="flex";
+  // Set today filter by default for report
+  const today=toLocalDateStr(new Date());
+  document.getElementById("repDateFrom").value=today;
+  document.getElementById("repDateTo").value=today;
   loadAdminData();
 }
-function doLogout() {
-  sessionStorage.clear();
-  currentUser=null; isAdmin=false;
-  allNums=[]; filteredNums=[]; adminAllNums=[]; adminFiltered=[];
-  document.getElementById("dashScreen").style.display="none";
+function doLogout(){
+  sessionStorage.clear();currentUser=null;isAdmin=false;
+  adminAllNums=[];allSalesList=[];
   document.getElementById("adminScreen").style.display="none";
   const login=document.getElementById("loginScreen");
-  login.style.display="flex";
+  login.style.display="flex";login.classList.add("active");
   document.getElementById("nameInp").value="";
   document.getElementById("passInp").value="";
   document.getElementById("loginErr").style.display="none";
 }
 
-// ══ SALES NUMS ══
-async function loadNums() {
-  try {
-    const rows = await api(`numbers?salesperson=eq.${enc(currentUser)}&distributed=eq.true&order=distributed_at.desc&select=number,data_type,distributed_at&limit=5000`);
-    allNums = rows||[];
-    renderStats(); buildTypeFilter(); filterTable();
-    document.getElementById("numsLoading").style.display="none";
-    if (allNums.length===0) document.getElementById("numsEmpty").style.display="block";
-    else document.getElementById("numsTable").style.display="table";
-  } catch(e) {
-    document.getElementById("numsLoading").innerHTML=`<p style="color:var(--red)">خطأ في التحميل</p>`;
-  }
-}
-function renderStats() {
-  const now=new Date(), todayStr=now.toDateString(), weekAgo=new Date(now-7*864e5);
-  const types=new Set(allNums.map(r=>r.data_type).filter(Boolean));
-  const today=allNums.filter(r=>r.distributed_at&&new Date(r.distributed_at).toDateString()===todayStr).length;
-  const week =allNums.filter(r=>r.distributed_at&&new Date(r.distributed_at)>=weekAgo).length;
-  document.getElementById("stTotal").textContent=allNums.length.toLocaleString("ar-EG");
-  document.getElementById("stToday").textContent=today;
-  document.getElementById("stWeek").textContent=week;
-  document.getElementById("stTypes").textContent=types.size;
-}
-function buildTypeFilter() {
-  const sel=document.getElementById("typeFilter");
-  const types=[...new Set(allNums.map(r=>r.data_type).filter(Boolean))].sort();
-  sel.innerHTML='<option value="">كل الأنواع</option>';
-  types.forEach(t=>{ const o=document.createElement("option"); o.value=t; o.textContent=t; sel.appendChild(o); });
-}
-function toLocalDateStr(d) { return d.toISOString().split("T")[0]; }
-
-function setQuick(range, btn) {
-  document.querySelectorAll("#page-nums .quick-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  applyQuick(range, "dateFrom", "dateTo");
-  filterTable();
-}
-function applyQuick(range, fromId, toId) {
-  const now=new Date(), today=toLocalDateStr(now);
-  const df=document.getElementById(fromId), dt=document.getElementById(toId);
-  if      (range==="today")     { df.value=today; dt.value=today; }
-  else if (range==="yesterday") { const y=toLocalDateStr(new Date(now-864e5)); df.value=y; dt.value=y; }
-  else if (range==="week")      { df.value=toLocalDateStr(new Date(now-6*864e5)); dt.value=today; }
-  else if (range==="month")     { df.value=toLocalDateStr(new Date(now.getFullYear(),now.getMonth(),1)); dt.value=today; }
-  else                          { df.value=""; dt.value=""; }
-}
-function resetDates() {
-  document.getElementById("dateFrom").value="";
-  document.getElementById("dateTo").value="";
-  document.querySelectorAll("#page-nums .quick-btn").forEach((b,i)=>b.classList.toggle("active",i===0));
-  closeAllCals(); filterTable();
-}
-function filterTable() {
-  const q=document.getElementById("searchInp").value.trim();
-  const tp=document.getElementById("typeFilter").value;
-  const df=document.getElementById("dateFrom").value;
-  const dt=document.getElementById("dateTo").value;
-  filteredNums=allNums.filter(r=>{
-    if (q&&!r.number.includes(q)) return false;
-    if (tp&&r.data_type!==tp) return false;
-    if (r.distributed_at) { const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
-    else if (df||dt) return false;
-    return true;
-  });
-  displayedCount=0;
-  document.getElementById("numsBody").innerHTML="";
-  renderChunk();
-}
-function renderChunk() {
-  const tbody=document.getElementById("numsBody"), empty=document.getElementById("numsEmpty"),
-        tbl=document.getElementById("numsTable"), rc=document.getElementById("resultsCount");
-  if (!filteredNums.length) { empty.style.display="block"; tbl.style.display="none"; document.getElementById("loadMoreBtn").style.display="none"; rc.textContent="لا يوجد نتائج"; return; }
-  empty.style.display="none"; tbl.style.display="table";
-  rc.textContent=`عدد النتائج: ${filteredNums.length.toLocaleString("ar-EG")} رقم`;
-  const chunk=filteredNums.slice(displayedCount,displayedCount+PAGE_SZ);
-  chunk.forEach((r,i)=>{ const co=getCompany(r.number); const tr=document.createElement("tr"); tr.innerHTML=`<td>${displayedCount+i+1}</td><td class="num-cell">${r.number}</td><td>${companyTag(co)}</td><td><span class="tag tag-dt">${r.data_type||"—"}</span></td><td class="date-cell">${fmtDate(r.distributed_at)}</td>`; tbody.appendChild(tr); });
-  displayedCount+=chunk.length;
-  document.getElementById("loadMoreBtn").style.display=displayedCount<filteredNums.length?"block":"none";
-}
-function loadMore() { renderChunk(); }
-
-// ══ ADMIN TABS ══
-function switchAdminTab(t) {
+function switchAdminTab(t){
   document.querySelectorAll(".admin-tab").forEach(b=>b.classList.remove("active"));
   document.querySelectorAll(".admin-page").forEach(p=>p.classList.remove("active"));
   document.getElementById(`atab-${t}`).classList.add("active");
   document.getElementById(`apage-${t}`).classList.add("active");
-  if (t === "report") renderReport();
+  if(t==="report") renderReport();
 }
 
-// ══ ADMIN DATA LOAD ══
-async function loadAdminData() {
-  try {
-    const [nums, sales] = await Promise.all([
+async function loadAdminData(){
+  try{
+    const[nums,sales]=await Promise.all([
       api(`numbers?distributed=eq.true&order=distributed_at.desc&select=id,number,data_type,distributed_at,salesperson&limit=10000`),
       api(`sales?select=name&order=name.asc`)
     ]);
-    adminAllNums = nums||[];
-    allSalesList = (sales||[]).map(s=>s.name).filter(n=>n.toLowerCase()!=="admin");
-
-    const todayStr=new Date().toDateString();
-    const yestStr=new Date(Date.now()-864e5).toDateString();
-    const todayCount=adminAllNums.filter(r=>r.distributed_at&&new Date(r.distributed_at).toDateString()===todayStr).length;
-    const yestCount =adminAllNums.filter(r=>r.distributed_at&&new Date(r.distributed_at).toDateString()===yestStr).length;
-    const types=new Set(adminAllNums.map(r=>r.data_type).filter(Boolean));
-
-    document.getElementById("aStTotal").textContent=adminAllNums.length.toLocaleString("ar-EG");
-    document.getElementById("aStSales").textContent=allSalesList.length;
-    document.getElementById("aStTypes").textContent=types.size;
-    document.getElementById("aStToday").textContent=todayCount;
-    document.getElementById("aStYest").textContent=yestCount;
-
-    renderSalesCards();
-    buildAdminFilters();
-    adminFilterTable();
+    adminAllNums=nums||[];
+    allSalesList=(sales||[]).map(s=>s.name).filter(n=>n.toLowerCase()!=="admin");
+    document.getElementById("repLoading").style.display="none";
+    renderReport();
+    buildSalesPicker();
     buildTransferLists();
     buildTypeChips();
-    document.getElementById("aNumsLoading").style.display="none";
-
-    // Show report loading done
-    document.getElementById("repLoading").style.display="none";
-  } catch(e) {
-    document.getElementById("aNumsLoading").innerHTML=`<p style="color:var(--red);text-align:center;padding:20px">خطأ في التحميل</p>`;
-    document.getElementById("repLoading").style.display="none";
-    document.getElementById("repEmpty").style.display="block";
+  }catch(e){
+    document.getElementById("repLoading").innerHTML=`<p style="color:var(--red);text-align:center;padding:20px">خطأ في التحميل</p>`;
   }
-}
-
-// ══ OVERVIEW SALES CARDS ══
-function setOvQuick(range, btn) {
-  document.querySelectorAll("#apage-overview .quick-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  applyQuick(range, "ovDateFrom", "ovDateTo");
-  renderSalesCards();
-}
-function resetOvDates() {
-  document.getElementById("ovDateFrom").value="";
-  document.getElementById("ovDateTo").value="";
-  document.querySelectorAll("#apage-overview .quick-btn").forEach((b,i)=>b.classList.toggle("active",i===0));
-  closeAllCals(); renderSalesCards();
-}
-function renderSalesCards() {
-  const q=document.getElementById("ovSearchInp").value.trim().toLowerCase();
-  const df=document.getElementById("ovDateFrom").value;
-  const dt=document.getElementById("ovDateTo").value;
-  const area=document.getElementById("salesCardsArea");
-  area.innerHTML="";
-  const list=allSalesList.filter(n=>!q||n.toLowerCase().includes(q));
-  if (!list.length) { area.innerHTML=`<p style="color:var(--muted);text-align:center;padding:20px;grid-column:span 2">لا يوجد سيلز</p>`; return; }
-  list.forEach(name=>{
-    let cnt=adminAllNums.filter(r=>{
-      if(r.salesperson!==name) return false;
-      if(r.distributed_at){ const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
-      else if(df||dt) return false;
-      return true;
-    }).length;
-    const card=document.createElement("div");
-    card.className="sales-mini-card";
-    card.innerHTML=`<div class="s-name">👤 ${name}</div><div class="s-count">${cnt.toLocaleString("ar-EG")}</div><div class="s-lbl">رقم موزّع</div>`;
-    card.onclick=()=>{ switchAdminTab('numbers'); document.getElementById("aSalesFilter").value=name; adminFilterTable(); };
-    area.appendChild(card);
-  });
 }
 
 // ══ REPORT ══
-function setRepQuick(range, btn) {
+function toLocalDateStr(d){return d.toISOString().split("T")[0];}
+function applyQuickDates(range,fromId,toId){
+  const now=new Date(),today=toLocalDateStr(now);
+  const df=document.getElementById(fromId),dt=document.getElementById(toId);
+  if(range==="today"){df.value=today;dt.value=today;}
+  else if(range==="yesterday"){const y=toLocalDateStr(new Date(now-864e5));df.value=y;dt.value=y;}
+  else if(range==="week"){df.value=toLocalDateStr(new Date(now-6*864e5));dt.value=today;}
+  else if(range==="month"){df.value=toLocalDateStr(new Date(now.getFullYear(),now.getMonth(),1));dt.value=today;}
+  else{df.value="";dt.value="";}
+}
+function setRepQuick(range,btn){
   document.querySelectorAll("#apage-report .rq-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  applyQuick(range, "repDateFrom", "repDateTo");
+  applyQuickDates(range,"repDateFrom","repDateTo");
   renderReport();
 }
-function resetRepDates() {
+function resetRepDates(){
   document.getElementById("repDateFrom").value="";
   document.getElementById("repDateTo").value="";
   document.querySelectorAll("#apage-report .rq-btn").forEach((b,i)=>b.classList.toggle("active",i===0));
-  closeAllCals(); renderReport();
+  closeAllCals();renderReport();
 }
-
-function getRepFiltered() {
-  const df = document.getElementById("repDateFrom").value;
-  const dt = document.getElementById("repDateTo").value;
+function getRepFiltered(){
+  const df=document.getElementById("repDateFrom").value;
+  const dt=document.getElementById("repDateTo").value;
   return adminAllNums.filter(r=>{
-    if(r.distributed_at){ const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
-    else if(df||dt) return false;
+    if(r.distributed_at){const d=r.distributed_at.split("T")[0];if(df&&d<df)return false;if(dt&&d>dt)return false;}
+    else if(df||dt)return false;
     return true;
   });
 }
-
-function renderReport() {
-  if (!adminAllNums.length) return;
-
-  const q = (document.getElementById("repSearchInp")||{}).value || "";
-  const filtered = getRepFiltered();
-
-  // Get unique types and sales
-  const allTypes = [...new Set(filtered.map(r=>r.data_type).filter(Boolean))].sort();
-  let salesInScope = [...new Set(filtered.map(r=>r.salesperson).filter(Boolean))].sort();
-  if (q.trim()) salesInScope = salesInScope.filter(n=>n.toLowerCase().includes(q.toLowerCase()));
-
-  const repLoading = document.getElementById("repLoading");
-  const repScroll  = document.getElementById("repTableScroll");
-  const repEmpty   = document.getElementById("repEmpty");
-  repLoading.style.display = "none";
-
-  if (!salesInScope.length || !allTypes.length) {
-    repScroll.style.display="none"; repEmpty.style.display="block"; return;
-  }
-  repEmpty.style.display="none"; repScroll.style.display="block";
-
-  // Build pivot: { salesperson -> { dataType -> count } }
-  const pivot = {};
-  salesInScope.forEach(s=>{ pivot[s]={}; allTypes.forEach(t=>{ pivot[s][t]=0; }); });
-  filtered.forEach(r=>{
-    if(pivot[r.salesperson] && r.data_type && pivot[r.salesperson][r.data_type]!==undefined)
-      pivot[r.salesperson][r.data_type]++;
-  });
-
-  // Column totals
-  const colTotals = {};
-  allTypes.forEach(t=>{ colTotals[t]=salesInScope.reduce((s,sp)=>s+(pivot[sp][t]||0),0); });
-  const grandTotal = salesInScope.reduce((s,sp)=>s+allTypes.reduce((ss,t)=>ss+(pivot[sp][t]||0),0),0);
-
+function renderReport(){
+  if(!adminAllNums.length)return;
+  const q=(document.getElementById("repSearchInp")||{}).value||"";
+  const filtered=getRepFiltered();
+  const allTypes=[...new Set(filtered.map(r=>r.data_type).filter(Boolean))].sort();
+  let salesInScope=[...new Set(filtered.map(r=>r.salesperson).filter(Boolean))].sort();
+  if(q.trim())salesInScope=salesInScope.filter(n=>n.toLowerCase().includes(q.toLowerCase()));
+  const repLoading=document.getElementById("repLoading");
+  const repScroll=document.getElementById("repTableScroll");
+  const repEmpty=document.getElementById("repEmpty");
+  repLoading.style.display="none";
+  if(!salesInScope.length||!allTypes.length){repScroll.style.display="none";repEmpty.style.display="block";return;}
+  repEmpty.style.display="none";repScroll.style.display="block";
+  // Pivot
+  const pivot={};
+  salesInScope.forEach(s=>{pivot[s]={};allTypes.forEach(t=>{pivot[s][t]=0;});});
+  filtered.forEach(r=>{if(pivot[r.salesperson]&&r.data_type&&pivot[r.salesperson][r.data_type]!==undefined)pivot[r.salesperson][r.data_type]++;});
+  const colTotals={};allTypes.forEach(t=>{colTotals[t]=salesInScope.reduce((s,sp)=>s+(pivot[sp][t]||0),0);});
+  const grandTotal=salesInScope.reduce((s,sp)=>s+allTypes.reduce((ss,t)=>ss+(pivot[sp][t]||0),0),0);
   // Summary cards
-  const summaryRow = document.getElementById("repSummaryRow");
-  summaryRow.innerHTML = "";
-  // Total card
-  const totCard = document.createElement("div");
-  totCard.className = "report-summary-card";
-  totCard.innerHTML = `<div class="rsnum">${grandTotal.toLocaleString("ar-EG")}</div><div class="rslbl">إجمالي الأرقام</div>`;
-  summaryRow.appendChild(totCard);
-  // Sales count
-  const salesCard = document.createElement("div");
-  salesCard.className = "report-summary-card";
-  salesCard.innerHTML = `<div class="rsnum">${salesInScope.length}</div><div class="rslbl">عدد السيلز</div>`;
-  summaryRow.appendChild(salesCard);
-  // Types count
-  const typesCard = document.createElement("div");
-  typesCard.className = "report-summary-card";
-  typesCard.innerHTML = `<div class="rsnum">${allTypes.length}</div><div class="rslbl">أنواع الداتا</div>`;
-  summaryRow.appendChild(typesCard);
-  // Top salesperson
-  let topSales="—", topCount=0;
-  salesInScope.forEach(sp=>{ const c=allTypes.reduce((s,t)=>s+(pivot[sp][t]||0),0); if(c>topCount){topCount=c;topSales=sp;} });
-  const topCard = document.createElement("div");
-  topCard.className = "report-summary-card";
-  topCard.innerHTML = `<div class="rsnum" style="font-size:15px;line-height:1.4;">${topSales}</div><div class="rslbl">الأعلى (${topCount.toLocaleString("ar-EG")})</div>`;
-  summaryRow.appendChild(topCard);
-
-  // Build thead — two rows: (1) main headers, (2) type columns
-  const thead = document.getElementById("repThead");
-  thead.innerHTML = "";
-
-  // Row 1: "السيلز" + colspan for types + "الإجمالي"
-  const r1 = document.createElement("tr");
-  const th1 = document.createElement("th");
-  th1.textContent = "السيلز";
-  th1.rowSpan = 1;
-  r1.appendChild(th1);
-  allTypes.forEach(t=>{
-    const th=document.createElement("th");
-    th.textContent=t;
-    r1.appendChild(th);
+  const summaryRow=document.getElementById("repSummaryRow");summaryRow.innerHTML="";
+  [[grandTotal,"إجمالي الأرقام"],[salesInScope.length,"عدد السيلز"],[allTypes.length,"أنواع الداتا"]].forEach(([v,l])=>{
+    const c=document.createElement("div");c.className="report-summary-card";
+    c.innerHTML=`<div class="rsnum">${typeof v==="number"?v.toLocaleString("en-US"):v}</div><div class="rslbl">${l}</div>`;
+    summaryRow.appendChild(c);
   });
-  const thTot = document.createElement("th");
-  thTot.textContent="الإجمالي";
-  r1.appendChild(thTot);
+  let topSales="—",topCount=0;
+  salesInScope.forEach(sp=>{const c=allTypes.reduce((s,t)=>s+(pivot[sp][t]||0),0);if(c>topCount){topCount=c;topSales=sp;}});
+  const topCard=document.createElement("div");topCard.className="report-summary-card";
+  topCard.innerHTML=`<div class="rsnum" style="font-size:15px;line-height:1.4;">${topSales}</div><div class="rslbl">الأعلى (${topCount.toLocaleString("en-US")})</div>`;
+  summaryRow.appendChild(topCard);
+  // thead
+  const thead=document.getElementById("repThead");thead.innerHTML="";
+  const r1=document.createElement("tr");
+  const th1=document.createElement("th");th1.textContent="السيلز";r1.appendChild(th1);
+  allTypes.forEach(t=>{const th=document.createElement("th");th.textContent=t;r1.appendChild(th);});
+  const thTot=document.createElement("th");thTot.textContent="الإجمالي";r1.appendChild(thTot);
   thead.appendChild(r1);
 
-  // Build tbody
-  const tbody = document.getElementById("repTbody");
-  tbody.innerHTML = "";
-  salesInScope.forEach(sp=>{
-    const tr = document.createElement("tr");
-    const tdName = document.createElement("td");
-    tdName.textContent = sp;
+
+  // tbody
+
+
+  // tbody
+const tbody=document.getElementById("repTbody");
+tbody.innerHTML="";
+
+salesInScope.forEach((sp,index)=>{
+    const tr=document.createElement("tr");
+
+    tr.style.borderBottom="1px solid #e5e7eb";
+    tr.style.background=index % 2 === 0 ? "#ffffff" : "#f8fafc";
+
+    const tdName=document.createElement("td");
+    tdName.textContent=sp;
+    tdName.style.fontWeight="700";
+    tdName.style.padding="12px";
     tr.appendChild(tdName);
-    let rowTotal = 0;
+
+    let rowTotal=0;
+
     allTypes.forEach(t=>{
-      const cnt = pivot[sp][t]||0;
-      rowTotal += cnt;
-      const td = document.createElement("td");
-      td.innerHTML = cnt > 0
-        ? `<span class="r-cell-val">${cnt.toLocaleString("ar-EG")}</span>`
-        : `<span class="r-cell-zero">—</span>`;
-      tr.appendChild(td);
+        const cnt=pivot[sp][t] || 0;
+        rowTotal += cnt;
+
+        const td=document.createElement("td");
+        td.style.padding="12px";
+        td.style.borderRight="1px solid #e5e7eb";
+
+        td.innerHTML = cnt > 0
+            ? `<span style="font-weight:600">${cnt.toLocaleString("en-US")}</span>`
+            : "—";
+
+        tr.appendChild(td);
     });
-    const tdTotal = document.createElement("td");
+
+    const tdTotal=document.createElement("td");
     tdTotal.className="r-total-col";
-    tdTotal.textContent=rowTotal.toLocaleString("ar-EG");
+    tdTotal.style.padding="12px";
+    tdTotal.textContent=rowTotal.toLocaleString("en-US")
+;
+
     tr.appendChild(tdTotal);
     tbody.appendChild(tr);
-  });
+});
 
-  // Build tfoot (column totals)
-  const tfoot = document.getElementById("repTfoot");
-  tfoot.innerHTML = "";
-  const tfr = document.createElement("tr");
-  const tdLabel = document.createElement("td");
-  tdLabel.innerHTML = `<span>الإجمالي</span>`;
-  tfr.appendChild(tdLabel);
-  allTypes.forEach(t=>{
-    const td=document.createElement("td");
-    td.innerHTML=`<span class="report-total-badge">${(colTotals[t]||0).toLocaleString("ar-EG")}</span>`;
-    tfr.appendChild(td);
-  });
-  const tdGrand = document.createElement("td");
-  tdGrand.innerHTML=`<span class="report-total-badge">${grandTotal.toLocaleString("ar-EG")}</span>`;
-  tfr.appendChild(tdGrand);
+
+
+  // tfoot
+
+
+  const tfoot=document.getElementById("repTfoot");tfoot.innerHTML="";
+  const tfr=document.createElement("tr");
+  const tdLabel=document.createElement("td");tdLabel.innerHTML="<span>الإجمالي</span>";tfr.appendChild(tdLabel);
+  allTypes.forEach(t=>{const td=document.createElement("td");td.innerHTML=`<span class="report-total-badge">${(colTotals[t]||0).toLocaleString("en-US")}</span>`;tfr.appendChild(td);});
+  const tdGrand=document.createElement("td");tdGrand.innerHTML=`<span class="report-total-badge">${grandTotal.toLocaleString("en-US")
+}</span>`;tfr.appendChild(tdGrand);
   tfoot.appendChild(tfr);
 }
 
-// ══ EXPORT CSV ══
-function exportReportCSV() {
-  const filtered = getRepFiltered();
-  const allTypes = [...new Set(filtered.map(r=>r.data_type).filter(Boolean))].sort();
-  const salesInScope = [...new Set(filtered.map(r=>r.salesperson).filter(Boolean))].sort();
-  const pivot = {};
-  salesInScope.forEach(s=>{ pivot[s]={}; allTypes.forEach(t=>{ pivot[s][t]=0; }); });
-  filtered.forEach(r=>{
-    if(pivot[r.salesperson] && r.data_type && pivot[r.salesperson][r.data_type]!==undefined)
-      pivot[r.salesperson][r.data_type]++;
-  });
-  let csv = "\uFEFF"; // BOM for Arabic
-  csv += ["السيلز", ...allTypes, "الإجمالي"].join(",") + "\n";
-  salesInScope.forEach(sp=>{
-    let row = [sp];
-    let total = 0;
-    allTypes.forEach(t=>{ const c=pivot[sp][t]||0; row.push(c); total+=c; });
-    row.push(total);
-    csv += row.join(",") + "\n";
-  });
-  // totals row
-  const colTotals = allTypes.map(t=>salesInScope.reduce((s,sp)=>s+(pivot[sp][t]||0),0));
-  const grand = colTotals.reduce((a,b)=>a+b,0);
-  csv += ["الإجمالي",...colTotals,grand].join(",") + "\n";
-
-  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href=url; a.download="report.csv"; a.click();
-  URL.revokeObjectURL(url);
+function exportReportCSV(){
+  const filtered=getRepFiltered();
+  const allTypes=[...new Set(filtered.map(r=>r.data_type).filter(Boolean))].sort();
+  const salesInScope=[...new Set(filtered.map(r=>r.salesperson).filter(Boolean))].sort();
+  const pivot={};
+  salesInScope.forEach(s=>{pivot[s]={};allTypes.forEach(t=>{pivot[s][t]=0;});});
+  filtered.forEach(r=>{if(pivot[r.salesperson]&&r.data_type&&pivot[r.salesperson][r.data_type]!==undefined)pivot[r.salesperson][r.data_type]++;});
+  let csv="\uFEFF";
+  csv+=["السيلز",...allTypes,"الإجمالي"].join(",")+"\n";
+  salesInScope.forEach(sp=>{let row=[sp],total=0;allTypes.forEach(t=>{const c=pivot[sp][t]||0;row.push(c);total+=c;});row.push(total);csv+=row.join(",")+"\n";});
+  const colTotals=allTypes.map(t=>salesInScope.reduce((s,sp)=>s+(pivot[sp][t]||0),0));
+  const grand=colTotals.reduce((a,b)=>a+b,0);
+  csv+=["الإجمالي",...colTotals,grand].join(",")+"\n";
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="report.csv";a.click();URL.revokeObjectURL(url);
   showToast("✅ تم تصدير الريبورت");
 }
 
-// ══ ADMIN NUMBERS FILTERS ══
-function buildAdminFilters() {
-  const salesSel=document.getElementById("aSalesFilter");
-  salesSel.innerHTML='<option value="">كل السيلز</option>';
-  allSalesList.forEach(n=>{ const o=document.createElement("option"); o.value=n; o.textContent=n; salesSel.appendChild(o); });
-  const types=[...new Set(adminAllNums.map(r=>r.data_type).filter(Boolean))].sort();
-  const typeSel=document.getElementById("aTypeFilter");
-  typeSel.innerHTML='<option value="">كل الأنواع</option>';
-  types.forEach(t=>{ const o=document.createElement("option"); o.value=t; o.textContent=t; typeSel.appendChild(o); });
+// ══ NUMBERS TAB ══
+function buildSalesPicker(){
+  const bar=document.getElementById("salesPickerBar");
+  bar.innerHTML="";
+  allSalesList.forEach(name=>{
+    const btn=document.createElement("button");
+    btn.className="sp-chip";btn.textContent=name;
+    btn.onclick=()=>{
+      document.querySelectorAll(".sp-chip").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      loadNumsForSales(name);
+    };
+    bar.appendChild(btn);
+  });
 }
-function setAQuick(range, btn) {
+function loadNumsForSales(name){
+  numsCurrentSales=name;
+  numsRaw=adminAllNums.filter(r=>r.salesperson===name);
+  document.getElementById("numsFiltersArea").style.display="block";
+  document.getElementById("numsWrap").style.display="block";
+  document.getElementById("nPickPrompt").style.display="none";
+  // Build type filter
+  const sel=document.getElementById("nTypeFilter");
+  const types=[...new Set(numsRaw.map(r=>r.data_type).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">كل الأنواع</option>';
+  types.forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;sel.appendChild(o);});
+  // Reset filters
+  document.getElementById("nSearchInp").value="";
+  document.getElementById("nDateFrom").value="";
+  document.getElementById("nDateTo").value="";
+  document.querySelectorAll("#apage-numbers .quick-btn").forEach((b,i)=>b.classList.toggle("active",i===0));
+  numsFilterTable();
+}
+function setNQuick(range,btn){
   document.querySelectorAll("#apage-numbers .quick-btn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  applyQuick(range, "aDateFrom", "aDateTo");
-  adminFilterTable();
+  applyQuickDates(range,"nDateFrom","nDateTo");
+  numsFilterTable();
 }
-function resetAdminDates() {
-  document.getElementById("aDateFrom").value="";
-  document.getElementById("aDateTo").value="";
+function resetNDates(){
+  document.getElementById("nDateFrom").value="";
+  document.getElementById("nDateTo").value="";
   document.querySelectorAll("#apage-numbers .quick-btn").forEach((b,i)=>b.classList.toggle("active",i===0));
-  closeAllCals(); adminFilterTable();
+  closeAllCals();numsFilterTable();
 }
-function adminFilterTable() {
-  const q=document.getElementById("aSearchInp").value.trim();
-  const sp=document.getElementById("aSalesFilter").value;
-  const tp=document.getElementById("aTypeFilter").value;
-  const df=document.getElementById("aDateFrom").value;
-  const dt=document.getElementById("aDateTo").value;
-  adminFiltered=adminAllNums.filter(r=>{
-    if(q&&!r.number.includes(q)&&!(r.salesperson||"").includes(q)) return false;
-    if(sp&&r.salesperson!==sp) return false;
-    if(tp&&r.data_type!==tp) return false;
-    if(r.distributed_at){ const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
-    else if(df||dt) return false;
+function numsFilterTable(){
+  const q=document.getElementById("nSearchInp").value.trim();
+  const tp=document.getElementById("nTypeFilter").value;
+  const df=document.getElementById("nDateFrom").value;
+  const dt=document.getElementById("nDateTo").value;
+  numsFiltered=numsRaw.filter(r=>{
+    if(q&&!r.number.includes(q))return false;
+    if(tp&&r.data_type!==tp)return false;
+    if(r.distributed_at){const d=r.distributed_at.split("T")[0];if(df&&d<df)return false;if(dt&&d>dt)return false;}
+    else if(df||dt)return false;
     return true;
   });
-  adminDisplayed=0;
-  document.getElementById("aNumsBody").innerHTML="";
-  adminRenderChunk();
+  numsDisplayed=0;
+  document.getElementById("nNumsBody").innerHTML="";
+  numsRenderChunk();
 }
-function adminRenderChunk() {
-  const tbody=document.getElementById("aNumsBody"), empty=document.getElementById("aNumsEmpty"),
-        tbl=document.getElementById("aNumsTable"), rc=document.getElementById("aResultsCount");
-  if (!adminFiltered.length) { empty.style.display="block"; tbl.style.display="none"; document.getElementById("aLoadMoreBtn").style.display="none"; rc.textContent="لا يوجد نتائج"; return; }
-  empty.style.display="none"; tbl.style.display="table";
-  rc.textContent=`عدد النتائج: ${adminFiltered.length.toLocaleString("ar-EG")} رقم`;
-  const chunk=adminFiltered.slice(adminDisplayed,adminDisplayed+PAGE_SZ);
-  chunk.forEach((r,i)=>{ const co=getCompany(r.number); const tr=document.createElement("tr"); tr.innerHTML=`<td>${adminDisplayed+i+1}</td><td class="num-cell">${r.number}</td><td>${companyTag(co)}</td><td><span class="tag tag-dt">${r.data_type||"—"}</span></td><td><strong>${r.salesperson||"—"}</strong></td><td class="date-cell">${fmtDate(r.distributed_at)}</td>`; tbody.appendChild(tr); });
-  adminDisplayed+=chunk.length;
-  document.getElementById("aLoadMoreBtn").style.display=adminDisplayed<adminFiltered.length?"block":"none";
+function numsRenderChunk(){
+  const tbody=document.getElementById("nNumsBody"),empty=document.getElementById("nNumsEmpty"),
+        tbl=document.getElementById("nNumsTable"),rc=document.getElementById("nResultsCount");
+  if(!numsFiltered.length){empty.style.display="block";tbl.style.display="none";document.getElementById("nLoadMoreBtn").style.display="none";rc.textContent="لا يوجد نتائج";return;}
+  empty.style.display="none";tbl.style.display="table";
+  rc.textContent=`${numsCurrentSales} — عدد النتائج: ${numsFiltered.length.toLocaleString("en-US")} رقم`;
+  const chunk=numsFiltered.slice(numsDisplayed,numsDisplayed+PAGE_SZ);
+  chunk.forEach((r,i)=>{const co=getCompany(r.number);const tr=document.createElement("tr");tr.innerHTML=`<td>${numsDisplayed+i+1}</td><td class="num-cell">${r.number}</td><td>${companyTag(co)}</td><td><span class="tag tag-dt">${r.data_type||"—"}</span></td><td class="date-cell">${fmtDate(r.distributed_at)}</td>`;tbody.appendChild(tr);});
+  numsDisplayed+=chunk.length;
+  document.getElementById("nLoadMoreBtn").style.display=numsDisplayed<numsFiltered.length?"block":"none";
 }
-function adminLoadMore() { adminRenderChunk(); }
+function numsLoadMore(){numsRenderChunk();}
 
 // ══ TRANSFER ══
-function buildTransferLists() {
+function buildTransferLists(){
   renderTransferList("tFromList","from","");
   renderTransferList("tToList","to","");
 }
-function renderTransferList(containerId, side, q) {
+function renderTransferList(containerId,side,q){
   const el=document.getElementById(containerId);
   const filtered=allSalesList.filter(n=>!q||n.includes(q));
-  if(!filtered.length){ el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;">لا يوجد نتائج</div>`; return; }
+  if(!filtered.length){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;">لا يوجد نتائج</div>`;return;}
   el.innerHTML="";
   filtered.forEach(name=>{
     const cnt=adminAllNums.filter(r=>r.salesperson===name).length;
     const div=document.createElement("div");
-    div.className="sales-item"+(( side==="from"&&selectedFromSales===name)||(side==="to"&&selectedToSales===name)?" selected":"");
+    div.className="sales-item"+((side==="from"&&selectedFromSales===name)||(side==="to"&&selectedToSales===name)?" selected":"");
     div.innerHTML=`<span class="ic">👤</span><span>${name}</span><span class="cnt">${cnt}</span>`;
-    div.onclick=()=>{
-      if(side==="from"){ selectedFromSales=name; loadTransferNums(); }
-      else             { selectedToSales=name; }
-      renderTransferList(containerId,side,q);
-    };
+    div.onclick=()=>{if(side==="from"){selectedFromSales=name;loadTransferNums();}else{selectedToSales=name;}renderTransferList(containerId,side,q);};
     el.appendChild(div);
   });
 }
-function filterFromList(){ renderTransferList("tFromList","from",document.getElementById("tFromSearch").value); }
-function filterToList()  { renderTransferList("tToList","to",document.getElementById("tToSearch").value); }
-
-function buildTypeChips() {
+function filterFromList(){renderTransferList("tFromList","from",document.getElementById("tFromSearch").value);}
+function filterToList(){renderTransferList("tToList","to",document.getElementById("tToSearch").value);}
+function buildTypeChips(){
   const types=[...new Set(adminAllNums.map(r=>r.data_type).filter(Boolean))].sort();
-  const area=document.getElementById("typeChipsArea");
-  area.innerHTML="";
-  const allChip=document.createElement("button");
-  allChip.className="type-chip active"; allChip.textContent="الكل"; allChip.dataset.type="__all__";
-  allChip.onclick=()=>{ activeTypeChips.clear(); document.querySelectorAll(".type-chip").forEach(c=>c.classList.remove("active")); allChip.classList.add("active"); filterTransferNums(); };
+  const area=document.getElementById("typeChipsArea");area.innerHTML="";
+  const allChip=document.createElement("button");allChip.className="type-chip active";allChip.textContent="الكل";allChip.dataset.type="__all__";
+  allChip.onclick=()=>{activeTypeChips.clear();document.querySelectorAll(".type-chip").forEach(c=>c.classList.remove("active"));allChip.classList.add("active");filterTransferNums();};
   area.appendChild(allChip);
   types.forEach(t=>{
-    const chip=document.createElement("button");
-    chip.className="type-chip"; chip.textContent=t; chip.dataset.type=t;
+    const chip=document.createElement("button");chip.className="type-chip";chip.textContent=t;chip.dataset.type=t;
     chip.onclick=()=>{
       document.querySelector(".type-chip[data-type='__all__']").classList.remove("active");
-      if(activeTypeChips.has(t)){ activeTypeChips.delete(t); chip.classList.remove("active"); }
-      else { activeTypeChips.add(t); chip.classList.add("active"); }
-      if(activeTypeChips.size===0){ document.querySelector(".type-chip[data-type='__all__']").classList.add("active"); }
+      if(activeTypeChips.has(t)){activeTypeChips.delete(t);chip.classList.remove("active");}
+      else{activeTypeChips.add(t);chip.classList.add("active");}
+      if(activeTypeChips.size===0){document.querySelector(".type-chip[data-type='__all__']").classList.add("active");}
       filterTransferNums();
     };
     area.appendChild(chip);
   });
 }
-
-function loadTransferNums() {
-  if(!selectedFromSales){ document.getElementById("transferNumsList").innerHTML=`<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">اختر السيلز المصدر أولاً</div>`; return; }
-  transferRawNums = adminAllNums.filter(r=>r.salesperson===selectedFromSales);
+function loadTransferNums(){
+  if(!selectedFromSales){document.getElementById("transferNumsList").innerHTML=`<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">اختر السيلز المصدر أولاً</div>`;return;}
+  transferRawNums=adminAllNums.filter(r=>r.salesperson===selectedFromSales);
   filterTransferNums();
 }
-function filterTransferNums() {
-  if(!selectedFromSales) return;
+function filterTransferNums(){
+  if(!selectedFromSales)return;
   const q=document.getElementById("trNumSearch").value.trim();
   const df=document.getElementById("trDateFrom").value;
   const dt=document.getElementById("trDateTo").value;
   transferFiltered=transferRawNums.filter(r=>{
-    if(q&&!r.number.includes(q)) return false;
-    if(activeTypeChips.size>0&&!activeTypeChips.has(r.data_type)) return false;
-    if(r.distributed_at){ const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
-    else if(df||dt) return false;
+    if(q&&!r.number.includes(q))return false;
+    if(activeTypeChips.size>0&&!activeTypeChips.has(r.data_type))return false;
+    if(r.distributed_at){const d=r.distributed_at.split("T")[0];if(df&&d<df)return false;if(dt&&d>dt)return false;}
+    else if(df||dt)return false;
     return true;
   });
   renderTransferNums();
 }
-function renderTransferNums() {
+function renderTransferNums(){
   const el=document.getElementById("transferNumsList");
-  if(!transferFiltered.length){ el.innerHTML=`<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">لا يوجد أرقام تطابق الفلتر</div>`; updateTrCount(); return; }
+  if(!transferFiltered.length){el.innerHTML=`<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">لا يوجد أرقام تطابق الفلتر</div>`;updateTrCount();return;}
   el.innerHTML="";
   transferFiltered.forEach(r=>{
     const co=getCompany(r.number);
-    const item=document.createElement("div");
-    item.className="tr-item";
+    const item=document.createElement("div");item.className="tr-item";
     item.innerHTML=`<input type="checkbox" class="tr-chk" data-id="${r.id}" onchange="updateTrCount()"><span class="tr-num">${r.number}</span>${companyTag(co)}<span class="tag tag-dt">${r.data_type||"—"}</span><span style="color:var(--muted);font-size:11px;">${fmtDate(r.distributed_at)}</span>`;
     el.appendChild(item);
   });
   updateTrCount();
 }
-function updateTrCount() {
+function updateTrCount(){
   const n=document.querySelectorAll(".tr-chk:checked").length;
   document.getElementById("trSelCount").textContent=n?`${n} رقم محدد`:"";
   document.getElementById("transferBtn").disabled=n===0||!selectedFromSales||!selectedToSales;
 }
-function selectAllTr()   { document.querySelectorAll(".tr-chk").forEach(c=>c.checked=true);  updateTrCount(); }
-function deselectAllTr() { document.querySelectorAll(".tr-chk").forEach(c=>c.checked=false); updateTrCount(); }
-function setTrQuick(range,btn) {
+function selectAllTr(){document.querySelectorAll(".tr-chk").forEach(c=>c.checked=true);updateTrCount();}
+function deselectAllTr(){document.querySelectorAll(".tr-chk").forEach(c=>c.checked=false);updateTrCount();}
+function setTrQuick(range,btn){
   document.querySelectorAll(".tr-day-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  applyQuick(range,"trDateFrom","trDateTo");
-  filterTransferNums();
+  btn.classList.add("active");applyQuickDates(range,"trDateFrom","trDateTo");filterTransferNums();
 }
-function resetTrDates() {
-  document.getElementById("trDateFrom").value="";
-  document.getElementById("trDateTo").value="";
-  closeAllCals(); filterTransferNums();
-}
-
-async function doTransfer() {
+function resetTrDates(){document.getElementById("trDateFrom").value="";document.getElementById("trDateTo").value="";closeAllCals();filterTransferNums();}
+async function doTransfer(){
   const ids=[...document.querySelectorAll(".tr-chk:checked")].map(c=>c.dataset.id);
   const btn=document.getElementById("transferBtn");
-  if(!selectedFromSales||!selectedToSales){ showToast("اختر السيلز من وإلى",true); return; }
-  if(selectedFromSales===selectedToSales){ showToast("السيلز من وإلى نفس الشخص!",true); return; }
-  if(!ids.length){ showToast("لم تحدد أي رقم",true); return; }
-  btn.disabled=true; btn.textContent="جاري النقل...";
-  try {
-    await fetch(`${SB_URL}/rest/v1/numbers?id=in.(${ids.join(",")})`, {
-      method:"PATCH", headers:{...HDR,Prefer:"return=minimal"}, body:JSON.stringify({salesperson:selectedToSales})
-    });
-    ids.forEach(id=>{ const rec=adminAllNums.find(r=>String(r.id)===String(id)); if(rec) rec.salesperson=selectedToSales; });
+  if(!selectedFromSales||!selectedToSales){showToast("اختر السيلز من وإلى",true);return;}
+  if(selectedFromSales===selectedToSales){showToast("السيلز من وإلى نفس الشخص!",true);return;}
+  if(!ids.length){showToast("لم تحدد أي رقم",true);return;}
+  btn.disabled=true;btn.textContent="جاري النقل...";
+  try{
+    await fetch(`${SB_URL}/rest/v1/numbers?id=in.(${ids.join(",")})`,{method:"PATCH",headers:{...HDR,Prefer:"return=minimal"},body:JSON.stringify({salesperson:selectedToSales})});
+    ids.forEach(id=>{const rec=adminAllNums.find(r=>String(r.id)===String(id));if(rec)rec.salesperson=selectedToSales;});
     showToast(`✅ تم نقل ${ids.length} رقم من ${selectedFromSales} إلى ${selectedToSales}`);
-    renderSalesCards();
-    adminFilterTable();
-    buildTransferLists();
-    transferRawNums=transferRawNums.filter(r=>!ids.includes(String(r.id)));
-    filterTransferNums();
-  } catch(e) { showToast("حدث خطأ أثناء النقل",true); }
-  finally { btn.textContent="🔄 نقل الأرقام المحددة"; updateTrCount(); }
+    buildTransferLists();transferRawNums=transferRawNums.filter(r=>!ids.includes(String(r.id)));filterTransferNums();
+    renderReport();
+  }catch(e){showToast("حدث خطأ أثناء النقل",true);}
+  finally{btn.textContent="🔄 نقل الأرقام المحددة";updateTrCount();}
 }
 
 // ══ UTILS ══
-function enc(s)  { return encodeURIComponent(s); }
-function pad(n)  { return String(n).padStart(2,"0"); }
-function fmtDate(iso) { if(!iso) return "—"; const d=new Date(iso); return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`; }
-function getCompany(num) {
-  if(num.startsWith("2010")||num.startsWith("010")) return "فودافون";
-  if(num.startsWith("2011")||num.startsWith("011")) return "اتصالات";
-  if(num.startsWith("2012")||num.startsWith("012")) return "أورانج";
-  if(num.startsWith("2015")||num.startsWith("015")) return "WE";
+function enc(s){return encodeURIComponent(s);}
+function pad(n){return String(n).padStart(2,"0");}
+function fmtDate(iso){if(!iso)return "—";const d=new Date(iso);return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`;}
+function getCompany(num){
+  if(num.startsWith("2010")||num.startsWith("010"))return "فودافون";
+  if(num.startsWith("2011")||num.startsWith("011"))return "اتصالات";
+  if(num.startsWith("2012")||num.startsWith("012"))return "أورانج";
+  if(num.startsWith("2015")||num.startsWith("015"))return "WE";
   return "أخرى";
 }
-function companyTag(co) {
-  const map={"فودافون":"vf","اتصالات":"et","أورانج":"or","WE":"we"};
-  return `<span class="tag tag-${map[co]||'ot'}">${co}</span>`;
-}
+function companyTag(co){const map={"فودافون":"vf","اتصالات":"et","أورانج":"or","WE":"we"};return `<span class="tag tag-${map[co]||'ot'}">${co}</span>`;}
 </script>
 </body>
 </html>

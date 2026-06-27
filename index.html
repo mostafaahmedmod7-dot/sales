@@ -1,840 +1,661 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بوابة السيلز</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>بوابة السيلز</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f0f2f5;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #1d4ed8;
+      --primary-dark: #1e3a8a;
+      --primary-light: #dbeafe;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --warning: #d97706;
+      --warning-light: #fef3c7;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+      --shadow: 0 4px 16px rgba(0,0,0,.08);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.14);
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
 
-:root {
-  --blue:    #2563eb;
-  --blue-dk: #1d4ed8;
-  --blue-lt: #eff6ff;
-  --green:   #16a34a;
-  --green-lt:#f0fdf4;
-  --red:     #ef4444;
-  --orange:  #d97706;
-  --purple:  #7c3aed;
-  --bg:      #f0f4ff;
-  --card:    #ffffff;
-  --text:    #111827;
-  --muted:   #6b7280;
-  --border:  #dbe2ea;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body { font-family: 'Cairo', Tahoma, Arial, sans-serif; background: var(--bg); min-height: 100vh; color: var(--text); }
+    body {
+      font-family: 'Cairo', Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-/* ══ LOGIN ══ */
-#loginScreen { min-height:100vh; display:none; align-items:center; justify-content:center; padding:20px; background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#7c3aed 100%); }
-#loginScreen.active { display:flex; }
-.login-wrap { width:100%; max-width:400px; }
-.logo-area { text-align:center; margin-bottom:28px; }
-.logo-icon { width:80px;height:80px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.3);border-radius:24px;display:inline-flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,0.2); }
-.logo-area h1 { font-size:28px;font-weight:900;color:#fff; }
-.logo-area p  { color:rgba(255,255,255,0.7);font-size:14px;margin-top:5px; }
-.card { background:#fff;border-radius:24px;padding:36px 32px;box-shadow:0 20px 60px rgba(0,0,0,0.25); }
-.field { margin-bottom:20px; }
-label { display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px; }
-input[type=text],input[type=password],input[type=date] { width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:15px;color:var(--text);background:#f8faff;transition:border-color .2s,box-shadow .2s;outline:none; }
-input:focus { border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12);background:#fff; }
-.btn-primary { width:100%;padding:14px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(37,99,235,0.35); }
-.btn-primary:hover { transform:translateY(-1px);box-shadow:0 6px 22px rgba(37,99,235,0.4); }
-.btn-primary:active { transform:translateY(0); }
-.btn-primary:disabled { opacity:.6;cursor:not-allowed;transform:none; }
-.error-box { background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:11px 14px;color:var(--red);font-size:13px;font-weight:600;margin-bottom:16px;display:none;text-align:center; }
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #2563eb 100%);
+      padding: 20px;
+    }
 
-/* ══ SALES DASHBOARD ══ */
-#dashScreen { min-height:100vh;display:none;flex-direction:column; }
-.header { background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 14px rgba(7,94,84,0.4); }
-.header-info h2 { font-size:17px;font-weight:900; }
-.header-info .sub { font-size:12px;opacity:.75;margin-top:2px; }
-.header-right { display:flex;align-items:center;gap:10px; }
-.logout-btn { background:rgba(255,255,255,0.2);border:none;color:#fff;padding:7px 14px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:background .2s; }
-.logout-btn:hover { background:rgba(255,255,255,0.3); }
-.page { display:none;padding:16px; }
-.page.active { display:block; }
+    .login-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: var(--shadow-lg);
+    }
 
-/* ══ STATS ══ */
-.stats-grid { display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:18px; }
-.stat-card { background:var(--card);border-radius:14px;padding:15px 12px;text-align:center;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.stat-card .snum { font-size:30px;font-weight:900;line-height:1; }
-.stat-card .slbl { font-size:12px;color:var(--muted);margin-top:4px;font-weight:600; }
-.stat-card.c-blue   .snum { color:var(--blue); }
-.stat-card.c-green  .snum { color:var(--green); }
-.stat-card.c-orange .snum { color:var(--orange); }
-.stat-card.c-purple .snum { color:var(--purple); }
+    .login-logo { text-align: center; margin-bottom: 28px; }
+    .login-logo .icon {
+      width: 60px; height: 60px;
+      background: var(--primary-light);
+      border-radius: 16px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 28px; margin-bottom: 12px;
+    }
+    .login-logo h1 { font-size: 20px; font-weight: 700; }
+    .login-logo p  { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-/* ══ FILTERS ══ */
-.filter-bar { display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap; }
-.filter-bar input[type=text],.filter-bar select { padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:var(--card);outline:none;flex:1;min-width:120px;color:var(--text);width:auto; }
-.filter-bar input[type=text]:focus { border-color:var(--blue); }
-.date-filter-bar { display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px; }
-.date-filter-bar label { font-size:12px;font-weight:700;color:var(--muted);margin-bottom:0;white-space:nowrap; }
-.date-filter-bar input[type=date] { padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:#f8faff;outline:none;color:var(--text);flex:1;min-width:130px;width:auto; }
-.date-filter-bar input[type=date]:focus { border-color:var(--blue); }
-.date-quick-btns { display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px; }
-.quick-btn { padding:6px 12px;border:1.5px solid var(--border);border-radius:20px;background:#f8faff;font-family:inherit;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:all .2s;white-space:nowrap; }
-.quick-btn:hover,.quick-btn.active { background:var(--blue);color:#fff;border-color:var(--blue); }
-.btn-reset-date { padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;background:#f3f4f6;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap; }
-.btn-reset-date:hover { background:var(--red);color:#fff;border-color:var(--red); }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .field input {
+      width: 100%; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 11px 14px;
+      font-size: 14px; font-family: 'Cairo', sans-serif;
+      background: #f8fafc; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field input:focus {
+      border-color: var(--primary); background: var(--white);
+      box-shadow: 0 0 0 3px rgba(29,78,216,.1);
+    }
 
-/* ══ TABLE ══ */
-.results-count { font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px;padding:0 2px; }
-.section-title { font-size:15px;font-weight:900;margin-bottom:10px; }
-.nums-wrap { background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-table { width:100%;border-collapse:collapse;font-size:13px; }
-thead th { background:#f8faff;padding:11px 8px;text-align:center;font-weight:700;font-size:12px;color:var(--muted);border-bottom:1px solid var(--border); }
-tbody tr { border-bottom:1px solid #f3f4f6; }
-tbody tr:last-child { border-bottom:none; }
-tbody tr:nth-child(even) { background:#fafbff; }
-tbody td { padding:10px 8px;text-align:center; }
-.num-cell { font-size:14px;font-weight:700; }
-.tag { display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700; }
-.tag-vf  { background:#fef2f2;color:#dc2626; }
-.tag-et  { background:#fff7ed;color:#c2410c; }
-.tag-or  { background:#fff7ed;color:#ea580c; }
-.tag-we  { background:#f0fdf4;color:#16a34a; }
-.tag-ot  { background:#f3f4f6;color:#6b7280; }
-.tag-dt  { background:#eff6ff;color:#2563eb; }
-.date-cell { color:var(--muted);font-size:12px; }
-.empty-state { text-align:center;padding:40px 20px;color:var(--muted); }
-.empty-state .eicon { font-size:42px;margin-bottom:10px; }
-.empty-state p { font-size:14px; }
-.load-more { width:100%;padding:12px;background:#f8faff;border:none;border-top:1px solid var(--border);font-family:inherit;font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;display:none; }
-.spinner { display:inline-block;width:22px;height:22px;border:2.5px solid #dbe2ea;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.loading-center { text-align:center;padding:36px; }
+    .btn-login {
+      width: 100%; background: var(--primary); color: #fff;
+      border: none; border-radius: var(--radius-sm); padding: 13px;
+      font-size: 15px; font-weight: 700; font-family: 'Cairo', sans-serif;
+      cursor: pointer; transition: background .2s; margin-top: 4px;
+    }
+    .btn-login:hover { background: var(--primary-dark); }
+    .btn-login:disabled { background: #94a3b8; cursor: not-allowed; }
 
-/* ══ ADMIN DASHBOARD ══ */
-#adminScreen { min-height:100vh;display:none;flex-direction:column;background:#f8faff; }
-.admin-header { background:linear-gradient(135deg,#1e3a8a,#7c3aed);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(30,58,138,0.4); }
-.admin-header h2 { font-size:18px;font-weight:900; }
-.admin-header .sub { font-size:12px;opacity:.75;margin-top:2px; }
-.admin-badge { background:#fbbf24;color:#78350f;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:900; }
-.admin-tabs { display:flex;background:#1e3a8a; }
-.admin-tab { flex:1;padding:13px 6px;border:none;background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px; }
-.admin-tab.active { color:#fff;border-bottom-color:#fbbf24;background:rgba(255,255,255,0.08); }
-.admin-page { display:none;padding:16px; }
-.admin-page.active { display:block; }
+    .login-error {
+      background: var(--danger-light); color: var(--danger);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      font-size: 13px; font-weight: 600; margin-top: 12px;
+      display: none; text-align: center;
+    }
 
-.admin-stats-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px; }
-.admin-stat-card { background:#fff;border-radius:14px;padding:14px 10px;text-align:center;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.admin-stat-card .snum { font-size:26px;font-weight:900; }
-.admin-stat-card .slbl { font-size:11px;color:var(--muted);margin-top:3px;font-weight:600; }
-.admin-stat-card.c-blue   .snum { color:var(--blue); }
-.admin-stat-card.c-green  .snum { color:var(--green); }
-.admin-stat-card.c-purple .snum { color:var(--purple); }
+    #appScreen { display: none; }
 
-.sales-cards-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px; }
-.sales-mini-card { background:#fff;border-radius:12px;padding:14px;border:1px solid var(--border);cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,0.04); }
-.sales-mini-card:hover { border-color:var(--blue);box-shadow:0 4px 16px rgba(37,99,235,0.15);transform:translateY(-1px); }
-.sales-mini-card .s-name { font-size:13px;font-weight:900;margin-bottom:4px; }
-.sales-mini-card .s-count { font-size:22px;font-weight:900;color:var(--blue); }
-.sales-mini-card .s-lbl { font-size:11px;color:var(--muted);font-weight:600; }
+    .topbar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 58px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm);
+    }
+    .topbar-brand {
+      font-size: 16px; font-weight: 700; color: var(--primary);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .user-badge {
+      background: var(--primary-light); color: var(--primary);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: 13px; font-weight: 700;
+    }
+    .btn-logout {
+      background: none; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 6px 14px;
+      font-size: 12px; font-family: 'Cairo', sans-serif;
+      cursor: pointer; color: var(--muted); transition: all .2s;
+    }
+    .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
 
-.section-card { background:#fff;border-radius:16px;padding:16px;border:1px solid var(--border);margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-.section-card-title { font-size:14px;font-weight:900;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px; }
+    .main-content { max-width: 860px; margin: 0 auto; padding: 24px 20px; }
 
-.modal-field { margin-bottom:16px; }
-.modal-field label { font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block; }
-.modal-field select,.modal-field input { width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;color:var(--text);background:#f8faff;outline:none; }
-.modal-field select:focus,.modal-field input:focus { border-color:var(--blue); }
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 18px 20px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    }
+    .stat-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+    .stat-value { font-size: 28px; font-weight: 900; line-height: 1; }
+    .stat-value.blue  { color: var(--primary); }
+    .stat-value.green { color: var(--success); }
+    .stat-value.warn  { color: var(--warning); }
 
-.btn-confirm { width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(124,58,237,0.35);transition:all .2s;margin-top:6px; }
-.btn-confirm:hover { transform:translateY(-1px); }
-.btn-confirm:disabled { opacity:.6;cursor:not-allowed;transform:none; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-title { font-size: 15px; font-weight: 700; }
+    .section-hint { font-size: 12px; color: var(--muted); }
 
-/* Toast */
-.toast-msg { position:fixed;top:-70px;left:50%;transform:translateX(-50%);background:#065f46;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);transition:top .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap; }
-.toast-msg.show { top:16px; }
-.toast-msg.error { background:#991b1b; }
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px; margin-bottom: 24px;
+    }
 
-/* Admin filter selects */
-.admin-filter-select { padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;background:#fff;outline:none;color:var(--text); }
-.admin-filter-select:focus { border-color:var(--blue); }
+    .type-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 2px solid var(--border); padding: 22px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, border-color .2s, transform .15s;
+      cursor: pointer; position: relative;
+    }
+    .type-card:hover { box-shadow: var(--shadow); border-color: #93c5fd; transform: translateY(-2px); }
+    .type-card.active { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(29,78,216,.12); transform: translateY(-2px); }
 
-/* Sales breakdown report */
-.sales-report { background:linear-gradient(135deg,#f5f3ff,#eff6ff);border:1px solid #ddd6fe;border-radius:14px;padding:14px;margin-bottom:14px; }
-.sales-report-title { font-size:13px;font-weight:900;margin-bottom:10px;color:var(--purple);display:flex;align-items:center;gap:6px; }
-.sales-report-grid { display:flex;flex-wrap:wrap;gap:8px; }
-.sales-report-chip { background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 12px;min-width:90px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
-.sales-report-chip .rc-num { font-size:18px;font-weight:900;color:var(--blue); }
-.sales-report-chip .rc-lbl { font-size:11px;color:var(--muted);font-weight:700;margin-top:2px; }
-.sales-report-chip.rc-total { background:var(--purple);border-color:var(--purple); }
-.sales-report-chip.rc-total .rc-num,.sales-report-chip.rc-total .rc-lbl { color:#fff; }
-</style>
+    .type-name { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+    .type-pending-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+    .type-count { font-size: 48px; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 6px; }
+    .type-sub { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+    .type-bar { height: 5px; background: #e2e8f0; border-radius: 4px; margin-top: 14px; overflow: hidden; }
+    .type-bar-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width .4s ease; }
+
+    .type-card.active::after {
+      content: '✓ محدد';
+      position: absolute; top: 12px; left: 14px;
+      background: var(--primary); color: #fff;
+      border-radius: 20px; padding: 2px 10px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    .no-types-msg {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 40px;
+      text-align: center; color: var(--muted); font-size: 14px;
+    }
+
+    .panel {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+      overflow: hidden; margin-bottom: 16px;
+    }
+    .panel-head {
+      padding: 14px 18px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .panel-title { font-size: 14px; font-weight: 700; }
+    .panel-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .btn {
+      border: none; border-radius: var(--radius-sm);
+      padding: 8px 16px; font-size: 13px; font-weight: 700;
+      font-family: 'Cairo', sans-serif; cursor: pointer;
+      transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-ghost { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: #e2e8f0; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: #15803d; }
+    .btn-success:disabled { background: #94a3b8; cursor: not-allowed; }
+
+    .numbers-wrap { max-height: 400px; overflow-y: auto; }
+
+    .numbers-table { width: 100%; border-collapse: collapse; }
+    .numbers-table th {
+      background: #f8fafc; padding: 10px 16px;
+      font-size: 12px; font-weight: 700; color: var(--muted);
+      text-align: right; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+    }
+    .numbers-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+    .numbers-table tr:last-child td { border-bottom: none; }
+    .numbers-table tr:hover td { background: #f8fafc; }
+
+    .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .tag-voda     { background: #fee2e2; color: #dc2626; }
+    .tag-orange   { background: #fff7ed; color: #ea580c; }
+    .tag-etisalat { background: #f0fdf4; color: #16a34a; }
+    .tag-we       { background: #eff6ff; color: #2563eb; }
+    .tag-other    { background: #f1f5f9; color: #64748b; }
+
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
+    .empty-state .emoji { font-size: 40px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; font-weight: 600; }
+    .empty-state small { font-size: 12px; display: block; margin-top: 4px; }
+
+    .send-section {
+      padding: 16px 18px; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; background: #f8fafc; flex-wrap: wrap;
+    }
+    .send-info { font-size: 13px; color: var(--muted); }
+    .send-info strong { color: var(--text); font-size: 16px; }
+
+    #toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--text); color: #fff;
+      padding: 12px 24px; border-radius: 30px;
+      font-size: 13px; font-weight: 600; box-shadow: var(--shadow-lg);
+      transition: transform .3s ease; z-index: 9999; white-space: nowrap;
+    }
+    #toast.show   { transform: translateX(-50%) translateY(0); }
+    #toast.success { background: var(--success); }
+    #toast.error   { background: var(--danger); }
+
+    .loading-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(255,255,255,.75); z-index: 500;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px;
+    }
+    .loading-overlay.show { display: flex; }
+    .dot-spinner {
+      width: 40px; height: 40px;
+      border: 4px solid var(--primary-light);
+      border-top-color: var(--primary);
+      border-radius: 50%; animation: spin .8s linear infinite;
+    }
+    .loading-overlay p { font-size: 13px; font-weight: 600; color: var(--primary); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stats-row .stat-card:last-child { grid-column: span 2; }
+      .types-grid { grid-template-columns: 1fr 1fr; }
+      .login-card { padding: 28px 20px; }
+      .type-count { font-size: 38px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="toast-msg" id="toastMsg"></div>
-
 <!-- LOGIN -->
-<div id="loginScreen" class="active">
-  <div class="login-wrap">
-    <div class="logo-area">
-      <div class="logo-icon">📋</div>
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="icon">📊</div>
       <h1>بوابة السيلز</h1>
-      <p>سجّل دخولك لمتابعة أرقامك</p>
+      <p>سجّل دخولك لعرض الأرقام المتبقية</p>
     </div>
-    <div class="card">
-      <div class="error-box" id="loginErr"></div>
-      <div class="field">
-        <label for="nameInp">اسم السيلز</label>
-        <input type="text" id="nameInp" placeholder="اكتب اسمك اللي موجود ف ال Odoo" autocomplete="username">
-      </div>
-      <div class="field">
-        <label for="passInp">كلمة المرور</label>
-        <input type="password" id="passInp" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <button class="btn-primary" id="loginBtn" onclick="doLogin()">دخول</button>
+    <div class="field">
+      <label>اسم السيلز</label>
+      <input type="text" id="inputName" placeholder="ادخل اسمك"/>
     </div>
+    <div class="field">
+      <label>الباسورد</label>
+      <input type="password" id="inputPassword" placeholder="••••••••"/>
+    </div>
+    <button class="btn-login" id="btnLogin">دخول</button>
+    <div class="login-error" id="loginError"></div>
   </div>
 </div>
 
-<!-- SALES DASHBOARD -->
-<div id="dashScreen" style="display:none;flex-direction:column;">
-  <div class="header">
-    <div class="header-info">
-      <h2 id="helloName">أهلاً 👋</h2>
-      <div class="sub" id="connStatus">—</div>
+<!-- APP -->
+<div id="appScreen">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span>📊</span>
+      <span>بوابة السيلز</span>
     </div>
-    <div class="header-right">
-      <button class="logout-btn" onclick="doLogout()">خروج ↩</button>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="user-badge" id="userBadge">—</div>
+      <button class="btn-logout" id="btnLogout">خروج</button>
     </div>
   </div>
-  <div class="page active" id="page-nums">
-    <div class="stats-grid">
-      <div class="stat-card c-blue">  <div class="snum" id="stTotal">—</div><div class="slbl">إجمالي الأرقام</div></div>
-      <div class="stat-card c-green"> <div class="snum" id="stToday">—</div><div class="slbl">اليوم</div></div>
-      <div class="stat-card c-orange"><div class="snum" id="stWeek">—</div> <div class="slbl">هذا الأسبوع</div></div>
-      <div class="stat-card c-purple"><div class="snum" id="stTypes">—</div><div class="slbl">أنواع الداتا</div></div>
+
+  <div class="main-content">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">إجمالي أرقامي</div>
+        <div class="stat-value blue" id="statTotal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">تم الإرسال لـ Odoo</div>
+        <div class="stat-value green" id="statSent">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">لم يُرسل بعد</div>
+        <div class="stat-value warn" id="statPending">0</div>
+      </div>
     </div>
-    <div class="section-title">📞 سجل الأرقام</div>
-    <div class="filter-bar">
-      <input type="text" id="searchInp" placeholder="🔍 بحث برقم..." oninput="filterTable()">
-      <select id="typeFilter" onchange="filterTable()"><option value="">كل الأنواع</option></select>
+
+    <div class="section-header">
+      <div class="section-title">الداتا المتاحة للإرسال</div>
+      <div class="section-hint" id="typesHint"></div>
     </div>
-    <div class="date-filter-bar">
-      <label>📅 من:</label>
-      <input type="date" id="dateFrom" onchange="filterTable()">
-      <label>إلى:</label>
-      <input type="date" id="dateTo" onchange="filterTable()">
-      <button class="btn-reset-date" onclick="resetDates()">✕ مسح</button>
+    <div class="types-grid" id="typesGrid"></div>
+
+    <div class="panel" id="numbersPanel" style="display:none">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title" id="panelTitle">الأرقام المتبقية</div>
+          <div class="panel-subtitle" id="panelSubtitle"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-ghost" id="btnRefresh">🔄 تحديث</button>
+          <button class="btn btn-success" id="btnSendOdoo" disabled>✈️ إرسال</button>
+        </div>
+      </div>
+      <div class="numbers-wrap">
+        <table class="numbers-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الرقم</th>
+              <th>الشبكة</th>
+            </tr>
+          </thead>
+          <tbody id="numbersBody"></tbody>
+        </table>
+      </div>
+      <div class="send-section">
+        <div class="send-info">متبقي: <strong id="pendingCount">0</strong> رقم</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;">
+            <label style="font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap">عايز كام رقم؟</label>
+            <input type="number" id="sendQty" min="1" placeholder="الكل"
+              style="width:80px;border:none;outline:none;font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;color:var(--primary);text-align:center;background:transparent"/>
+          </div>
+          <button class="btn btn-success" id="btnSendOdoo2" disabled>✈️ إرسال</button>
+        </div>
+      </div>
     </div>
-    <div class="date-quick-btns">
-      <button class="quick-btn" onclick="setQuick('today',event)">اليوم</button>
-      <button class="quick-btn" onclick="setQuick('yesterday',event)">أمس</button>
-      <button class="quick-btn" onclick="setQuick('week',event)">آخر 7 أيام</button>
-      <button class="quick-btn" onclick="setQuick('month',event)">هذا الشهر</button>
-      <button class="quick-btn" onclick="setQuick('all',event)">الكل</button>
-    </div>
-    <div class="results-count" id="resultsCount"></div>
-    <div class="nums-wrap">
-      <div class="loading-center" id="numsLoading"><div class="spinner"></div></div>
-      <table id="numsTable" style="display:none">
-        <thead><tr><th>#</th><th>الرقم</th><th>الشركة</th><th>نوع الداتا</th><th>التاريخ</th></tr></thead>
-        <tbody id="numsBody"></tbody>
-      </table>
-      <div class="empty-state" id="numsEmpty" style="display:none"><div class="eicon">📭</div><p>لا يوجد أرقام في هذه الفترة</p></div>
-    </div>
-    <button class="load-more" id="loadMoreBtn" onclick="loadMore()">⬇ تحميل المزيد</button>
+
   </div>
 </div>
 
-<!-- ADMIN DASHBOARD -->
-<div id="adminScreen" style="display:none;flex-direction:column;">
-  <div class="admin-header">
-    <div>
-      <h2>🛡️ لوحة الأدمن</h2>
-      <div class="sub">إدارة كاملة للأرقام والسيلز</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span class="admin-badge">ADMIN</span>
-      <button class="logout-btn" onclick="doLogout()">خروج ↩</button>
-    </div>
-  </div>
-  <div class="admin-tabs">
-    <button class="admin-tab active" id="atab-overview" onclick="switchAdminTab('overview')">📊 نظرة عامة</button>
-    <button class="admin-tab" id="atab-numbers"  onclick="switchAdminTab('numbers')">📞 كل الأرقام</button>
-    <button class="admin-tab" id="atab-transfer" onclick="switchAdminTab('transfer')">🔄 نقل الأرقام</button>
-  </div>
-
-  <!-- Overview -->
-  <div class="admin-page active" id="apage-overview">
-    <div class="date-filter-bar">
-      <label>📅 من:</label>
-      <input type="date" id="oDateFrom" onchange="overviewFilterChanged()">
-      <label>إلى:</label>
-      <input type="date" id="oDateTo" onchange="overviewFilterChanged()">
-      <button class="btn-reset-date" onclick="resetOverviewDates()">✕ مسح</button>
-    </div>
-    <div class="date-quick-btns" id="oQuickBtns">
-      <button class="quick-btn" onclick="setQuickOverview('today',event)">اليوم</button>
-      <button class="quick-btn" onclick="setQuickOverview('yesterday',event)">أمس</button>
-      <button class="quick-btn" onclick="setQuickOverview('week',event)">آخر 7 أيام</button>
-      <button class="quick-btn" onclick="setQuickOverview('month',event)">هذا الشهر</button>
-      <button class="quick-btn" onclick="setQuickOverview('all',event)">الكل</button>
-    </div>
-    <div class="admin-stats-grid">
-      <div class="admin-stat-card c-blue">  <div class="snum" id="aStTotal">—</div><div class="slbl">إجمالي الأرقام</div></div>
-      <div class="admin-stat-card c-green"> <div class="snum" id="aStSales">—</div><div class="slbl">عدد السيلز</div></div>
-      <div class="admin-stat-card c-purple"><div class="snum" id="aStToday">—</div><div class="slbl">عدد أنواع الداتا</div></div>
-    </div>
-    <div class="section-card">
-      <div class="section-card-title">👥 السيلز وأرقامهم <span id="oResultsHint" style="font-weight:600;color:var(--muted);font-size:11px;"></span></div>
-      <div id="salesCardsArea"><div class="loading-center"><div class="spinner"></div></div></div>
-    </div>
-  </div>
-
-  <!-- All Numbers -->
-  <div class="admin-page" id="apage-numbers">
-    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
-      <input type="text" class="admin-filter-select" style="flex:2;min-width:150px;" id="aSearchInp" placeholder="🔍 بحث برقم أو سيلز..." oninput="adminFilterTable()">
-      <select class="admin-filter-select" style="flex:1;min-width:120px;" id="aSalesFilter" onchange="adminFilterTable()"><option value="">كل السيلز</option></select>
-      <select class="admin-filter-select" style="flex:1;min-width:110px;" id="aTypeFilter"  onchange="adminFilterTable()"><option value="">كل الأنواع</option></select>
-    </div>
-    <div class="date-filter-bar">
-      <label>📅 من:</label>
-      <input type="date" id="aDateFrom" onchange="adminFilterTable()">
-      <label>إلى:</label>
-      <input type="date" id="aDateTo"   onchange="adminFilterTable()">
-      <button class="btn-reset-date" onclick="resetAdminDates()">✕ مسح</button>
-    </div>
-    <div class="date-quick-btns" id="aQuickBtns">
-      <button class="quick-btn" onclick="setQuickAdmin('today',event)">اليوم</button>
-      <button class="quick-btn" onclick="setQuickAdmin('yesterday',event)">أمس</button>
-      <button class="quick-btn" onclick="setQuickAdmin('week',event)">آخر 7 أيام</button>
-      <button class="quick-btn" onclick="setQuickAdmin('month',event)">هذا الشهر</button>
-      <button class="quick-btn" onclick="setQuickAdmin('all',event)">الكل</button>
-    </div>
-    <div id="aSalesReportArea"></div>
-    <div class="results-count" id="aResultsCount"></div>
-    <div class="nums-wrap">
-      <div class="loading-center" id="aNumsLoading"><div class="spinner"></div></div>
-      <table id="aNumsTable" style="display:none">
-        <thead><tr><th>#</th><th>الرقم</th><th>الشركة</th><th>نوع الداتا</th><th>السيلز</th><th>التاريخ</th></tr></thead>
-        <tbody id="aNumsBody"></tbody>
-      </table>
-      <div class="empty-state" id="aNumsEmpty" style="display:none"><div class="eicon">📭</div><p>لا يوجد أرقام</p></div>
-    </div>
-    <button class="load-more" id="aLoadMoreBtn" onclick="adminLoadMore()">⬇ تحميل المزيد</button>
-  </div>
-
-  <!-- Transfer -->
-  <div class="admin-page" id="apage-transfer">
-    <div class="section-card">
-      <div class="section-card-title">🔄 نقل أرقام بين السيلز</div>
-      <div class="modal-field">
-        <label>من السيلز:</label>
-        <select id="tFromSales" onchange="loadTransferNums()"><option value="">— اختر السيلز —</option></select>
-      </div>
-      <div class="modal-field">
-        <label>إلى السيلز:</label>
-        <select id="tToSales"><option value="">— اختر السيلز —</option></select>
-      </div>
-      <div class="modal-field">
-        <label>فلترة بالتاريخ:</label>
-        <div class="date-filter-bar" style="margin-bottom:8px;">
-          <label>📅 من:</label>
-          <input type="date" id="tDateFrom" onchange="loadTransferNums()">
-          <label>إلى:</label>
-          <input type="date" id="tDateTo" onchange="loadTransferNums()">
-          <button class="btn-reset-date" onclick="resetTransferDates()">✕ مسح</button>
-        </div>
-        <div class="date-quick-btns" id="tQuickBtns">
-          <button class="quick-btn" onclick="setQuickTransfer('today',event)">اليوم</button>
-          <button class="quick-btn" onclick="setQuickTransfer('yesterday',event)">أمس</button>
-          <button class="quick-btn" onclick="setQuickTransfer('week',event)">آخر 7 أيام</button>
-          <button class="quick-btn" onclick="setQuickTransfer('month',event)">هذا الشهر</button>
-          <button class="quick-btn active" onclick="setQuickTransfer('all',event)">الكل</button>
-        </div>
-      </div>
-      <div class="modal-field">
-        <label>اختار الأرقام:</label>
-        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;">
-          <button class="quick-btn" onclick="selectAllTransfer()">تحديد الكل</button>
-          <button class="quick-btn" onclick="deselectAllTransfer()">إلغاء الكل</button>
-          <span id="selectedCount" style="font-size:13px;font-weight:700;color:var(--purple);"></span>
-        </div>
-        <div id="transferNumsList" style="max-height:320px;overflow-y:auto;border:1.5px solid var(--border);border-radius:10px;background:#f8faff;">
-          <div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">اختر السيلز الأول أولاً</div>
-        </div>
-      </div>
-      <button class="btn-confirm" onclick="doTransfer()" id="transferBtn" disabled>🔄 نقل الأرقام المحددة</button>
-    </div>
-  </div>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="dot-spinner"></div>
+  <p id="loadingText">جارٍ التحميل...</p>
 </div>
+
+<div id="toast"></div>
 
 <script>
-'use strict';
+const SUPABASE_URL = 'https://fyjiizuumgoeuxppdect.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5amlpenV1bWdvZXV4cHBkZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTg4MjgsImV4cCI6MjA5NDY5NDgyOH0.M8BvjRYszipT-JNOMwcOhQkWT2g8yTLXHuAeuuMscbs';
+const WORKER_URL   = 'https://odoo-proxy2.lapmozmen.workers.dev';
 
-const SB_URL = "https://fyjiizuumgoeuxppdect.supabase.co";
-const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5amlpenV1bWdvZXV4cHBkZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTg4MjgsImV4cCI6MjA5NDY5NDgyOH0.M8BvjRYszipT-JNOMwcOhQkWT2g8yTLXHuAeuuMscbs";
-const HDR    = { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, "Content-Type": "application/json" };
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $  = id => document.getElementById(id);
 
-let currentUser  = sessionStorage.getItem("sales_name") || null;
-let isAdmin      = sessionStorage.getItem("is_admin") === "true";
-let allNums      = [], filteredNums = [], displayedCount = 0;
-let adminAllNums = [], adminFiltered = [], adminDisplayed = 0;
-let allSalesList = [];
-const PAGE_SZ    = 50;
+let currentUser = null;
+let allNumbers  = [];
+let activeType  = null;
 
-// ── نفس الـ api function الأصلية بدون أي تغيير ──
-async function api(path, opts={}) {
-  const r = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: HDR, ...opts });
-  if (!r.ok) throw new Error(await r.text());
-  if (r.status === 204 || opts.method === "PATCH" || opts.method === "DELETE") return null;
-  return r.json();
+function getCompany(num) {
+  if (/^2010/.test(num)) return 'فودافون';
+  if (/^2011/.test(num)) return 'اتصالات';
+  if (/^2012/.test(num)) return 'أورانج';
+  if (/^2015/.test(num)) return 'WE';
+  return 'أخرى';
 }
 
-// ── Toast ──
-let toastTimer = null;
-function showToast(msg, isError=false) {
-  const el = document.getElementById("toastMsg");
-  el.textContent = msg;
-  el.className = "toast-msg" + (isError ? " error" : "") + " show";
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove("show"), 3000);
+function companyTag(c) {
+  const map = { 'فودافون':'tag-voda','أورانج':'tag-orange','اتصالات':'tag-etisalat','WE':'tag-we','أخرى':'tag-other' };
+  return `<span class="tag ${map[c]||'tag-other'}">${c}</span>`;
 }
 
-// ── Init ──
-if (currentUser) {
-  if (isAdmin) showAdmin();
-  else showDash();
+function formatPhone(num) {
+  const m = num.match(/^20(\d{3})(\d{3})(\d{4})$/);
+  return m ? `+20 ${m[1]} ${m[2]} ${m[3]}` : '+' + num;
 }
 
-// ══ LOGIN — نفس الكود الأصلي بالظبط + إضافة check للأدمن ══
-document.getElementById("passInp").addEventListener("keydown", e => { if (e.key==="Enter") doLogin(); });
+function showToast(msg, type = '') {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'show ' + type;
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = '', 3200);
+}
+
+function showLoading(txt = 'جارٍ التحميل...') {
+  $('loadingText').textContent = txt;
+  $('loadingOverlay').classList.add('show');
+}
+
+function hideLoading() {
+  $('loadingOverlay').classList.remove('show');
+}
 
 async function doLogin() {
-  const name = document.getElementById("nameInp").value.trim();
-  const pass = document.getElementById("passInp").value.trim();
-  const btn  = document.getElementById("loginBtn");
-  document.getElementById("loginErr").style.display = "none";
-  if (!name||!pass) { showErr("من فضلك ادخل الاسم وكلمة المرور"); return; }
-  btn.disabled = true;
-  btn.innerHTML = 'جاري التحقق <span style="display:inline-block;width:16px;height:16px;border:2px solid #ffffff55;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>';
-  try {
-    // ── نفس الـ query الأصلي بالظبط ──
-    const data = await api(`sales?name=eq.${enc(name)}&select=name,password`);
-    if (!data||!data.length)       { showErr("❌ الاسم غير موجود في النظام"); return; }
-    if (data[0].password !== pass) { showErr("❌ كلمة المرور غلط");           return; }
-    sessionStorage.setItem("sales_name", name);
-    currentUser = name;
-    // الفرق الوحيد: لو الاسم admin يروح لوحة الأدمن
-    if (name.toLowerCase() === "admin") {
-      sessionStorage.setItem("is_admin", "true");
-      isAdmin = true;
-      showAdmin();
-    } else {
-      sessionStorage.setItem("is_admin", "false");
-      isAdmin = false;
-      showDash();
-    }
-  } catch(e) { showErr("خطأ في الاتصال، حاول تاني"); }
-  finally { btn.disabled=false; btn.innerHTML="دخول"; }
+  const name = $('inputName').value.trim();
+  const pass  = $('inputPassword').value.trim();
+  if (!name || !pass) { showErr('ادخل الاسم والباسورد'); return; }
+
+  $('btnLogin').disabled = true;
+  $('btnLogin').textContent = 'جارٍ التحقق...';
+  $('loginError').style.display = 'none';
+
+  const { data, error } = await sb
+    .from('sales')
+    .select('name, password')
+    .eq('name', name)
+    .single();
+
+  $('btnLogin').disabled = false;
+  $('btnLogin').textContent = 'دخول';
+
+  if (error || !data) { showErr('الاسم غير موجود'); return; }
+  if (String(data.password) !== String(pass)) { showErr('الباسورد غلط'); return; }
+
+  currentUser = { name: data.name };
+  enterApp();
 }
 
 function showErr(msg) {
-  const el = document.getElementById("loginErr");
-  el.textContent=msg; el.style.display="block";
+  $('loginError').textContent = msg;
+  $('loginError').style.display = 'block';
 }
 
-// ══ SHOW / HIDE ══
-function showDash() {
-  document.getElementById("loginScreen").classList.remove("active");
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("adminScreen").style.display = "none";
-  const dash = document.getElementById("dashScreen");
-  dash.style.display = "flex";
-  document.getElementById("helloName").textContent = `أهلاً ${currentUser} 👋`;
-  document.getElementById("connStatus").textContent = currentUser;
-  loadNums();
+function enterApp() {
+  $('loginScreen').style.display = 'none';
+  $('appScreen').style.display   = 'block';
+  $('userBadge').textContent = currentUser.name;
+  loadData();
 }
 
-function showAdmin() {
-  document.getElementById("loginScreen").classList.remove("active");
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("dashScreen").style.display = "none";
-  document.getElementById("adminScreen").style.display = "flex";
-  loadAdminData();
-}
+async function loadData() {
+  showLoading('جارٍ تحميل الأرقام المتبقية...');
 
-function doLogout() {
-  sessionStorage.clear();
-  currentUser = null; isAdmin = false;
-  allNums=[]; filteredNums=[]; adminAllNums=[]; adminFiltered=[];
-  document.getElementById("dashScreen").style.display  = "none";
-  document.getElementById("adminScreen").style.display = "none";
-  const login = document.getElementById("loginScreen");
-  login.style.display = "flex";
-  document.getElementById("nameInp").value = "";
-  document.getElementById("passInp").value = "";
-  document.getElementById("loginErr").style.display = "none";
-}
+  const { data, error } = await sb
+    .from('numbers')
+    .select('number, data_type')
+    .eq('distributed', false);
 
-// ══ SALES NUMBERS — نفس الكود الأصلي ══
-async function loadNums() {
-  try {
-    const rows = await api(`numbers?salesperson=eq.${enc(currentUser)}&distributed=eq.true&order=distributed_at.desc&select=number,data_type,distributed_at&limit=5000`);
-    allNums = rows||[];
-    renderStats(); buildTypeFilter(); filterTable();
-    document.getElementById("numsLoading").style.display="none";
-    if (allNums.length===0) { document.getElementById("numsEmpty").style.display="block"; }
-    else { document.getElementById("numsTable").style.display="table"; }
-  } catch(e) {
-    document.getElementById("numsLoading").innerHTML=`<p style="color:var(--red)">خطأ في التحميل</p>`;
+  hideLoading();
+
+  if (error) {
+    showToast('فشل تحميل البيانات', 'error');
+    console.error(error);
+    return;
+  }
+
+  allNumbers = data || [];
+  renderStats();
+  renderTypes();
+  if (activeType) {
+    const stillHas = allNumbers.some(r => (r.data_type || 'غير محدد') === activeType);
+    if (stillHas) {
+      showNumbers(activeType);
+    } else {
+      activeType = null;
+      $('numbersPanel').style.display = 'none';
+    }
   }
 }
 
 function renderStats() {
-  const now=new Date(), todayStr=now.toDateString(), weekAgo=new Date(now-7*864e5);
-  const types=new Set(allNums.map(r=>r.data_type).filter(Boolean));
-  const today=allNums.filter(r=>r.distributed_at&&new Date(r.distributed_at).toDateString()===todayStr).length;
-  const week =allNums.filter(r=>r.distributed_at&&new Date(r.distributed_at)>=weekAgo).length;
-  document.getElementById("stTotal").textContent=allNums.length.toLocaleString("ar-EG");
-  document.getElementById("stToday").textContent=today;
-  document.getElementById("stWeek").textContent=week;
-  document.getElementById("stTypes").textContent=types.size;
+  const pending = allNumbers.length;
+  $('statTotal').textContent   = pending;
+  $('statSent').textContent    = '—';
+  $('statPending').textContent = pending;
 }
 
-function buildTypeFilter() {
-  const sel=document.getElementById("typeFilter");
-  const types=[...new Set(allNums.map(r=>r.data_type).filter(Boolean))].sort();
-  sel.innerHTML='<option value="">كل الأنواع</option>';
-  types.forEach(t=>{ const o=document.createElement("option"); o.value=t; o.textContent=t; sel.appendChild(o); });
-}
-
-function toLocalDateStr(d) { return d.toISOString().split("T")[0]; }
-
-function setQuick(range, ev) {
-  document.querySelectorAll(".quick-btn").forEach(b=>b.classList.remove("active"));
-  if (ev&&ev.target) ev.target.classList.add("active");
-  const now=new Date(), today=toLocalDateStr(now);
-  if      (range==="today")     { document.getElementById("dateFrom").value=today; document.getElementById("dateTo").value=today; }
-  else if (range==="yesterday") { const y=toLocalDateStr(new Date(now-864e5)); document.getElementById("dateFrom").value=y; document.getElementById("dateTo").value=y; }
-  else if (range==="week")      { document.getElementById("dateFrom").value=toLocalDateStr(new Date(now-6*864e5)); document.getElementById("dateTo").value=today; }
-  else if (range==="month")     { document.getElementById("dateFrom").value=toLocalDateStr(new Date(now.getFullYear(),now.getMonth(),1)); document.getElementById("dateTo").value=today; }
-  else if (range==="all")       { document.getElementById("dateFrom").value=""; document.getElementById("dateTo").value=""; }
-  filterTable();
-}
-
-function resetDates() {
-  document.getElementById("dateFrom").value="";
-  document.getElementById("dateTo").value="";
-  document.querySelectorAll(".quick-btn").forEach(b=>b.classList.remove("active"));
-  filterTable();
-}
-
-function filterTable() {
-  const q=document.getElementById("searchInp").value.trim();
-  const tp=document.getElementById("typeFilter").value;
-  const df=document.getElementById("dateFrom").value;
-  const dt=document.getElementById("dateTo").value;
-  filteredNums=allNums.filter(r=>{
-    if (q&&!r.number.includes(q)) return false;
-    if (tp&&r.data_type!==tp) return false;
-    if (r.distributed_at) { const d=r.distributed_at.split("T")[0]; if (df&&d<df) return false; if (dt&&d>dt) return false; }
-    else { if (df||dt) return false; }
-    return true;
-  });
-  displayedCount=0;
-  document.getElementById("numsBody").innerHTML="";
-  renderChunk();
-}
-
-function renderChunk() {
-  const tbody=document.getElementById("numsBody"), empty=document.getElementById("numsEmpty"), tbl=document.getElementById("numsTable"), rc=document.getElementById("resultsCount");
-  if (!filteredNums.length) { empty.style.display="block"; tbl.style.display="none"; document.getElementById("loadMoreBtn").style.display="none"; rc.textContent="لا يوجد نتائج"; return; }
-  empty.style.display="none"; tbl.style.display="table";
-  rc.textContent=`عدد النتائج: ${filteredNums.length.toLocaleString("ar-EG")} رقم`;
-  const chunk=filteredNums.slice(displayedCount,displayedCount+PAGE_SZ);
-  chunk.forEach((r,i)=>{ const co=getCompany(r.number); const tr=document.createElement("tr"); tr.innerHTML=`<td>${displayedCount+i+1}</td><td class="num-cell">${r.number}</td><td>${companyTag(co)}</td><td><span class="tag tag-dt">${r.data_type||"—"}</span></td><td class="date-cell">${fmtDate(r.distributed_at)}</td>`; tbody.appendChild(tr); });
-  displayedCount+=chunk.length;
-  document.getElementById("loadMoreBtn").style.display=displayedCount<filteredNums.length?"block":"none";
-}
-function loadMore() { renderChunk(); }
-
-// ══ ADMIN ══
-let adminTabsInited = { numbers:false, overview:false };
-
-function switchAdminTab(t) {
-  document.querySelectorAll(".admin-tab").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll(".admin-page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(`atab-${t}`).classList.add("active");
-  document.getElementById(`apage-${t}`).classList.add("active");
-
-  // أول ما تفتح تاب "كل الأرقام" أو "نظرة عامة" لأول مرة، فلتر اليوم يبقا مختار تلقائي
-  if (t === "numbers" && !adminTabsInited.numbers) {
-    adminTabsInited.numbers = true;
-    setQuickAdmin("today", { target: document.querySelector('#aQuickBtns .quick-btn') });
+function renderTypes() {
+  const grid = $('typesGrid');
+  const map = {};
+  for (const r of allNumbers) {
+    const t = r.data_type || 'غير محدد';
+    map[t] = (map[t] || 0) + 1;
   }
-  if (t === "overview" && !adminTabsInited.overview) {
-    adminTabsInited.overview = true;
-    setQuickOverview("today", { target: document.querySelector('#oQuickBtns .quick-btn') });
+  const types = Object.entries(map);
+  $('typesHint').textContent = types.length ? `${types.length} نوع متاح` : '';
+
+  if (!types.length) {
+    grid.innerHTML = `
+      <div class="no-types-msg">
+        <div style="font-size:40px;margin-bottom:12px">🎉</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:6px">تم إرسال كل الأرقام!</div>
+        <div style="font-size:13px;color:var(--muted)">لا يوجد أرقام متبقية للإرسال</div>
+      </div>`;
+    return;
   }
-}
 
-async function loadAdminData() {
-  try {
-    const [nums, sales] = await Promise.all([
-      api(`numbers?distributed=eq.true&order=distributed_at.desc&select=id,number,data_type,distributed_at,salesperson&limit=10000`),
-      api(`sales?select=name&order=name.asc`)
-    ]);
-    adminAllNums = nums||[];
-    allSalesList = (sales||[]).map(s=>s.name).filter(n=>n.toLowerCase()!=="admin");
+  grid.innerHTML = types.map(([name, count]) => `
+    <div class="type-card ${activeType === name ? 'active' : ''}" data-type="${name}">
+      <div class="type-name">${name}</div>
+      <div class="type-pending-label">رقم متبقي</div>
+      <div class="type-count">${count}</div>
+      <div class="type-sub">متبقي للإرسال</div>
+    </div>`).join('');
 
-    document.getElementById("aStSales").textContent = allSalesList.length;
-
-    buildAdminFilters();
-    buildTransferSelects();
-    document.getElementById("aNumsLoading").style.display="none";
-
-    // تفعيل فلتر "اليوم" الافتراضي لأول تاب مفتوح (نظرة عامة)
-    if (!adminTabsInited.overview) {
-      adminTabsInited.overview = true;
-      setQuickOverview("today", { target: document.querySelector('#oQuickBtns .quick-btn') });
-    } else {
-      overviewFilterChanged();
-    }
-  } catch(e) {
-    document.getElementById("aNumsLoading").innerHTML=`<p style="color:var(--red);text-align:center;padding:20px">خطأ في التحميل</p>`;
-  }
-}
-
-// ── فلترة عامة بالتاريخ (تُستخدم في أكتر من مكان) ──
-function filterByDateRange(rows, df, dt) {
-  return rows.filter(r=>{
-    if (r.distributed_at) { const d=r.distributed_at.split("T")[0]; if (df&&d<df) return false; if (dt&&d>dt) return false; }
-    else if (df||dt) return false;
-    return true;
-  });
-}
-
-// ══ نظرة عامة (Overview) ══
-function setQuickOverview(range, ev) {
-  document.querySelectorAll('#oQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  if (ev&&ev.target) ev.target.classList.add("active");
-  applyQuickRange("oDateFrom","oDateTo",range);
-  overviewFilterChanged();
-}
-
-function resetOverviewDates() {
-  document.getElementById("oDateFrom").value="";
-  document.getElementById("oDateTo").value="";
-  document.querySelectorAll('#oQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  overviewFilterChanged();
-}
-
-function overviewFilterChanged() {
-  document.querySelectorAll('#oQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  const df=document.getElementById("oDateFrom").value, dt=document.getElementById("oDateTo").value;
-  const filtered = filterByDateRange(adminAllNums, df, dt);
-
-  const typesCount = new Set(filtered.map(r=>r.data_type).filter(Boolean)).size;
-  document.getElementById("aStTotal").textContent = filtered.length.toLocaleString("ar-EG");
-  document.getElementById("aStToday").textContent = typesCount;
-
-  document.getElementById("oResultsHint").textContent = (df||dt) ? `(${filtered.length.toLocaleString("ar-EG")} رقم في الفترة المحددة)` : "";
-
-  renderSalesCards(filtered);
-}
-
-function applyQuickRange(fromId, toId, range) {
-  const now=new Date(), today=toLocalDateStr(now);
-  if      (range==="today")     { document.getElementById(fromId).value=today; document.getElementById(toId).value=today; }
-  else if (range==="yesterday") { const y=toLocalDateStr(new Date(now-864e5)); document.getElementById(fromId).value=y; document.getElementById(toId).value=y; }
-  else if (range==="week")      { document.getElementById(fromId).value=toLocalDateStr(new Date(now-6*864e5)); document.getElementById(toId).value=today; }
-  else if (range==="month")     { document.getElementById(fromId).value=toLocalDateStr(new Date(now.getFullYear(),now.getMonth(),1)); document.getElementById(toId).value=today; }
-  else if (range==="all")       { document.getElementById(fromId).value=""; document.getElementById(toId).value=""; }
-}
-
-function renderSalesCards(sourceRows) {
-  const rows = sourceRows || adminAllNums;
-  const area = document.getElementById("salesCardsArea");
-  if (!allSalesList.length) { area.innerHTML=`<p style="color:var(--muted);text-align:center;padding:20px">لا يوجد سيلز</p>`; return; }
-  const counts={};
-  allSalesList.forEach(n=>counts[n]=0);
-  rows.forEach(r=>{ if(r.salesperson&&counts[r.salesperson]!==undefined) counts[r.salesperson]++; });
-  const grid=document.createElement("div");
-  grid.className="sales-cards-grid";
-  allSalesList.forEach(name=>{
-    const card=document.createElement("div");
-    card.className="sales-mini-card";
-    card.innerHTML=`<div class="s-name">👤 ${name}</div><div class="s-count">${counts[name].toLocaleString("ar-EG")}</div><div class="s-lbl">رقم موزّع</div>`;
-    card.onclick=()=>{ switchAdminTab('numbers'); document.getElementById("aSalesFilter").value=name; adminFilterTable(); };
-    grid.appendChild(card);
-  });
-  area.innerHTML="";
-  area.appendChild(grid);
-}
-
-function buildAdminFilters() {
-  const salesSel=document.getElementById("aSalesFilter");
-  salesSel.innerHTML='<option value="">كل السيلز</option>';
-  allSalesList.forEach(n=>{ const o=document.createElement("option"); o.value=n; o.textContent=n; salesSel.appendChild(o); });
-  const types=[...new Set(adminAllNums.map(r=>r.data_type).filter(Boolean))].sort();
-  const typeSel=document.getElementById("aTypeFilter");
-  typeSel.innerHTML='<option value="">كل الأنواع</option>';
-  types.forEach(t=>{ const o=document.createElement("option"); o.value=t; o.textContent=t; typeSel.appendChild(o); });
-}
-
-function buildTransferSelects() {
-  ["tFromSales","tToSales"].forEach(id=>{
-    const sel=document.getElementById(id);
-    sel.innerHTML='<option value="">— اختر السيلز —</option>';
-    allSalesList.forEach(n=>{ const o=document.createElement("option"); o.value=n; o.textContent=n; sel.appendChild(o); });
-  });
-}
-
-// ══ كل الأرقام (Numbers tab) ══
-function setQuickAdmin(range, ev) {
-  document.querySelectorAll('#aQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  if (ev&&ev.target) ev.target.classList.add("active");
-  applyQuickRange("aDateFrom","aDateTo",range);
-  adminFilterTable();
-}
-
-function resetAdminDates() {
-  document.getElementById("aDateFrom").value="";
-  document.getElementById("aDateTo").value="";
-  document.querySelectorAll('#aQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  adminFilterTable();
-}
-
-function adminFilterTable() {
-  document.querySelectorAll('#aQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  const q=document.getElementById("aSearchInp").value.trim();
-  const sp=document.getElementById("aSalesFilter").value;
-  const tp=document.getElementById("aTypeFilter").value;
-  const df=document.getElementById("aDateFrom").value;
-  const dt=document.getElementById("aDateTo").value;
-  adminFiltered=adminAllNums.filter(r=>{
-    if (q&&!r.number.includes(q)&&!(r.salesperson||"").includes(q)) return false;
-    if (sp&&r.salesperson!==sp) return false;
-    if (tp&&r.data_type!==tp) return false;
-    if (r.distributed_at) { const d=r.distributed_at.split("T")[0]; if(df&&d<df) return false; if(dt&&d>dt) return false; }
-    else if (df||dt) return false;
-    return true;
-  });
-  adminDisplayed=0;
-  document.getElementById("aNumsBody").innerHTML="";
-  renderSalesReport(sp);
-  adminRenderChunk();
-}
-
-// ── تقرير السيلز المحدد: كام رقم من كل نوع ──
-function renderSalesReport(sp) {
-  const area = document.getElementById("aSalesReportArea");
-  if (!sp) { area.innerHTML=""; return; }
-  const counts={};
-  adminFiltered.forEach(r=>{ const t=r.data_type||"غير محدد"; counts[t]=(counts[t]||0)+1; });
-  const types=Object.keys(counts).sort();
-  let chips = `<div class="sales-report-chip rc-total"><div class="rc-num">${adminFiltered.length.toLocaleString("ar-EG")}</div><div class="rc-lbl">إجمالي ${sp}</div></div>`;
-  types.forEach(t=>{ chips += `<div class="sales-report-chip"><div class="rc-num">${counts[t].toLocaleString("ar-EG")}</div><div class="rc-lbl">${t}</div></div>`; });
-  area.innerHTML = `<div class="sales-report"><div class="sales-report-title">📊 تقرير ${sp}</div><div class="sales-report-grid">${chips}</div></div>`;
-}
-
-function adminRenderChunk() {
-  const tbody=document.getElementById("aNumsBody"), empty=document.getElementById("aNumsEmpty"), tbl=document.getElementById("aNumsTable"), rc=document.getElementById("aResultsCount");
-  if (!adminFiltered.length) { empty.style.display="block"; tbl.style.display="none"; document.getElementById("aLoadMoreBtn").style.display="none"; rc.textContent="لا يوجد نتائج"; return; }
-  empty.style.display="none"; tbl.style.display="table";
-  rc.textContent=`عدد النتائج: ${adminFiltered.length.toLocaleString("ar-EG")} رقم`;
-  const chunk=adminFiltered.slice(adminDisplayed,adminDisplayed+PAGE_SZ);
-  chunk.forEach((r,i)=>{ const co=getCompany(r.number); const tr=document.createElement("tr"); tr.innerHTML=`<td>${adminDisplayed+i+1}</td><td class="num-cell">${r.number}</td><td>${companyTag(co)}</td><td><span class="tag tag-dt">${r.data_type||"—"}</span></td><td><strong>${r.salesperson||"—"}</strong></td><td class="date-cell">${fmtDate(r.distributed_at)}</td>`; tbody.appendChild(tr); });
-  adminDisplayed+=chunk.length;
-  document.getElementById("aLoadMoreBtn").style.display=adminDisplayed<adminFiltered.length?"block":"none";
-}
-function adminLoadMore() { adminRenderChunk(); }
-
-// ══ TRANSFER ══
-function setQuickTransfer(range, ev) {
-  document.querySelectorAll('#tQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  if (ev&&ev.target) ev.target.classList.add("active");
-  applyQuickRange("tDateFrom","tDateTo",range);
-  loadTransferNums();
-}
-
-function resetTransferDates() {
-  document.getElementById("tDateFrom").value="";
-  document.getElementById("tDateTo").value="";
-  document.querySelectorAll('#tQuickBtns .quick-btn').forEach(b=>b.classList.remove("active"));
-  loadTransferNums();
-}
-
-async function loadTransferNums() {
-  document.querySelectorAll('#tQuickBtns .quick-btn').forEach(b=>{
-    const isAll = b.textContent.trim()==="الكل" && !document.getElementById("tDateFrom").value && !document.getElementById("tDateTo").value;
-  });
-  const from=document.getElementById("tFromSales").value;
-  const df=document.getElementById("tDateFrom").value;
-  const dt=document.getElementById("tDateTo").value;
-  const list=document.getElementById("transferNumsList");
-  document.getElementById("selectedCount").textContent="";
-  document.getElementById("transferBtn").disabled=true;
-  if (!from) { list.innerHTML=`<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">اختر السيلز الأول أولاً</div>`; return; }
-  list.innerHTML=`<div style="text-align:center;padding:24px;"><div class="spinner"></div></div>`;
-  let nums=adminAllNums.filter(r=>r.salesperson===from);
-  nums=filterByDateRange(nums, df, dt);
-  if (!nums.length) { list.innerHTML=`<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">لا يوجد أرقام لهذا السيلز في هذه الفترة</div>`; return; }
-  list.innerHTML="";
-  nums.forEach(r=>{
-    const co=getCompany(r.number);
-    const item=document.createElement("label");
-    item.style.cssText="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #f3f4f6;cursor:pointer;font-size:13px;";
-    item.innerHTML=`<input type="checkbox" class="transfer-chk" data-id="${r.id}" style="width:16px;height:16px;cursor:pointer;" onchange="updateSelectedCount()"><span style="font-weight:700;flex:1;">${r.number}</span>${companyTag(co)}<span class="tag tag-dt" style="font-size:10px;">${r.data_type||"—"}</span>`;
-    list.appendChild(item);
-  });
-  updateSelectedCount();
-}
-
-function updateSelectedCount() {
-  const checked=document.querySelectorAll(".transfer-chk:checked").length;
-  document.getElementById("selectedCount").textContent=checked?`${checked} رقم محدد`:"";
-  document.getElementById("transferBtn").disabled=checked===0;
-}
-function selectAllTransfer()   { document.querySelectorAll(".transfer-chk").forEach(c=>c.checked=true);  updateSelectedCount(); }
-function deselectAllTransfer() { document.querySelectorAll(".transfer-chk").forEach(c=>c.checked=false); updateSelectedCount(); }
-
-async function doTransfer() {
-  const from=document.getElementById("tFromSales").value;
-  const to  =document.getElementById("tToSales").value;
-  const checked=[...document.querySelectorAll(".transfer-chk:checked")];
-  const btn=document.getElementById("transferBtn");
-  if (!from||!to)    { showToast("اختر السيلز من وإلى",true); return; }
-  if (from===to)     { showToast("السيلز من وإلى نفس الشخص!",true); return; }
-  if (!checked.length) { showToast("لم تحدد أي رقم",true); return; }
-  const ids=checked.map(c=>c.dataset.id);
-  btn.disabled=true; btn.textContent="جاري النقل...";
-  try {
-    await fetch(`${SB_URL}/rest/v1/numbers?id=in.(${ids.join(",")})`, {
-      method:"PATCH", headers:{...HDR,Prefer:"return=minimal"}, body:JSON.stringify({salesperson:to})
+  grid.querySelectorAll('.type-card').forEach(card => {
+    card.addEventListener('click', () => {
+      activeType = card.dataset.type;
+      grid.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      showNumbers(activeType);
     });
-    ids.forEach(id=>{ const rec=adminAllNums.find(r=>String(r.id)===String(id)); if(rec) rec.salesperson=to; });
-    showToast(`✅ تم نقل ${ids.length} رقم من ${from} إلى ${to}`);
-    renderSalesCards();
-    adminFilterTable();
-    loadTransferNums();
-  } catch(e) { showToast("حدث خطأ أثناء النقل",true); }
-  finally { btn.textContent="🔄 نقل الأرقام المحددة"; updateSelectedCount(); }
+  });
 }
 
-// ══ UTILS ══
-function enc(s)  { return encodeURIComponent(s); }
-function esc(s)  { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
-function pad(n)  { return String(n).padStart(2,"0"); }
-function fmtDate(iso) { if(!iso) return "—"; const d=new Date(iso); return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`; }
-function getCompany(num) {
-  if (num.startsWith("2010")||num.startsWith("010")) return "فودافون";
-  if (num.startsWith("2011")||num.startsWith("011")) return "اتصالات";
-  if (num.startsWith("2012")||num.startsWith("012")) return "أورانج";
-  if (num.startsWith("2015")||num.startsWith("015")) return "WE";
-  return "أخرى";
+function showNumbers(typeName) {
+  const pending = allNumbers.filter(r => (r.data_type || 'غير محدد') === typeName);
+  $('numbersPanel').style.display = 'block';
+  $('panelTitle').textContent = `الأرقام المتبقية — ${typeName}`;
+  $('panelSubtitle').textContent = `${pending.length} رقم متبقي للإرسال`;
+  $('pendingCount').textContent = pending.length;
+  $('btnSendOdoo').disabled  = pending.length === 0;
+  $('btnSendOdoo2').disabled = pending.length === 0;
+
+  const body = $('numbersBody');
+  if (!pending.length) {
+    body.innerHTML = `
+      <tr><td colspan="3">
+        <div class="empty-state">
+          <div class="emoji">✅</div>
+          <p>كل أرقام هذا النوع تم إرسالها</p>
+          <small>اختر نوع آخر من الأعلى</small>
+        </div>
+      </td></tr>`;
+    return;
+  }
+
+  body.innerHTML = pending.map((r, i) => `
+    <tr>
+      <td style="color:var(--muted);font-size:12px">${i + 1}</td>
+      <td style="font-family:monospace;font-size:13px">${formatPhone(r.number)}</td>
+      <td>${companyTag(getCompany(r.number))}</td>
+    </tr>
+  `).join('');
 }
-function companyTag(co) { const map={"فودافون":"vf","اتصالات":"et","أورانج":"or","WE":"we"}; return `<span class="tag tag-${map[co]||'ot'}">${co}</span>`; }
+
+async function sendToOdoo() {
+  let pool = activeType
+    ? allNumbers.filter(r => (r.data_type || 'غير محدد') === activeType)
+    : [...allNumbers];
+
+  if (!pool.length) { showToast('كل الأرقام تم إرسالها بالفعل'); return; }
+
+  const qtyInput = $('sendQty');
+  const qty = qtyInput ? parseInt(qtyInput.value) : NaN;
+  const source = (!isNaN(qty) && qty > 0) ? pool.slice(0, qty) : pool;
+
+  if (source.length === 0) { showToast('ادخل عدد صحيح'); return; }
+
+  showLoading(`جارٍ إرسال ${source.length} رقم لـ Odoo...`);
+  if ($('sendQty')) $('sendQty').value = '';
+  $('btnSendOdoo').disabled  = true;
+  $('btnSendOdoo2').disabled = true;
+
+  const leads = source.map(r => ({
+    phone:       r.number,
+    name:        formatPhone(r.number),
+    data_type:   r.data_type || '',
+    salesperson: currentUser.name,  // ✅ اسم الـ user اللي فاتح البورتال
+  }));
+
+  try {
+    const res = await fetch(`${WORKER_URL}/send-leads`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'khalidahmmed209@gmail.com',  // ✅ account خالد دايماً للـ authenticate
+        password: '123',
+        leads,
+      }),
+    });
+
+    const result = await res.json();
+    hideLoading();
+
+    if (!res.ok || !result.success) {
+      showToast(result.error || 'فشل الإرسال', 'error');
+      $('btnSendOdoo').disabled  = false;
+      $('btnSendOdoo2').disabled = false;
+      return;
+    }
+
+    const nums = source.map(r => r.number);
+    await sb.from('numbers').update({ odoo_sent: true, distributed: true, distributed_at: new Date().toISOString() }).in('number', nums);
+
+    allNumbers = allNumbers.filter(r => !nums.includes(r.number));
+
+    showToast(`✅ تم إرسال ${result.created} رقم`, 'success');
+    renderStats();
+    renderTypes();
+    if (activeType) showNumbers(activeType);
+
+  } catch (err) {
+    hideLoading();
+    showToast('خطأ: ' + err.message, 'error');
+    $('btnSendOdoo').disabled  = false;
+    $('btnSendOdoo2').disabled = false;
+  }
+}
+
+$('btnLogin').addEventListener('click', doLogin);
+$('inputPassword').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+$('inputName').addEventListener('keydown', e => { if (e.key === 'Enter') $('inputPassword').focus(); });
+
+$('btnLogout').addEventListener('click', () => {
+  currentUser = null; allNumbers = []; activeType = null;
+  $('appScreen').style.display    = 'none';
+  $('loginScreen').style.display  = 'flex';
+  $('numbersPanel').style.display = 'none';
+  $('inputName').value = ''; $('inputPassword').value = '';
+  $('loginError').style.display = 'none';
+});
+
+$('btnRefresh').addEventListener('click', loadData);
+$('btnSendOdoo').addEventListener('click', sendToOdoo);
+$('btnSendOdoo2').addEventListener('click', sendToOdoo);
 </script>
 </body>
 </html>

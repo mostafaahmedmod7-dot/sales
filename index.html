@@ -1,285 +1,158 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>بوابة السيلز</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>بوابة السيلز</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo',Tahoma,sans-serif;background:#f0f2f5;color:#0f172a;min-height:100vh}
 
-    :root {
-      --bg: #f0f2f5;
-      --white: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
-      --primary: #1d4ed8;
-      --primary-dark: #1e3a8a;
-      --primary-light: #dbeafe;
-      --success: #16a34a;
-      --success-light: #dcfce7;
-      --danger: #dc2626;
-      --danger-light: #fee2e2;
-      --warning: #d97706;
-      --warning-light: #fef3c7;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
-      --shadow: 0 4px 16px rgba(0,0,0,.08);
-      --shadow-lg: 0 12px 40px rgba(0,0,0,.14);
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:20px}
+.login-card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-icon{width:64px;height:64px;background:#dbeafe;border-radius:18px;display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:12px}
+.login-logo h1{font-size:22px;font-weight:900;color:#0f172a}
+.login-logo p{font-size:13px;color:#64748b;margin-top:4px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#374151}
+.field input{width:100%;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:14px;font-family:'Cairo',sans-serif;background:#f8fafc;outline:none;transition:border-color .2s,box-shadow .2s}
+.field input:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.btn-login{width:100%;background:#1d4ed8;color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:800;font-family:'Cairo',sans-serif;cursor:pointer;transition:background .2s;margin-top:4px}
+.btn-login:hover{background:#1e3a8a}
+.btn-login:disabled{background:#94a3b8;cursor:not-allowed}
+.login-error{background:#fee2e2;color:#dc2626;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;margin-top:12px;display:none;text-align:center}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* APP */
+#appScreen{display:none}
+.topbar{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.topbar-brand{font-size:16px;font-weight:800;color:#1d4ed8;display:flex;align-items:center;gap:8px}
+.user-badge{background:#dbeafe;color:#1d4ed8;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:800}
+.btn-logout{background:none;border:1.5px solid #e2e8f0;border-radius:8px;padding:6px 14px;font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer;color:#64748b;transition:all .2s}
+.btn-logout:hover{border-color:#dc2626;color:#dc2626}
 
-    body {
-      font-family: 'Cairo', Tahoma, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+.main-content{max-width:920px;margin:0 auto;padding:24px 20px}
 
-    #loginScreen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 50%, #2563eb 100%);
-      padding: 20px;
-    }
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid #e2e8f0}
+.stat-label{font-size:12px;color:#64748b;font-weight:700;margin-bottom:6px}
+.stat-value{font-size:30px;font-weight:900;line-height:1}
+.stat-value.blue{color:#1d4ed8}
+.stat-value.green{color:#16a34a}
+.stat-value.warn{color:#d97706}
 
-    .login-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: var(--shadow-lg);
-    }
+/* DATA TYPE CARDS */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-size:15px;font-weight:800}
+.section-hint{font-size:12px;color:#64748b}
+.types-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px}
+.type-card{background:#fff;border-radius:14px;border:2px solid #e2e8f0;padding:20px;cursor:pointer;transition:all .2s;position:relative}
+.type-card:hover{border-color:#93c5fd;box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+.type-card.active{border-color:#1d4ed8;box-shadow:0 0 0 4px rgba(29,78,216,.1);transform:translateY(-2px)}
+.type-card.active::after{content:'✓ محدد';position:absolute;top:10px;left:12px;background:#1d4ed8;color:#fff;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:800}
+.type-name{font-size:14px;font-weight:800;margin-bottom:12px}
+.type-count{font-size:46px;font-weight:900;color:#1d4ed8;line-height:1;margin-bottom:4px}
+.type-sub{font-size:11px;color:#64748b;font-weight:600}
+.type-bar{height:5px;background:#e2e8f0;border-radius:4px;margin-top:14px;overflow:hidden}
+.type-bar-fill{height:100%;background:#1d4ed8;border-radius:4px;transition:width .5s ease}
 
-    .login-logo { text-align: center; margin-bottom: 28px; }
-    .login-logo .icon {
-      width: 60px; height: 60px;
-      background: var(--primary-light);
-      border-radius: 16px;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 28px; margin-bottom: 12px;
-    }
-    .login-logo h1 { font-size: 20px; font-weight: 700; }
-    .login-logo p  { font-size: 13px; color: var(--muted); margin-top: 4px; }
+/* NETWORK PRIORITY PANEL */
+.priority-panel{background:#fff;border-radius:14px;border:1px solid #e2e8f0;margin-bottom:16px;overflow:hidden}
+.priority-head{padding:14px 18px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.priority-title{font-size:14px;font-weight:800}
+.priority-title small{font-size:12px;color:#64748b;font-weight:600}
 
-    .field { margin-bottom: 16px; }
-    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-    .field input {
-      width: 100%; border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm); padding: 11px 14px;
-      font-size: 14px; font-family: 'Cairo', sans-serif;
-      background: #f8fafc; outline: none;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .field input:focus {
-      border-color: var(--primary); background: var(--white);
-      box-shadow: 0 0 0 3px rgba(29,78,216,.1);
-    }
+.networks-bar{display:flex;gap:10px;padding:16px 18px;align-items:center;flex-wrap:wrap}
+.net-chip{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;border:2px solid #e2e8f0;cursor:grab;user-select:none;font-size:13px;font-weight:800;transition:all .2s;background:#fff}
+.net-chip:hover{border-color:#93c5fd;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.net-chip.dragging{opacity:.4;border-style:dashed}
+.net-chip.drag-over{border-color:#1d4ed8;background:#dbeafe}
+.net-chip .net-dot{width:10px;height:10px;border-radius:50%}
+.net-chip .net-count{font-size:11px;color:#64748b;font-weight:700;margin-right:2px}
+.net-chip .drag-handle{color:#cbd5e1;font-size:16px}
+.chip-voda{border-color:#fca5a5;color:#dc2626;background:#fff5f5}
+.chip-voda .net-dot{background:#dc2626}
+.chip-orange{border-color:#fed7aa;color:#ea580c;background:#fff7ed}
+.chip-orange .net-dot{background:#ea580c}
+.chip-etisalat{border-color:#bbf7d0;color:#16a34a;background:#f0fdf4}
+.chip-etisalat .net-dot{background:#16a34a}
+.chip-we{border-color:#bfdbfe;color:#2563eb;background:#eff6ff}
+.chip-we .net-dot{background:#2563eb}
+.chip-other{border-color:#e2e8f0;color:#64748b;background:#f8fafc}
+.chip-other .net-dot{background:#94a3b8}
 
-    .btn-login {
-      width: 100%; background: var(--primary); color: #fff;
-      border: none; border-radius: var(--radius-sm); padding: 13px;
-      font-size: 15px; font-weight: 700; font-family: 'Cairo', sans-serif;
-      cursor: pointer; transition: background .2s; margin-top: 4px;
-    }
-    .btn-login:hover { background: var(--primary-dark); }
-    .btn-login:disabled { background: #94a3b8; cursor: not-allowed; }
+.priority-hint{font-size:12px;color:#64748b;padding:0 18px 14px;font-weight:600}
+.priority-hint span{font-weight:800;color:#1d4ed8}
 
-    .login-error {
-      background: var(--danger-light); color: var(--danger);
-      border-radius: var(--radius-sm); padding: 10px 14px;
-      font-size: 13px; font-weight: 600; margin-top: 12px;
-      display: none; text-align: center;
-    }
+/* NUMBERS PANEL */
+.panel{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:16px}
+.panel-head{padding:14px 18px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.panel-title{font-size:14px;font-weight:800}
+.panel-subtitle{font-size:12px;color:#64748b;margin-top:2px}
+.btn{border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:#1d4ed8;color:#fff}
+.btn-primary:hover{background:#1e3a8a}
+.btn-ghost{background:#f1f5f9;color:#0f172a;border:1px solid #e2e8f0}
+.btn-ghost:hover{background:#e2e8f0}
+.btn-success{background:#16a34a;color:#fff}
+.btn-success:hover{background:#15803d}
+.btn-success:disabled{background:#94a3b8;cursor:not-allowed}
 
-    #appScreen { display: none; }
+.numbers-wrap{max-height:380px;overflow-y:auto}
+.numbers-table{width:100%;border-collapse:collapse}
+.numbers-table th{background:#f8fafc;padding:10px 16px;font-size:12px;font-weight:800;color:#64748b;text-align:right;border-bottom:1px solid #e2e8f0;position:sticky;top:0}
+.numbers-table td{padding:10px 16px;font-size:13px;border-bottom:1px solid #f1f5f9}
+.numbers-table tr:last-child td{border-bottom:none}
+.numbers-table tr:hover td{background:#f8fafc}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
+.tag-voda{background:#fee2e2;color:#dc2626}
+.tag-orange{background:#fff7ed;color:#ea580c}
+.tag-etisalat{background:#dcfce7;color:#16a34a}
+.tag-we{background:#dbeafe;color:#2563eb}
+.tag-other{background:#f1f5f9;color:#64748b}
 
-    .topbar {
-      background: var(--white); border-bottom: 1px solid var(--border);
-      padding: 0 24px; height: 58px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm);
-    }
-    .topbar-brand {
-      font-size: 16px; font-weight: 700; color: var(--primary);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .user-badge {
-      background: var(--primary-light); color: var(--primary);
-      border-radius: 20px; padding: 5px 14px;
-      font-size: 13px; font-weight: 700;
-    }
-    .btn-logout {
-      background: none; border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm); padding: 6px 14px;
-      font-size: 12px; font-family: 'Cairo', sans-serif;
-      cursor: pointer; color: var(--muted); transition: all .2s;
-    }
-    .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+.priority-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:800;background:#f1f5f9;color:#64748b}
+.priority-badge.overflow{background:#fef3c7;color:#d97706}
 
-    .main-content { max-width: 860px; margin: 0 auto; padding: 24px 20px; }
+.send-section{padding:16px 18px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#f8fafc;flex-wrap:wrap}
+.send-info{font-size:13px;color:#64748b}
+.send-info strong{color:#0f172a;font-size:16px}
+.qty-wrap{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:6px 12px}
+.qty-wrap label{font-size:12px;color:#64748b;font-weight:700;white-space:nowrap}
+.qty-wrap input{width:80px;border:none;outline:none;font-size:14px;font-weight:800;font-family:'Cairo',sans-serif;color:#1d4ed8;text-align:center;background:transparent}
 
-    .stats-row {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 14px; margin-bottom: 24px;
-    }
-    .stat-card {
-      background: var(--white); border-radius: var(--radius);
-      padding: 18px 20px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
-    }
-    .stat-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
-    .stat-value { font-size: 28px; font-weight: 900; line-height: 1; }
-    .stat-value.blue  { color: var(--primary); }
-    .stat-value.green { color: var(--success); }
-    .stat-value.warn  { color: var(--warning); }
+.empty-state{text-align:center;padding:48px 20px;color:#64748b}
+.empty-state .emoji{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:14px;font-weight:700}
+.empty-state small{font-size:12px;display:block;margin-top:4px}
 
-    .section-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .section-title { font-size: 15px; font-weight: 700; }
-    .section-hint { font-size: 12px; color: var(--muted); }
+/* PREVIEW BOX */
+.preview-box{margin:0 18px 14px;background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:10px;padding:12px 14px}
+.preview-title{font-size:12px;font-weight:800;color:#0369a1;margin-bottom:8px}
+.preview-rows{display:flex;flex-wrap:wrap;gap:8px}
+.preview-row{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#0c4a6e}
+.preview-row .pnet{padding:2px 8px;border-radius:20px;font-size:11px}
 
-    .types-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 16px; margin-bottom: 24px;
-    }
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f172a;color:#fff;padding:12px 24px;border-radius:30px;font-size:13px;font-weight:700;box-shadow:0 8px 32px rgba(0,0,0,.2);transition:transform .3s ease;z-index:9999;white-space:nowrap;font-family:'Cairo',sans-serif}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.success{background:#16a34a}
+#toast.error{background:#dc2626}
 
-    .type-card {
-      background: var(--white); border-radius: var(--radius);
-      border: 2px solid var(--border); padding: 22px 20px;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow .2s, border-color .2s, transform .15s;
-      cursor: pointer; position: relative;
-    }
-    .type-card:hover { box-shadow: var(--shadow); border-color: #93c5fd; transform: translateY(-2px); }
-    .type-card.active { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(29,78,216,.12); transform: translateY(-2px); }
+/* LOADING */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.8);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.loading-overlay.show{display:flex}
+.spinner{width:40px;height:40px;border:4px solid #dbeafe;border-top-color:#1d4ed8;border-radius:50%;animation:spin .8s linear infinite}
+.loading-overlay p{font-size:13px;font-weight:700;color:#1d4ed8;font-family:'Cairo',sans-serif}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    .type-name { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: var(--text); }
-    .type-pending-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
-    .type-count { font-size: 48px; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 6px; }
-    .type-sub { font-size: 12px; color: var(--muted); font-weight: 600; }
-
-    .type-bar { height: 5px; background: #e2e8f0; border-radius: 4px; margin-top: 14px; overflow: hidden; }
-    .type-bar-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width .4s ease; }
-
-    .type-card.active::after {
-      content: '✓ محدد';
-      position: absolute; top: 12px; left: 14px;
-      background: var(--primary); color: #fff;
-      border-radius: 20px; padding: 2px 10px;
-      font-size: 11px; font-weight: 700;
-    }
-
-    .no-types-msg {
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid var(--border); padding: 40px;
-      text-align: center; color: var(--muted); font-size: 14px;
-    }
-
-    .panel {
-      background: var(--white); border-radius: var(--radius);
-      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
-      overflow: hidden; margin-bottom: 16px;
-    }
-    .panel-head {
-      padding: 14px 18px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 10px; flex-wrap: wrap;
-    }
-    .panel-title { font-size: 14px; font-weight: 700; }
-    .panel-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-    .btn {
-      border: none; border-radius: var(--radius-sm);
-      padding: 8px 16px; font-size: 13px; font-weight: 700;
-      font-family: 'Cairo', sans-serif; cursor: pointer;
-      transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
-    }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-dark); }
-    .btn-ghost { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
-    .btn-ghost:hover { background: #e2e8f0; }
-    .btn-success { background: var(--success); color: #fff; }
-    .btn-success:hover { background: #15803d; }
-    .btn-success:disabled { background: #94a3b8; cursor: not-allowed; }
-
-    .numbers-wrap { max-height: 400px; overflow-y: auto; }
-
-    .numbers-table { width: 100%; border-collapse: collapse; }
-    .numbers-table th {
-      background: #f8fafc; padding: 10px 16px;
-      font-size: 12px; font-weight: 700; color: var(--muted);
-      text-align: right; border-bottom: 1px solid var(--border);
-      position: sticky; top: 0;
-    }
-    .numbers-table td { padding: 10px 16px; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
-    .numbers-table tr:last-child td { border-bottom: none; }
-    .numbers-table tr:hover td { background: #f8fafc; }
-
-    .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-    .tag-voda     { background: #fee2e2; color: #dc2626; }
-    .tag-orange   { background: #fff7ed; color: #ea580c; }
-    .tag-etisalat { background: #f0fdf4; color: #16a34a; }
-    .tag-we       { background: #eff6ff; color: #2563eb; }
-    .tag-other    { background: #f1f5f9; color: #64748b; }
-
-    .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
-    .empty-state .emoji { font-size: 40px; margin-bottom: 12px; }
-    .empty-state p { font-size: 14px; font-weight: 600; }
-    .empty-state small { font-size: 12px; display: block; margin-top: 4px; }
-
-    .send-section {
-      padding: 16px 18px; border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 10px; background: #f8fafc; flex-wrap: wrap;
-    }
-    .send-info { font-size: 13px; color: var(--muted); }
-    .send-info strong { color: var(--text); font-size: 16px; }
-
-    #toast {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--text); color: #fff;
-      padding: 12px 24px; border-radius: 30px;
-      font-size: 13px; font-weight: 600; box-shadow: var(--shadow-lg);
-      transition: transform .3s ease; z-index: 9999; white-space: nowrap;
-    }
-    #toast.show   { transform: translateX(-50%) translateY(0); }
-    #toast.success { background: var(--success); }
-    #toast.error   { background: var(--danger); }
-
-    .loading-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(255,255,255,.75); z-index: 500;
-      align-items: center; justify-content: center;
-      flex-direction: column; gap: 12px;
-    }
-    .loading-overlay.show { display: flex; }
-    .dot-spinner {
-      width: 40px; height: 40px;
-      border: 4px solid var(--primary-light);
-      border-top-color: var(--primary);
-      border-radius: 50%; animation: spin .8s linear infinite;
-    }
-    .loading-overlay p { font-size: 13px; font-weight: 600; color: var(--primary); }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 600px) {
-      .stats-row { grid-template-columns: 1fr 1fr; }
-      .stats-row .stat-card:last-child { grid-column: span 2; }
-      .types-grid { grid-template-columns: 1fr 1fr; }
-      .login-card { padding: 28px 20px; }
-      .type-count { font-size: 38px; }
-    }
-  </style>
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}.stats-row .stat-card:last-child{grid-column:span 2}.types-grid{grid-template-columns:1fr 1fr}.login-card{padding:28px 20px}.type-count{font-size:36px}}
+</style>
 </head>
 <body>
 
@@ -287,7 +160,7 @@
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="icon">📊</div>
+      <div class="login-icon">📊</div>
       <h1>بوابة السيلز</h1>
       <p>سجّل دخولك لعرض الأرقام المتبقية</p>
     </div>
@@ -318,24 +191,26 @@
   </div>
 
   <div class="main-content">
-
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">إجمالي أرقامي</div>
-        <div class="stat-value blue" id="statTotal">0</div>
+      <div class="stat-card"><div class="stat-label">إجمالي الأرقام</div><div class="stat-value blue" id="statTotal">0</div></div>
+      <div class="stat-card"><div class="stat-label">تم الإرسال</div><div class="stat-value green" id="statSent">0</div></div>
+      <div class="stat-card"><div class="stat-label">متبقي للإرسال</div><div class="stat-value warn" id="statPending">0</div></div>
+    </div>
+
+    <!-- NETWORK PRIORITY -->
+    <div class="priority-panel" id="priorityPanel" style="display:none">
+      <div class="priority-head">
+        <div>
+          <div class="priority-title">أولوية الشبكات <small>— اسحب الشبكات لتغيير الترتيب</small></div>
+        </div>
+        <button class="btn btn-ghost" id="btnResetPriority">↺ إعادة تعيين</button>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">تم الإرسال لـ Odoo</div>
-        <div class="stat-value green" id="statSent">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">لم يُرسل بعد</div>
-        <div class="stat-value warn" id="statPending">0</div>
-      </div>
+      <div class="networks-bar" id="networksBar"></div>
+      <div class="priority-hint" id="priorityHint"></div>
     </div>
 
     <div class="section-header">
-      <div class="section-title">الداتا المتاحة للإرسال</div>
+      <div class="section-title">الداتا المتاحة</div>
       <div class="section-hint" id="typesHint"></div>
     </div>
     <div class="types-grid" id="typesGrid"></div>
@@ -348,55 +223,61 @@
         </div>
         <div style="display:flex;gap:8px;align-items:center">
           <button class="btn btn-ghost" id="btnRefresh">🔄 تحديث</button>
-          <button class="btn btn-success" id="btnSendOdoo" disabled>✈️ إرسال</button>
         </div>
+      </div>
+      <div id="previewBox" class="preview-box" style="display:none">
+        <div class="preview-title">📋 معاينة الإرسال حسب الأولوية</div>
+        <div class="preview-rows" id="previewRows"></div>
       </div>
       <div class="numbers-wrap">
         <table class="numbers-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>الرقم</th>
-              <th>الشبكة</th>
-            </tr>
-          </thead>
+          <thead><tr><th>#</th><th>الرقم</th><th>الشبكة</th></tr></thead>
           <tbody id="numbersBody"></tbody>
         </table>
       </div>
       <div class="send-section">
         <div class="send-info">متبقي: <strong id="pendingCount">0</strong> رقم</div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;">
-            <label style="font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap">عايز كام رقم؟</label>
-            <input type="number" id="sendQty" min="1" placeholder="الكل"
-              style="width:80px;border:none;outline:none;font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;color:var(--primary);text-align:center;background:transparent"/>
+          <div class="qty-wrap">
+            <label>عايز كام رقم؟</label>
+            <input type="number" id="sendQty" min="1" placeholder="الكل"/>
           </div>
-          <button class="btn btn-success" id="btnSendOdoo2" disabled>✈️ إرسال</button>
+          <button class="btn btn-success" id="btnSendOdoo" disabled>✈️ إرسال</button>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
 <div class="loading-overlay" id="loadingOverlay">
-  <div class="dot-spinner"></div>
+  <div class="spinner"></div>
   <p id="loadingText">جارٍ التحميل...</p>
 </div>
-
 <div id="toast"></div>
 
 <script>
 const SUPABASE_URL = 'https://fyjiizuumgoeuxppdect.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5amlpenV1bWdvZXV4cHBkZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTg4MjgsImV4cCI6MjA5NDY5NDgyOH0.M8BvjRYszipT-JNOMwcOhQkWT2g8yTLXHuAeuuMscbs';
-const WORKER_URL   = 'https://odoo-proxy2.lapmozmen.workers.dev';
+const WORKER_URL = 'https://odoo-proxy2.lapmozmen.workers.dev';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const $  = id => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 let currentUser = null;
-let allNumbers  = [];
-let activeType  = null;
+let allNumbers = [];
+let activeType = null;
+
+// NETWORK PRIORITY SYSTEM
+const DEFAULT_PRIORITY = ['فودافون','اتصالات','WE','أورانج','أخرى'];
+let networkPriority = [...DEFAULT_PRIORITY];
+
+const NET_STYLES = {
+  'فودافون': {cls:'chip-voda', tag:'tag-voda', label:'فودافون', color:'#dc2626'},
+  'اتصالات': {cls:'chip-etisalat', tag:'tag-etisalat', label:'اتصالات', color:'#16a34a'},
+  'أورانج':  {cls:'chip-orange', tag:'tag-orange', label:'أورانج', color:'#ea580c'},
+  'WE':      {cls:'chip-we', tag:'tag-we', label:'WE', color:'#2563eb'},
+  'أخرى':    {cls:'chip-other', tag:'tag-other', label:'أخرى', color:'#94a3b8'}
+};
 
 function getCompany(num) {
   if (/^2010/.test(num)) return 'فودافون';
@@ -406,139 +287,187 @@ function getCompany(num) {
   return 'أخرى';
 }
 
-function companyTag(c) {
-  const map = { 'فودافون':'tag-voda','أورانج':'tag-orange','اتصالات':'tag-etisalat','WE':'tag-we','أخرى':'tag-other' };
-  return `<span class="tag ${map[c]||'tag-other'}">${c}</span>`;
-}
-
 function formatPhone(num) {
   const m = num.match(/^20(\d{3})(\d{3})(\d{4})$/);
   return m ? `+20 ${m[1]} ${m[2]} ${m[3]}` : '+' + num;
 }
 
-function showToast(msg, type = '') {
+function showToast(msg, type='') {
   const t = $('toast');
   t.textContent = msg;
   t.className = 'show ' + type;
   clearTimeout(t._t);
   t._t = setTimeout(() => t.className = '', 3200);
 }
+function showLoading(txt='جارٍ التحميل...') { $('loadingText').textContent = txt; $('loadingOverlay').classList.add('show'); }
+function hideLoading() { $('loadingOverlay').classList.remove('show'); }
 
-function showLoading(txt = 'جارٍ التحميل...') {
-  $('loadingText').textContent = txt;
-  $('loadingOverlay').classList.add('show');
+// ---------- PRIORITY DRAG & DROP ----------
+let dragSrc = null;
+
+function buildNetworkBar(pool) {
+  const bar = $('networksBar');
+  // Count by network in current pool
+  const counts = {};
+  for (const r of pool) {
+    const c = getCompany(r.number);
+    counts[c] = (counts[c]||0) + 1;
+  }
+  // Only show networks that exist in pool
+  const active = networkPriority.filter(n => counts[n]);
+  if (!active.length) return;
+
+  bar.innerHTML = active.map((net,i) => {
+    const s = NET_STYLES[net] || NET_STYLES['أخرى'];
+    return `<div class="net-chip ${s.cls}" draggable="true" data-net="${net}">
+      <span class="drag-handle">⠿</span>
+      <span class="net-dot"></span>
+      <span>${net}</span>
+      <span class="net-count">(${counts[net]||0})</span>
+    </div>`;
+  }).join('') + `<span style="font-size:12px;color:#94a3b8;font-weight:600;margin-right:4px">← اسحب لتغيير الأولوية</span>`;
+
+  bar.querySelectorAll('.net-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      dragSrc = chip;
+      setTimeout(() => chip.classList.add('dragging'), 0);
+    });
+    chip.addEventListener('dragend', () => { chip.classList.remove('dragging'); dragSrc = null; });
+    chip.addEventListener('dragover', e => { e.preventDefault(); chip.classList.add('drag-over'); });
+    chip.addEventListener('dragleave', () => chip.classList.remove('drag-over'));
+    chip.addEventListener('drop', e => {
+      e.preventDefault();
+      chip.classList.remove('drag-over');
+      if (!dragSrc || dragSrc === chip) return;
+      const from = dragSrc.dataset.net;
+      const to   = chip.dataset.net;
+      const fi = networkPriority.indexOf(from);
+      const ti = networkPriority.indexOf(to);
+      if (fi !== -1 && ti !== -1) {
+        networkPriority.splice(fi, 1);
+        networkPriority.splice(ti, 0, from);
+      }
+      buildNetworkBar(pool);
+      if (activeType) updatePreview(pool);
+    });
+  });
 }
 
-function hideLoading() {
-  $('loadingOverlay').classList.remove('show');
+function updatePriorityHint(pool) {
+  const counts = {};
+  for (const r of pool) { const c = getCompany(r.number); counts[c] = (counts[c]||0)+1; }
+  const order = networkPriority.filter(n => counts[n]);
+  const parts = order.map((n,i) => `<span style="color:#1d4ed8;font-weight:800">${i+1}. ${n} (${counts[n]})</span>`).join(' ← ');
+  $('priorityHint').innerHTML = `ترتيب الأولوية: ${parts}`;
 }
 
+// ---------- SEND PREVIEW ----------
+function getQty() {
+  const v = parseInt($('sendQty').value);
+  return (isNaN(v)||v<=0) ? null : v;
+}
+
+function buildSendList(pool) {
+  // Sort by priority
+  const sorted = [...pool].sort((a,b) => {
+    const ca = getCompany(a.number), cb = getCompany(b.number);
+    const ia = networkPriority.indexOf(ca), ib = networkPriority.indexOf(cb);
+    const ra = ia === -1 ? 99 : ia, rb = ib === -1 ? 99 : ib;
+    return ra - rb;
+  });
+  const qty = getQty();
+  return qty ? sorted.slice(0, qty) : sorted;
+}
+
+function updatePreview(pool) {
+  const list = buildSendList(pool);
+  const counts = {};
+  for (const r of list) { const c = getCompany(r.number); counts[c] = (counts[c]||0)+1; }
+  const box = $('previewBox');
+  const rows = $('previewRows');
+  if (!list.length) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  const order = networkPriority.filter(n => counts[n]);
+  rows.innerHTML = order.map(n => {
+    const s = NET_STYLES[n]||NET_STYLES['أخرى'];
+    return `<div class="preview-row"><span class="pnet tag ${s.tag}">${n}</span><strong>${counts[n]} رقم</strong></div>`;
+  }).join('<span style="color:#94a3b8;font-size:16px;font-weight:700">→</span>');
+}
+
+// ---------- LOGIN ----------
 async function doLogin() {
   const name = $('inputName').value.trim();
   const pass  = $('inputPassword').value.trim();
-  if (!name || !pass) { showErr('ادخل الاسم والباسورد'); return; }
-
+  if (!name||!pass) { showErr('ادخل الاسم والباسورد'); return; }
   $('btnLogin').disabled = true;
   $('btnLogin').textContent = 'جارٍ التحقق...';
   $('loginError').style.display = 'none';
-
-  const { data, error } = await sb
-    .from('sales')
-    .select('name, password')
-    .eq('name', name)
-    .single();
-
+  const {data,error} = await sb.from('sales').select('name,password').eq('name',name).single();
   $('btnLogin').disabled = false;
   $('btnLogin').textContent = 'دخول';
-
-  if (error || !data) { showErr('الاسم غير موجود'); return; }
+  if (error||!data) { showErr('الاسم غير موجود'); return; }
   if (String(data.password) !== String(pass)) { showErr('الباسورد غلط'); return; }
-
-  currentUser = { name: data.name };
+  currentUser = {name:data.name};
   enterApp();
 }
-
-function showErr(msg) {
-  $('loginError').textContent = msg;
-  $('loginError').style.display = 'block';
-}
+function showErr(msg) { $('loginError').textContent=msg; $('loginError').style.display='block'; }
 
 function enterApp() {
-  $('loginScreen').style.display = 'none';
-  $('appScreen').style.display   = 'block';
-  $('userBadge').textContent = currentUser.name;
+  $('loginScreen').style.display='none';
+  $('appScreen').style.display='block';
+  $('userBadge').textContent=currentUser.name;
   loadData();
 }
 
+// ---------- DATA ----------
 async function loadData() {
-  showLoading('جارٍ تحميل الأرقام المتبقية...');
-
-  const { data, error } = await sb
-    .from('numbers')
-    .select('number, data_type')
-    .eq('distributed', false);
-
+  showLoading('جارٍ تحميل الأرقام...');
+  const {data,error} = await sb.from('numbers').select('number,data_type').eq('distributed',false);
   hideLoading();
-
-  if (error) {
-    showToast('فشل تحميل البيانات', 'error');
-    console.error(error);
-    return;
-  }
-
-  allNumbers = data || [];
+  if (error) { showToast('فشل تحميل البيانات','error'); return; }
+  allNumbers = data||[];
   renderStats();
   renderTypes();
+  buildNetworkBar(allNumbers);
+  updatePriorityHint(allNumbers);
+  $('priorityPanel').style.display = allNumbers.length ? 'block' : 'none';
   if (activeType) {
-    const stillHas = allNumbers.some(r => (r.data_type || 'غير محدد') === activeType);
-    if (stillHas) {
-      showNumbers(activeType);
-    } else {
-      activeType = null;
-      $('numbersPanel').style.display = 'none';
-    }
+    const pool = activeType==='__all__' ? allNumbers : allNumbers.filter(r=>(r.data_type||'غير محدد')===activeType);
+    if (pool.length) showNumbers(activeType); else { activeType=null; $('numbersPanel').style.display='none'; }
   }
 }
 
 function renderStats() {
-  const pending = allNumbers.length;
-  $('statTotal').textContent   = pending;
+  $('statTotal').textContent   = allNumbers.length;
   $('statSent').textContent    = '—';
-  $('statPending').textContent = pending;
+  $('statPending').textContent = allNumbers.length;
 }
 
 function renderTypes() {
   const grid = $('typesGrid');
   const map = {};
-  for (const r of allNumbers) {
-    const t = r.data_type || 'غير محدد';
-    map[t] = (map[t] || 0) + 1;
-  }
+  for (const r of allNumbers) { const t = r.data_type||'غير محدد'; map[t]=(map[t]||0)+1; }
   const types = Object.entries(map);
   $('typesHint').textContent = types.length ? `${types.length} نوع متاح` : '';
-
   if (!types.length) {
-    grid.innerHTML = `
-      <div class="no-types-msg">
-        <div style="font-size:40px;margin-bottom:12px">🎉</div>
-        <div style="font-weight:700;font-size:15px;margin-bottom:6px">تم إرسال كل الأرقام!</div>
-        <div style="font-size:13px;color:var(--muted)">لا يوجد أرقام متبقية للإرسال</div>
-      </div>`;
+    grid.innerHTML = `<div style="background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:40px;text-align:center;color:#64748b;font-size:14px;grid-column:1/-1">
+      <div style="font-size:40px;margin-bottom:12px">🎉</div>
+      <div style="font-weight:800;font-size:15px;margin-bottom:6px">تم إرسال كل الأرقام!</div>
+      <div style="font-size:13px">لا يوجد أرقام متبقية</div></div>`;
     return;
   }
-
-  grid.innerHTML = types.map(([name, count]) => `
-    <div class="type-card ${activeType === name ? 'active' : ''}" data-type="${name}">
+  const total = allNumbers.length;
+  grid.innerHTML = types.map(([name,count])=>`
+    <div class="type-card ${activeType===name?'active':''}" data-type="${name}">
       <div class="type-name">${name}</div>
-      <div class="type-pending-label">رقم متبقي</div>
       <div class="type-count">${count}</div>
-      <div class="type-sub">متبقي للإرسال</div>
+      <div class="type-sub">رقم متبقي للإرسال</div>
+      <div class="type-bar"><div class="type-bar-fill" style="width:${Math.round(count/total*100)}%"></div></div>
     </div>`).join('');
-
-  grid.querySelectorAll('.type-card').forEach(card => {
-    card.addEventListener('click', () => {
+  grid.querySelectorAll('.type-card').forEach(card=>{
+    card.addEventListener('click',()=>{
       activeType = card.dataset.type;
-      grid.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+      grid.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));
       card.classList.add('active');
       showNumbers(activeType);
     });
@@ -546,116 +475,115 @@ function renderTypes() {
 }
 
 function showNumbers(typeName) {
-  const pending = allNumbers.filter(r => (r.data_type || 'غير محدد') === typeName);
-  $('numbersPanel').style.display = 'block';
-  $('panelTitle').textContent = `الأرقام المتبقية — ${typeName}`;
-  $('panelSubtitle').textContent = `${pending.length} رقم متبقي للإرسال`;
-  $('pendingCount').textContent = pending.length;
-  $('btnSendOdoo').disabled  = pending.length === 0;
-  $('btnSendOdoo2').disabled = pending.length === 0;
+  const pool = typeName==='__all__' ? allNumbers : allNumbers.filter(r=>(r.data_type||'غير محدد')===typeName);
+  // Sort by priority
+  const sorted = [...pool].sort((a,b)=>{
+    const ca=getCompany(a.number),cb=getCompany(b.number);
+    const ia=networkPriority.indexOf(ca),ib=networkPriority.indexOf(cb);
+    return (ia===-1?99:ia)-(ib===-1?99:ib);
+  });
 
-  const body = $('numbersBody');
-  if (!pending.length) {
-    body.innerHTML = `
-      <tr><td colspan="3">
-        <div class="empty-state">
-          <div class="emoji">✅</div>
-          <p>كل أرقام هذا النوع تم إرسالها</p>
-          <small>اختر نوع آخر من الأعلى</small>
-        </div>
-      </td></tr>`;
+  $('numbersPanel').style.display='block';
+  $('panelTitle').textContent=`الأرقام — ${typeName}`;
+  $('panelSubtitle').textContent=`${pool.length} رقم متبقي`;
+  $('pendingCount').textContent=pool.length;
+  $('btnSendOdoo').disabled=pool.length===0;
+
+  updatePreview(pool);
+
+  const body=$('numbersBody');
+  if (!sorted.length) {
+    body.innerHTML=`<tr><td colspan="3"><div class="empty-state"><div class="emoji">✅</div><p>كل أرقام هذا النوع تم إرسالها</p><small>اختر نوع آخر</small></div></td></tr>`;
     return;
   }
-
-  body.innerHTML = pending.map((r, i) => `
-    <tr>
-      <td style="color:var(--muted);font-size:12px">${i + 1}</td>
+  const s=NET_STYLES;
+  body.innerHTML=sorted.map((r,i)=>{
+    const co=getCompany(r.number);
+    const st=s[co]||s['أخرى'];
+    return `<tr>
+      <td style="color:#94a3b8;font-size:12px">${i+1}</td>
       <td style="font-family:monospace;font-size:13px">${formatPhone(r.number)}</td>
-      <td>${companyTag(getCompany(r.number))}</td>
-    </tr>
-  `).join('');
+      <td><span class="tag ${st.tag}">${co}</span></td>
+    </tr>`;
+  }).join('');
 }
 
+// ---------- SEND ----------
 async function sendToOdoo() {
-  let pool = activeType
-    ? allNumbers.filter(r => (r.data_type || 'غير محدد') === activeType)
-    : [...allNumbers];
+  const pool = activeType==='__all__' ? allNumbers : allNumbers.filter(r=>(r.data_type||'غير محدد')===activeType);
+  if (!pool.length) { showToast('كل الأرقام تم إرسالها'); return; }
+  const source = buildSendList(pool);
+  if (!source.length) { showToast('ادخل عدد صحيح'); return; }
 
-  if (!pool.length) { showToast('كل الأرقام تم إرسالها بالفعل'); return; }
+  const netBreakdown = {};
+  for (const r of source) { const c=getCompany(r.number); netBreakdown[c]=(netBreakdown[c]||0)+1; }
+  const breakdown = Object.entries(netBreakdown).map(([n,c])=>`${n}(${c})`).join(' + ');
 
-  const qtyInput = $('sendQty');
-  const qty = qtyInput ? parseInt(qtyInput.value) : NaN;
-  const source = (!isNaN(qty) && qty > 0) ? pool.slice(0, qty) : pool;
+  showLoading(`جارٍ إرسال ${source.length} رقم لـ Odoo...\n${breakdown}`);
+  if ($('sendQty')) $('sendQty').value='';
+  $('btnSendOdoo').disabled=true;
 
-  if (source.length === 0) { showToast('ادخل عدد صحيح'); return; }
-
-  showLoading(`جارٍ إرسال ${source.length} رقم لـ Odoo...`);
-  if ($('sendQty')) $('sendQty').value = '';
-  $('btnSendOdoo').disabled  = true;
-  $('btnSendOdoo2').disabled = true;
-
-  const leads = source.map(r => ({
-    phone:       r.number,
-    name:        formatPhone(r.number),
-    data_type:   r.data_type || '',
-    salesperson: currentUser.name,  // ✅ اسم الـ user اللي فاتح البورتال
+  const leads=source.map(r=>({
+    phone:r.number,
+    name:formatPhone(r.number),
+    data_type:r.data_type||'',
+    salesperson:currentUser.name,
   }));
 
   try {
-    const res = await fetch(`${WORKER_URL}/send-leads`, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: 'khalidahmmed209@gmail.com',  // ✅ account خالد دايماً للـ authenticate
-        password: '123',
-        leads,
-      }),
+    const res=await fetch(`${WORKER_URL}/send-leads`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads}),
     });
-
-    const result = await res.json();
+    const result=await res.json();
     hideLoading();
+    if (!res.ok||!result.success) { showToast(result.error||'فشل الإرسال','error'); $('btnSendOdoo').disabled=false; return; }
 
-    if (!res.ok || !result.success) {
-      showToast(result.error || 'فشل الإرسال', 'error');
-      $('btnSendOdoo').disabled  = false;
-      $('btnSendOdoo2').disabled = false;
-      return;
-    }
+    const nums=source.map(r=>r.number);
+    await sb.from('numbers').update({odoo_sent:true,distributed:true,distributed_at:new Date().toISOString(),salesperson:currentUser.name}).in('number',nums);
+    allNumbers=allNumbers.filter(r=>!nums.includes(r.number));
 
-    const nums = source.map(r => r.number);
-    await sb.from('numbers').update({ odoo_sent: true, distributed: true, distributed_at: new Date().toISOString() }).in('number', nums);
-
-    allNumbers = allNumbers.filter(r => !nums.includes(r.number));
-
-    showToast(`✅ تم إرسال ${result.created} رقم`, 'success');
+    showToast(`✅ تم إرسال ${result.created} رقم (${breakdown})`,'success');
     renderStats();
     renderTypes();
+    buildNetworkBar(allNumbers);
+    updatePriorityHint(allNumbers);
     if (activeType) showNumbers(activeType);
-
-  } catch (err) {
+  } catch(err) {
     hideLoading();
-    showToast('خطأ: ' + err.message, 'error');
-    $('btnSendOdoo').disabled  = false;
-    $('btnSendOdoo2').disabled = false;
+    showToast('خطأ: '+err.message,'error');
+    $('btnSendOdoo').disabled=false;
   }
 }
 
-$('btnLogin').addEventListener('click', doLogin);
-$('inputPassword').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-$('inputName').addEventListener('keydown', e => { if (e.key === 'Enter') $('inputPassword').focus(); });
-
-$('btnLogout').addEventListener('click', () => {
-  currentUser = null; allNumbers = []; activeType = null;
-  $('appScreen').style.display    = 'none';
-  $('loginScreen').style.display  = 'flex';
-  $('numbersPanel').style.display = 'none';
-  $('inputName').value = ''; $('inputPassword').value = '';
-  $('loginError').style.display = 'none';
+// ---------- EVENTS ----------
+$('btnLogin').addEventListener('click',doLogin);
+$('inputPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+$('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPassword').focus()});
+$('btnLogout').addEventListener('click',()=>{
+  currentUser=null;allNumbers=[];activeType=null;networkPriority=[...DEFAULT_PRIORITY];
+  $('appScreen').style.display='none';$('loginScreen').style.display='flex';
+  $('numbersPanel').style.display='none';$('priorityPanel').style.display='none';
+  $('inputName').value='';$('inputPassword').value='';$('loginError').style.display='none';
+});
+$('btnRefresh').addEventListener('click',loadData);
+$('btnSendOdoo').addEventListener('click',sendToOdoo);
+$('btnResetPriority').addEventListener('click',()=>{
+  networkPriority=[...DEFAULT_PRIORITY];
+  buildNetworkBar(allNumbers);
+  updatePriorityHint(allNumbers);
+  if(activeType) updatePreview(allNumbers.filter(r=>(r.data_type||'غير محدد')===activeType));
+  showToast('تم إعادة تعيين الأولوية');
 });
 
-$('btnRefresh').addEventListener('click', loadData);
-$('btnSendOdoo').addEventListener('click', sendToOdoo);
-$('btnSendOdoo2').addEventListener('click', sendToOdoo);
+// Update preview on qty change
+$('sendQty').addEventListener('input',()=>{
+  if(activeType){
+    const pool=allNumbers.filter(r=>(r.data_type||'غير محدد')===activeType);
+    updatePreview(pool);
+  }
+});
 </script>
 </body>
 </html>

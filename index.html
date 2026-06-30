@@ -695,7 +695,7 @@ async function sendToOdoo() {
   showLoading(`جارٍ إرسال ${source.length} رقم...\n${bk}`);
   $('sendQty').value='';$('btnSend').disabled=true;
   const salespersonName=currentUser.name;
-  const leads=source.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:salespersonName}));
+  const leads=source.map(r=>({phone:formatPhone(r.number),name:r.number,data_type:r.data_type||'',salesperson:salespersonName}));
   try {
     const res=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
@@ -910,7 +910,7 @@ async function doDistribute() {
         if(!slice.length) continue;
 
         const leads = slice.map(r=>({
-          phone:formatPhonePlus(r.number), name:r.number,
+          phone:formatPhone(r.number), name:r.number,
           data_type:r.data_type||'', salesperson:salesName
         }));
 
@@ -983,7 +983,7 @@ async function doTransfer() {
     async ()=>{
       showLoading(`جارٍ نقل ${list.length} رقم...`);
       try {
-        const leads=list.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:toName}));
+        const leads=list.map(r=>({phone:formatPhone(r.number),name:r.number,data_type:r.data_type||'',salesperson:toName}));
         await fetch(`${WORKER_URL}/delete-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',phones:list.map(r=>r.number)})});
         const createRes=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
         const createResult=await createRes.json();

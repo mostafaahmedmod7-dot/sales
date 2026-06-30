@@ -543,6 +543,7 @@ function formatPhone(num) {
   const m = num.match(/^20(\d{3})(\d{3})(\d{4})$/);
   return m ? `+20 ${m[1]} ${m[2]} ${m[3]}` : '+' + num;
 }
+function formatPhonePlus(num) { return '+' + num; }
 function showToast(msg, type='') {
   const t=$('toast'); t.textContent=msg; t.className='show '+type;
   clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3400);
@@ -694,8 +695,7 @@ async function sendToOdoo() {
   showLoading(`جارٍ إرسال ${source.length} رقم...\n${bk}`);
   $('sendQty').value='';$('btnSend').disabled=true;
   const salespersonName=currentUser.name;
-  const leads=source.map(r=>({phone:formatPhone(r.number),name:formatPhone(r.number),data_type:r.data_type||'',salesperson:salespersonName}));
-
+  const leads=source.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:salespersonName}));
   try {
     const res=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
@@ -910,10 +910,9 @@ async function doDistribute() {
         if(!slice.length) continue;
 
         const leads = slice.map(r=>({
-          phone:formatPhone(r.number), name:formatPhone(r.number),
+          phone:formatPhonePlus(r.number), name:r.number,
           data_type:r.data_type||'', salesperson:salesName
         }));
-
 
         try {
           const res = await fetch(`${WORKER_URL}/send-leads`,{
@@ -984,8 +983,7 @@ async function doTransfer() {
     async ()=>{
       showLoading(`جارٍ نقل ${list.length} رقم...`);
       try {
-        const leads=list.map(r=>({phone:formatPhone(r.number),name:formatPhone(r.number),data_type:r.data_type||'',salesperson:toName}));
-
+        const leads=list.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:toName}));
         await fetch(`${WORKER_URL}/delete-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',phones:list.map(r=>r.number)})});
         const createRes=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
         const createResult=await createRes.json();

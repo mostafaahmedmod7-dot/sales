@@ -695,7 +695,7 @@ async function sendToOdoo() {
   showLoading(`جارٍ إرسال ${source.length} رقم...\n${bk}`);
   $('sendQty').value='';$('btnSend').disabled=true;
   const salespersonName=currentUser.name;
-  const leads=source.map(r=>({phone:formatPhone(r.number),name:r.number,data_type:r.data_type||'',salesperson:salespersonName}));
+  const leads=source.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:salespersonName}));
   try {
     const res=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
@@ -703,7 +703,12 @@ async function sendToOdoo() {
     hideLoading();
     if(!res.ok||!result.success){showToast(result.error||'فشل الإرسال','error');$('btnSend').disabled=false;return}
     const nums=source.map(r=>r.number);
-    await sb.from('numbers').update({odoo_sent:true,distributed:true,distributed_at:new Date().toISOString(),salesperson:salespersonName}).in('number',nums);
+    // ✅ FIX: إضافة فلترة على data_type و distributed عشان منلمسش صفوف من نوع تاني بنفس الرقم
+    await sb.from('numbers')
+      .update({odoo_sent:true,distributed:true,distributed_at:new Date().toISOString(),salesperson:salespersonName})
+      .in('number',nums)
+      .eq('data_type',activeType)
+      .eq('distributed',false);
     allNumbers=allNumbers.filter(r=>!nums.includes(r.number));
     showToast(`✅ تم إرسال ${result.created} رقم (${bk})`,'success');
     selectedPriority=[];renderStats();renderTypes();
@@ -910,7 +915,7 @@ async function doDistribute() {
         if(!slice.length) continue;
 
         const leads = slice.map(r=>({
-          phone:formatPhone(r.number), name:r.number,
+          phone:formatPhonePlus(r.number), name:r.number,
           data_type:r.data_type||'', salesperson:salesName
         }));
 
@@ -923,10 +928,15 @@ async function doDistribute() {
           if(!res.ok||!result.success){ allOk=false; showToast(`فشل إرسال ${salesName}: ${result.error}`,'error'); continue; }
 
           const nums = slice.map(r=>r.number);
-          await sb.from('numbers').update({
-            odoo_sent:true, distributed:true,
-            distributed_at:new Date().toISOString(), salesperson:salesName
-          }).in('number',nums);
+          // ✅ FIX: إضافة فلترة على data_type و distributed لنفس السبب
+          await sb.from('numbers')
+            .update({
+              odoo_sent:true, distributed:true,
+              distributed_at:new Date().toISOString(), salesperson:salesName
+            })
+            .in('number',nums)
+            .eq('data_type',typeName)
+            .eq('distributed',false);
 
           totalSent += slice.length;
         } catch(err){ allOk=false; showToast(`خطأ في ${salesName}: ${err.message}`,'error'); }
@@ -983,7 +993,7 @@ async function doTransfer() {
     async ()=>{
       showLoading(`جارٍ نقل ${list.length} رقم...`);
       try {
-        const leads=list.map(r=>({phone:formatPhone(r.number),name:r.number,data_type:r.data_type||'',salesperson:toName}));
+        const leads=list.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:toName}));
         await fetch(`${WORKER_URL}/delete-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',phones:list.map(r=>r.number)})});
         const createRes=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
         const createResult=await createRes.json();

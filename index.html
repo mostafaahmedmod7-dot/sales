@@ -159,48 +159,35 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 .empty-state small{font-size:12px;margin-top:4px;display:block}
 
 /* ═══════════════════════════════════════
-   DISTRIBUTE TAB - NEW
+   DISTRIBUTE TAB - SIMPLIFIED / MOBILE
    ═══════════════════════════════════════ */
-.dist-section{margin-bottom:28px}
-.dist-section .sec-title{font-size:13px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.dist-section{margin-bottom:20px}
+.dist-section .sec-title{font-size:12px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .dist-section .sec-title span{background:#6366f1;color:#fff;border-radius:20px;padding:2px 10px;font-size:11px}
 
-/* type selector row */
-.dist-types-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.dist-type-chip{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:20px;border:1.5px solid #334155;background:#1e293b;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;color:#64748b;transition:all .2s}
-.dist-type-chip:hover{border-color:#6366f1;color:#a5b4fc}
-.dist-type-chip.sel{border-color:#6366f1;background:#1e2d4a;color:#a5b4fc}
-.dist-type-chip .tc{font-size:11px;background:#0f172a;border-radius:20px;padding:2px 8px;color:#475569}
-.dist-type-chip.sel .tc{background:rgba(99,102,241,.2);color:#a5b4fc}
-
-/* sales distribute table */
-.dist-table-wrap{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;margin-bottom:16px}
-.dist-table{width:100%;border-collapse:collapse}
-.dist-table th{background:#0f172a;padding:11px 18px;font-size:11px;font-weight:700;color:#475569;text-align:right;border-bottom:1px solid #334155;text-transform:uppercase;letter-spacing:.5px}
-.dist-table td{padding:10px 18px;border-bottom:1px solid rgba(51,65,85,.4);font-size:13px;vertical-align:middle}
-.dist-table tr:last-child td{border-bottom:none}
-.dist-table tr:hover td{background:rgba(99,102,241,.04)}
-.d-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:11px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.d-name-cell{display:flex;align-items:center;gap:10px}
-.d-type-sel{background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;transition:border-color .2s;min-width:130px}
+/* compact sales distribute table */
+.dist-table-wrap{background:#1e293b;border-radius:14px;border:1px solid #334155;overflow:hidden;margin-bottom:14px}
+.dist-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(51,65,85,.4)}
+.dist-row:last-child{border-bottom:none}
+.d-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.d-name{font-size:12.5px;font-weight:800;color:#f1f5f9;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-type-sel{background:#0f172a;border:1.5px solid #334155;border-radius:9px;padding:7px 8px;font-size:11.5px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;flex:1 1 84px;min-width:0}
 .d-type-sel:focus{border-color:#6366f1}
-.d-qty-input{width:90px;background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:7px 10px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;outline:none;text-align:center;transition:border-color .2s}
+.d-qty-input{width:56px;flex:0 0 56px;background:#0f172a;border:1.5px solid #334155;border-radius:9px;padding:7px 4px;font-size:13px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;outline:none;text-align:center}
 .d-qty-input:focus{border-color:#6366f1}
-.d-status{font-size:11px;font-weight:800}
-.d-status.pending{color:#475569}
-.d-status.ready{color:#10b981}
-.d-status.sent{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.25);border-radius:20px;padding:2px 10px}
+.d-status-dot{width:9px;height:9px;border-radius:50%;background:#334155;flex-shrink:0}
+.d-status-dot.on{background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.18)}
 
 /* distribute bar */
-.dist-bar{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.dist-bar-info{display:flex;gap:28px;flex-wrap:wrap}
+.dist-bar{background:#1e293b;border-radius:14px;border:1px solid #334155;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;bottom:10px}
+.dist-bar-info{display:flex;gap:16px;flex-wrap:wrap}
 .dbi-item{text-align:center}
-.dbi-label{font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.dbi-val{font-size:24px;font-weight:900}
+.dbi-label{font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.dbi-val{font-size:19px;font-weight:900}
 .dbi-val.c1{color:#6366f1}
 .dbi-val.c2{color:#10b981}
 .dbi-val.c3{color:#f59e0b}
-.btn-dist-now{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:12px;padding:13px 32px;font-size:15px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s,transform .1s}
+.btn-dist-now{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:11px;padding:11px 22px;font-size:13.5px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s,transform .1s;flex:1 1 auto}
 .btn-dist-now:hover{opacity:.9;transform:translateY(-1px)}
 .btn-dist-now:disabled{background:#334155;color:#475569;cursor:not-allowed;transform:none;opacity:1}
 .btn-dist-now:active{transform:translateY(0)}
@@ -218,16 +205,28 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 
 /* ADMIN — OVERVIEW TAB */
 .sales-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
-.sales-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;transition:border-color .2s}
+.sales-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;transition:border-color .2s;cursor:pointer}
 .sales-card:hover{border-color:#6366f1}
+.sales-card.open{border-color:#6366f1}
 .sc-name{font-size:15px;font-weight:900;color:#f1f5f9;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .sc-avatar{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0}
+.sc-chevron{margin-right:auto;font-size:12px;color:#475569;transition:transform .2s}
+.sales-card.open .sc-chevron{transform:rotate(180deg);color:#a5b4fc}
 .sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .sc-stat{background:#0f172a;border-radius:10px;padding:10px 12px}
 .sc-stat-label{font-size:10px;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
 .sc-stat-val{font-size:20px;font-weight:900}
 .sc-stat-val.s-total{color:#6366f1}
 .sc-stat-val.s-sent{color:#10b981}
+.sc-details{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #334155}
+.sales-card.open .sc-details{display:block}
+.sc-detail-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:#0f172a;border-radius:9px;margin-bottom:6px;font-size:12px}
+.sc-detail-row:last-child{margin-bottom:0}
+.sc-detail-type{font-weight:800;color:#a5b4fc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-detail-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;color:#64748b;font-weight:700}
+.sc-detail-time{color:#f1f5f9;font-family:monospace;font-size:11.5px}
+.sc-detail-qty{background:rgba(16,185,129,.15);color:#6ee7b7;border-radius:20px;padding:1px 8px;font-size:11px}
+.sc-no-details{font-size:12px;color:#475569;text-align:center;padding:8px}
 
 /* ADMIN — TRANSFER TAB */
 .transfer-panel{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:24px;margin-bottom:20px}
@@ -277,10 +276,15 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 @media(max-width:600px){
   .stats-row{grid-template-columns:1fr 1fr}.stats-row .stat-card:last-child{grid-column:span 2}
   .types-grid{grid-template-columns:1fr 1fr}.tc-num{font-size:34px}
-  .transfer-form{grid-template-columns:1fr;gap:10px}.tf-arrow{display:none}
+  .transfer-form{grid-template-columns:1fr}.tf-arrow{display:none}
   .sales-grid{grid-template-columns:1fr}
-  .dist-bar{flex-direction:column;align-items:stretch}
-  .btn-dist-now{width:100%}
+  .main{padding:16px 10px}
+  .dist-row{flex-wrap:wrap}
+  .d-name{flex:1 1 100%;order:1}
+  .d-avatar{order:1}
+  .d-type-sel{order:3;flex:1 1 auto}
+  .d-qty-input{order:4}
+  .d-status-dot{order:2}
 }
 </style>
 </head>
@@ -315,12 +319,12 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   </div>
   <div class="main">
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">إجمالي الأرقام</div><div class="stat-val v1" id="statTotal">0</div></div>
+      <div class="stat-card"><div class="stat-label">إجمالي أرقام النهاردة</div><div class="stat-val v1" id="statTotal">0</div></div>
       <div class="stat-card"><div class="stat-label">تم الإرسال</div><div class="stat-val v2" id="statSent">—</div></div>
       <div class="stat-card"><div class="stat-label">متبقي</div><div class="stat-val v3" id="statPending">0</div></div>
     </div>
     <div class="sec-head">
-      <div class="sec-title">الداتا المتاحة</div>
+      <div class="sec-title">الداتا المتاحة النهاردة</div>
       <div style="font-size:12px;color:#475569" id="typesHint"></div>
     </div>
     <div class="types-grid" id="typesGrid"></div>
@@ -374,9 +378,9 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   <!-- OVERVIEW TAB -->
   <div class="main" id="adminTabOverview">
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">إجمالي الأرقام</div><div class="stat-val v1" id="adStatTotal">0</div></div>
-      <div class="stat-card"><div class="stat-label">تم الإرسال</div><div class="stat-val v2" id="adStatSent">0</div></div>
-      <div class="stat-card"><div class="stat-label">متبقي</div><div class="stat-val v3" id="adStatPending">0</div></div>
+      <div class="stat-card"><div class="stat-label">إجمالي أرقام النهاردة</div><div class="stat-val v1" id="adStatTotal">0</div></div>
+      <div class="stat-card"><div class="stat-label">تم الإرسال النهاردة</div><div class="stat-val v2" id="adStatSent">0</div></div>
+      <div class="stat-card"><div class="stat-label">متبقي النهاردة</div><div class="stat-val v3" id="adStatPending">0</div></div>
     </div>
     <div class="sec-head"><div class="sec-title">أداء كل سيلز</div><button class="btn btn-ghost2" id="btnAdRefresh">🔄 تحديث</button></div>
     <div class="admin-filters">
@@ -385,39 +389,18 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
       <input type="date" class="af-date" id="ovDateFrom"/>
       <span class="af-label">إلى</span>
       <input type="date" class="af-date" id="ovDateTo"/>
-      <button class="af-clear" id="ovClearDate">كل الوقت</button>
+      <button class="af-clear" id="ovClearDate">اليوم</button>
     </div>
+    <div style="font-size:11px;color:#475569;margin:-10px 0 14px">👆 دوس على أي كرت سيلز عشان تشوف كل نوع داتا اتوزعله والوقت بالظبط. البيانات المعروضة هنا محدودة بأرقام النهاردة فقط لتقليل حمل الموقع.</div>
     <div class="sales-grid" id="salesGrid"></div>
   </div>
 
-  <!-- DISTRIBUTE TAB (NEW) -->
+  <!-- DISTRIBUTE TAB (SIMPLIFIED) -->
   <div class="main" id="adminTabDistribute" style="display:none">
-
-    <!-- Step 1: type selector -->
     <div class="dist-section">
-      <div class="sec-title">الداتا المتاحة <span id="distTotalBadge">0 رقم</span></div>
-      <div class="dist-types-row" id="distTypesRow">
-        <div style="color:#475569;font-size:13px;padding:8px 0">جارٍ التحميل...</div>
-      </div>
-    </div>
-
-    <!-- Step 2: sales table -->
-    <div class="dist-section">
-      <div class="sec-title" style="margin-bottom:14px">توزيع على السيلز</div>
-      <div class="dist-table-wrap">
-        <table class="dist-table">
-          <thead>
-            <tr>
-              <th>اسم السيلز</th>
-              <th>النوع</th>
-              <th>العدد</th>
-              <th>الحالة</th>
-            </tr>
-          </thead>
-          <tbody id="distSalesBody">
-            <tr><td colspan="4" style="text-align:center;padding:32px;color:#475569;font-size:13px">اختار نوع داتا الأول</td></tr>
-          </tbody>
-        </table>
+      <div class="sec-title">توزيع على السيلز <span id="distTotalBadge">0 رقم</span></div>
+      <div class="dist-table-wrap" id="distSalesBody">
+        <div style="text-align:center;padding:24px;color:#475569;font-size:13px">جارٍ التحميل...</div>
       </div>
     </div>
 
@@ -427,10 +410,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
         <div class="dbi-item">
           <div class="dbi-label">المعين</div>
           <div class="dbi-val c1" id="distTotalAssigned">0</div>
-        </div>
-        <div class="dbi-item">
-          <div class="dbi-label">المتبقي</div>
-          <div class="dbi-val c3" id="distTotalRemaining">0</div>
         </div>
         <div class="dbi-item">
           <div class="dbi-label">عدد السيلز</div>
@@ -445,14 +424,14 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   <div class="main" id="adminTabTransfer" style="display:none">
     <div class="transfer-panel">
       <div class="tp-title">نقل أرقام من سيلز لسيلز</div>
-      <div class="tp-sub">الأرقام هتتنقل في Supabase وفي Odoo (الـ lead القديم هيتمسح ويتعمل جديد)</div>
+      <div class="tp-sub">الأرقام هتتنقل في Supabase وفي Odoo (الـ lead القديم هيتمسح ويتعمل جديد). ملحوظة: بيظهر هنا أرقام النهاردة بس.</div>
       <div class="admin-filters" style="margin-bottom:16px">
         <span class="af-label">فلتر التاريخ:</span>
         <span class="af-label">من</span>
         <input type="date" class="af-date" id="tfDateFrom"/>
         <span class="af-label">إلى</span>
         <input type="date" class="af-date" id="tfDateTo"/>
-        <button class="af-clear" id="tfClearDate">كل الوقت</button>
+        <button class="af-clear" id="tfClearDate">اليوم</button>
       </div>
       <div class="transfer-form">
         <div class="tf-field">
@@ -503,12 +482,58 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 
 let currentUser = null, allNumbers = [], activeType = null, selectedPriority = [];
+let hiddenTypes = new Set();
+
+// ─── TODAY-ONLY DATA WINDOW ───
+// كل الاستعلامات بترجع بس الصفوف اللي added_at أو distributed_at بتاعتها النهاردة
+// (بيبدأ من نص الليل بتوقيت الجهاز اللي شغال عليه المتصفح) عشان الموقع يفضل خفيف.
+// added_at و distributed_at متخزنين كـ text بصيغة ISO من غير أجزاء الألف من الثانية
+// (مثال: 2026-06-18T03:40:16Z) فبنشيل الـ milliseconds عشان المقارنة النصية تظبط 100%
+function stripMs(iso) { return iso.replace(/\.\d+Z$/, 'Z'); }
+function todayStartISO() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return stripMs(d.toISOString());
+}
+function todayEndISO() {
+  const d = new Date();
+  d.setHours(23, 59, 59, 999);
+  return stripMs(d.toISOString());
+}
+
+async function loadHiddenTypes() {
+  try {
+    const {data,error} = await sb.from('data_types').select('name').eq('hidden',true);
+    if(error){ hiddenTypes = new Set(); return; }
+    hiddenTypes = new Set((data||[]).map(r=>r.name));
+  } catch(e){ hiddenTypes = new Set(); }
+}
+
+// يحاول ينفذ الطلب، ولو فشل بسبب شبكة/تايم آوت بيعيد المحاولة مرة واحدة بعد نص ثانية
+async function withRetry(fn, retries=1) {
+  try {
+    const result = await fn();
+    if(result && result.error) throw result.error;
+    return {data: result ? result.data : null, error: null};
+  } catch(err) {
+    if(retries > 0) {
+      await new Promise(r=>setTimeout(r, 800));
+      return withRetry(fn, retries - 1);
+    }
+    return {data:null, error: err};
+  }
+}
+function errMsg(err) {
+  if(!err) return 'خطأ غير معروف';
+  return err.message || err.details || err.hint || String(err);
+}
 
 // ─── ADMIN STATE ───
 let adminAllNumbers = [], adminSalesList = [];
 // ─── DISTRIBUTE STATE ───
 let distAssignments = {}; // { salesName: { type, qty } }
-let distSelectedType = null;
+// ─── OVERVIEW STATE ───
+let openSalesCard = null; // name of currently expanded card
 
 function todayStr() { return new Date().toISOString().slice(0,10); }
 
@@ -518,10 +543,10 @@ function initAdminFilters() {
   $('ovSearch').addEventListener('input', renderAdminOverview);
   $('ovDateFrom').addEventListener('change', renderAdminOverview);
   $('ovDateTo').addEventListener('change', renderAdminOverview);
-  $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=''; $('ovDateTo').value=''; renderAdminOverview(); });
+  $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=todayStr(); $('ovDateTo').value=todayStr(); renderAdminOverview(); });
   $('tfDateFrom').addEventListener('change', updateTransferPreview);
   $('tfDateTo').addEventListener('change', updateTransferPreview);
-  $('tfClearDate').addEventListener('click',()=>{ $('tfDateFrom').value=''; $('tfDateTo').value=''; updateTransferPreview(); });
+  $('tfClearDate').addEventListener('click',()=>{ $('tfDateFrom').value=todayStr(); $('tfDateTo').value=todayStr(); updateTransferPreview(); });
 }
 
 const NETS = {
@@ -544,6 +569,11 @@ function formatPhone(num) {
   return m ? `+20 ${m[1]} ${m[2]} ${m[3]}` : '+' + num;
 }
 function formatPhonePlus(num) { return '+' + num; }
+function formatTime(iso) {
+  if(!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',hour12:true});
+}
 function showToast(msg, type='') {
   const t=$('toast'); t.textContent=msg; t.className='show '+type;
   clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3400);
@@ -574,11 +604,16 @@ function enterApp() {
   loadData();
 }
 async function loadData() {
-  showLoading('جارٍ تحميل الأرقام...');
-  const {data,error}=await sb.from('numbers').select('number,data_type').eq('distributed',false);
+  showLoading('جارٍ تحميل أرقام النهاردة...');
+  await loadHiddenTypes();
+  // بس الأرقام اللي اتضافت النهاردة ولسه معلقة (مبعتتش)
+  const {data,error}=await withRetry(()=>sb.from('numbers').select('number,data_type')
+    .eq('distributed',false)
+    .gte('added_at', todayStartISO())
+    .lte('added_at', todayEndISO()));
   hideLoading();
-  if(error){showToast('فشل التحميل','error');return}
-  allNumbers=data||[];
+  if(error){showToast('فشل التحميل: '+errMsg(error),'error');return}
+  allNumbers=(data||[]).filter(r=>!hiddenTypes.has(r.data_type));
   renderStats();renderTypes();
   if(activeType){
     const pool=getPool();
@@ -596,8 +631,8 @@ function renderTypes() {
   if(!types.length){
     grid.innerHTML=`<div style="grid-column:1/-1;background:#1e293b;border-radius:16px;border:1px solid #334155;padding:48px;text-align:center;color:#475569">
       <div style="font-size:44px;margin-bottom:14px">🎉</div>
-      <div style="font-weight:900;font-size:16px;color:#64748b;margin-bottom:6px">كل الأرقام اتبعتت!</div>
-      <div style="font-size:13px">مفيش أرقام متبقية</div></div>`;
+      <div style="font-weight:900;font-size:16px;color:#64748b;margin-bottom:6px">كل أرقام النهاردة اتبعتت!</div>
+      <div style="font-size:13px">مفيش أرقام متبقية من النهاردة</div></div>`;
     return;
   }
   const total=allNumbers.length;
@@ -727,13 +762,17 @@ function enterAdmin() {
 }
 
 async function loadAdminData() {
-  showLoading('جارٍ تحميل البيانات...');
+  showLoading('جارٍ تحميل بيانات النهاردة...');
+  await loadHiddenTypes();
+  const todayFrom = todayStartISO(), todayTo = todayEndISO();
+  // بس الصفوف اللي اتضافت النهاردة (added_at) أو اتوزعت/اتبعتت النهاردة (distributed_at)
   const [{data:nums,error:e1},{data:sales,error:e2}] = await Promise.all([
-    sb.from('numbers').select('number,data_type,distributed,odoo_sent,salesperson,distributed_at'),
-    sb.from('sales').select('name').neq('name','admin')
+    withRetry(()=>sb.from('numbers').select('number,data_type,distributed,odoo_sent,salesperson,distributed_at,added_at')
+      .or(`and(added_at.gte."${todayFrom}",added_at.lte."${todayTo}"),and(distributed_at.gte."${todayFrom}",distributed_at.lte."${todayTo}")`)),
+    withRetry(()=>sb.from('sales').select('name').neq('name','admin'))
   ]);
   hideLoading();
-  if(e1||e2){showToast('فشل التحميل','error');return}
+  if(e1||e2){showToast('فشل التحميل: '+errMsg(e1||e2),'error');return}
   adminAllNumbers = nums||[];
   adminSalesList = (sales||[]).map(s=>s.name);
   renderAdminOverview();
@@ -761,134 +800,128 @@ function renderAdminOverview() {
   $('adStatTotal').textContent=totalAll;
   $('adStatSent').textContent=sentAll;
   $('adStatPending').textContent=totalAll-adminAllNumbers.filter(r=>r.distributed).length;
+
+  // group by salesperson -> sent count, and detailed breakdown by (type + exact distributed_at)
   const map={};
-  for(const s of adminSalesList) map[s]={sent:0};
-  for(const r of filtered){if(r.salesperson&&map[r.salesperson])map[r.salesperson].sent++;}
-  let entries=adminSalesList.map(name=>({name, sent:map[name]?.sent||0}));
+  for(const s of adminSalesList) map[s]={sent:0, breakdown:{}};
+  for(const r of filtered){
+    if(r.salesperson&&map[r.salesperson]){
+      map[r.salesperson].sent++;
+      const type=r.data_type||'غير محدد';
+      const key=type+'|'+r.distributed_at;
+      if(!map[r.salesperson].breakdown[key]) map[r.salesperson].breakdown[key]={type,time:r.distributed_at,qty:0};
+      map[r.salesperson].breakdown[key].qty++;
+    }
+  }
+  let entries=adminSalesList.map(name=>({name, sent:map[name]?.sent||0, breakdown:map[name]?map[name].breakdown:{}}));
   if(search) entries=entries.filter(e=>e.name.toLowerCase().includes(search));
   const dateLabel=from===to&&from?`يوم ${from}`:(from||to)?`${from||'...'} → ${to||'...'}`:'اليوم';
   const grid=$('salesGrid');
   if(!entries.length){grid.innerHTML='<div style="color:#475569;padding:20px;font-size:13px">مفيش نتائج</div>';return}
-  grid.innerHTML=entries.map(({name,sent})=>{
+  grid.innerHTML=entries.map(({name,sent,breakdown})=>{
     const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    return `<div class="sales-card">
-      <div class="sc-name"><div class="sc-avatar">${initials}</div>${name}</div>
+    const rows=Object.values(breakdown).sort((a,b)=>new Date(b.time)-new Date(a.time));
+    const detailsHtml = rows.length
+      ? rows.map(row=>`<div class="sc-detail-row">
+          <span class="sc-detail-type">${row.type}</span>
+          <span class="sc-detail-meta"><span class="sc-detail-qty">${row.qty}</span><span class="sc-detail-time">${formatTime(row.time)}</span></span>
+        </div>`).join('')
+      : `<div class="sc-no-details">مفيش داتا اتوزعت في الفترة دي</div>`;
+    return `<div class="sales-card ${openSalesCard===name?'open':''}" data-name="${name}">
+      <div class="sc-name"><div class="sc-avatar">${initials}</div>${name}<span class="sc-chevron">▾</span></div>
       <div class="sc-stats">
         <div class="sc-stat" style="grid-column:span 2"><div class="sc-stat-label">أرقام أُرسلت — ${dateLabel}</div><div class="sc-stat-val s-sent" style="font-size:28px">${sent}</div></div>
       </div>
+      <div class="sc-details">${detailsHtml}</div>
     </div>`;
   }).join('');
+  grid.querySelectorAll('.sales-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const name=card.dataset.name;
+      openSalesCard = openSalesCard===name ? null : name;
+      renderAdminOverview();
+    });
+  });
 }
 
-/* ─── DISTRIBUTE TAB ─── */
+/* ─── DISTRIBUTE TAB (SIMPLIFIED) ─── */
 function renderDistributeTab() {
-  // Build type chips from undistributed numbers
-  const undist = adminAllNumbers.filter(r=>!r.distributed);
+  const undist = adminAllNumbers.filter(r=>!r.distributed && !hiddenTypes.has(r.data_type));
   const typeMap = {};
   for(const r of undist){ const t=r.data_type||'غير محدد'; typeMap[t]=(typeMap[t]||0)+1; }
   const types = Object.entries(typeMap);
-  const totalUndist = undist.length;
+  $('distTotalBadge').textContent = `${undist.length} رقم متاح`;
 
-  $('distTotalBadge').textContent = `${totalUndist} رقم متاح`;
-
-  const row = $('distTypesRow');
+  const wrap = $('distSalesBody');
   if(!types.length){
-    row.innerHTML='<div style="color:#475569;font-size:13px;padding:8px 0">مفيش أرقام متبقية</div>';
+    wrap.innerHTML='<div style="text-align:center;padding:24px;color:#475569;font-size:13px">مفيش أرقام متبقية</div>';
+    updateDistBar();
     return;
   }
-
-  // pick first type if none selected
-  if(!distSelectedType || !typeMap[distSelectedType]) {
-    distSelectedType = types[0][0];
+  if(!adminSalesList.length){
+    wrap.innerHTML='<div style="text-align:center;padding:24px;color:#475569;font-size:13px">مفيش سيلز</div>';
+    return;
   }
+  const defaultType = types[0][0];
+  const typeOpts = types.map(([t,c])=>`<option value="${t}">${t} (${c})</option>`).join('');
 
-  row.innerHTML = types.map(([name,count])=>`
-    <button class="dist-type-chip ${distSelectedType===name?'sel':''}" data-type="${name}">
-      <span>${name}</span><span class="tc">${count}</span>
-    </button>`).join('');
+  wrap.innerHTML = adminSalesList.map(name=>{
+    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const asgn = distAssignments[name] || {};
+    const selectedType = typeMap[asgn.type] ? asgn.type : defaultType;
+    const qty = asgn.qty || '';
+    const opts = types.map(([t,c])=>`<option value="${t}" ${selectedType===t?'selected':''}>${t} (${c})</option>`).join('');
+    return `<div class="dist-row" data-sales="${name}">
+      <div class="d-avatar">${initials}</div>
+      <div class="d-name">${name}</div>
+      <span class="d-status-dot ${qty>0?'on':''}"></span>
+      <select class="d-type-sel" data-sales="${name}">${opts}</select>
+      <input class="d-qty-input" type="number" min="1" placeholder="عدد" data-sales="${name}" value="${qty}"/>
+    </div>`;
+  }).join('');
 
-  row.querySelectorAll('.dist-type-chip').forEach(chip=>{
-    chip.addEventListener('click',()=>{
-      distSelectedType = chip.dataset.type;
-      distAssignments = {};
-      renderDistributeTab();
+  wrap.querySelectorAll('.d-type-sel').forEach(sel=>{
+    sel.addEventListener('change',()=>{
+      const name=sel.dataset.sales;
+      if(!distAssignments[name]) distAssignments[name]={};
+      distAssignments[name].type=sel.value;
+      updateDistBar();
+    });
+  });
+  wrap.querySelectorAll('.d-qty-input').forEach(inp=>{
+    inp.addEventListener('input',()=>{
+      const name=inp.dataset.sales;
+      if(!distAssignments[name]) distAssignments[name]={};
+      const v=parseInt(inp.value)||0;
+      distAssignments[name].qty=v;
+      const dot=inp.closest('.dist-row').querySelector('.d-status-dot');
+      dot.classList.toggle('on', v>0);
+      updateDistBar();
     });
   });
 
-  renderDistSalesTable(undist, typeMap);
-}
-
-function renderDistSalesTable(undist, typeMap) {
-  if(!distSelectedType){ return; }
-  const availableForType = undist.filter(r=>(r.data_type||'غير محدد')===distSelectedType);
-  const availCount = availableForType.length;
-
-  // build type options
-  const typeOpts = Object.keys(typeMap).map(t=>`<option value="${t}">${t} (${typeMap[t]})</option>`).join('');
-
-  const body = $('distSalesBody');
-  if(!adminSalesList.length){
-    body.innerHTML='<tr><td colspan="4" style="text-align:center;padding:24px;color:#475569">مفيش سيلز</td></tr>';
-    return;
-  }
-
-  body.innerHTML = adminSalesList.map(name=>{
-    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const asgn = distAssignments[name] || {};
-    const selectedType = asgn.type || distSelectedType;
-    const qty = asgn.qty || '';
-    const status = asgn.qty>0 ? `<span class="d-status ready">✓ جاهز (${asgn.qty})</span>` : `<span class="d-status pending">—</span>`;
-
-    const opts = Object.keys(typeMap).map(t=>`<option value="${t}" ${selectedType===t?'selected':''}>${t} (${typeMap[t]})</option>`).join('');
-
-    return `<tr>
-      <td><div class="d-name-cell"><div class="d-avatar">${initials}</div><span>${name}</span></div></td>
-      <td><select class="d-type-sel" data-sales="${name}" onchange="distSetType(this)">${opts}</select></td>
-      <td><input class="d-qty-input" type="number" min="1" placeholder="الكل" data-sales="${name}" value="${qty}" oninput="distSetQty(this)"/></td>
-      <td>${status}</td>
-    </tr>`;
-  }).join('');
-
-  updateDistBar(availCount);
-}
-
-function distSetType(sel) {
-  const name = sel.dataset.sales;
-  if(!distAssignments[name]) distAssignments[name]={};
-  distAssignments[name].type = sel.value;
   updateDistBar();
 }
-function distSetQty(inp) {
-  const name = inp.dataset.sales;
-  if(!distAssignments[name]) distAssignments[name]={};
-  const v = parseInt(inp.value)||0;
-  distAssignments[name].qty = v;
-  // update status cell inline
-  const row = inp.closest('tr');
-  const statusCell = row.querySelector('td:last-child');
-  if(v>0) statusCell.innerHTML=`<span class="d-status ready">✓ جاهز (${v})</span>`;
-  else statusCell.innerHTML=`<span class="d-status pending">—</span>`;
-  updateDistBar();
-}
-function updateDistBar(availCount) {
+
+function updateDistBar() {
   let totalAssigned = 0, salesCount = 0;
   for(const [, asgn] of Object.entries(distAssignments)){
     if(asgn.qty>0){ totalAssigned+=asgn.qty; salesCount++; }
   }
-  const undist = adminAllNumbers.filter(r=>!r.distributed);
-  const typeCount = distSelectedType ? undist.filter(r=>(r.data_type||'غير محدد')===distSelectedType).length : 0;
   $('distTotalAssigned').textContent = totalAssigned;
-  $('distTotalRemaining').textContent = Math.max(0, typeCount - totalAssigned);
   $('distSalesCount').textContent = salesCount;
   $('btnDistNow').disabled = totalAssigned === 0;
 }
 
 async function doDistribute() {
+  const undist = adminAllNumbers.filter(r=>!r.distributed && !hiddenTypes.has(r.data_type));
+  const typeMap = {};
+  for(const r of undist){ const t=r.data_type||'غير محدد'; typeMap[t]=(typeMap[t]||0)+1; }
+  const defaultType = Object.keys(typeMap)[0];
   const entries = Object.entries(distAssignments).filter(([,a])=>a.qty>0);
   if(!entries.length){ showToast('حدد كمية لسيلز واحد على الأقل','error'); return; }
 
-  // build summary for modal
-  const summary = entries.map(([name,a])=>`<strong>${name}</strong>: ${a.qty} رقم (${a.type||distSelectedType})`).join('<br>');
+  const summary = entries.map(([name,a])=>`<strong>${name}</strong>: ${a.qty} رقم (${a.type||defaultType})`).join('<br>');
   const totalNums = entries.reduce((s,[,a])=>s+a.qty,0);
 
   showConfirm(
@@ -896,9 +929,7 @@ async function doDistribute() {
     `${summary}<br><br>الأرقام هتتحجز وتتبعت على Odoo فوراً.`,
     async () => {
       showLoading(`جارٍ توزيع ${totalNums} رقم...`);
-      const undist = adminAllNumbers.filter(r=>!r.distributed);
 
-      // pool per type
       const typePool = {};
       for(const r of undist){
         const t=r.data_type||'غير محدد';
@@ -909,9 +940,9 @@ async function doDistribute() {
       let allOk=true, totalSent=0;
 
       for(const [salesName, asgn] of entries){
-        const typeName = asgn.type || distSelectedType;
+        const typeName = asgn.type || defaultType;
         const pool = typePool[typeName] || [];
-        const slice = pool.splice(0, asgn.qty); // remove from pool so next sales gets fresh
+        const slice = pool.splice(0, asgn.qty);
         if(!slice.length) continue;
 
         const leads = slice.map(r=>({
@@ -928,7 +959,6 @@ async function doDistribute() {
           if(!res.ok||!result.success){ allOk=false; showToast(`فشل إرسال ${salesName}: ${result.error}`,'error'); continue; }
 
           const nums = slice.map(r=>r.number);
-          // ✅ FIX: إضافة فلترة على data_type و distributed لنفس السبب
           await sb.from('numbers')
             .update({
               odoo_sent:true, distributed:true,
@@ -1037,7 +1067,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
-  adminAllNumbers=[];adminSalesList=[];distAssignments={};distSelectedType=null;
+  adminAllNumbers=[];adminSalesList=[];distAssignments={};openSalesCard=null;
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';

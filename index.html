@@ -390,8 +390,9 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
       <span class="af-label">إلى</span>
       <input type="date" class="af-date" id="ovDateTo"/>
       <button class="af-clear" id="ovClearDate">اليوم</button>
+      <button class="af-clear" id="ovYesterday">أمس</button>
     </div>
-    <div style="font-size:11px;color:#475569;margin:-10px 0 14px">👆 دوس على أي كرت سيلز عشان تشوف كل نوع داتا اتوزعله والوقت بالظبط. البيانات المعروضة هنا محدودة بأرقام النهاردة فقط لتقليل حمل الموقع.</div>
+    <div style="font-size:11px;color:#475569;margin:-10px 0 14px">👆 دوس على أي كرت سيلز عشان تشوف كل نوع داتا اتوزعله والوقت بالظبط.</div>
     <div class="sales-grid" id="salesGrid"></div>
   </div>
 
@@ -424,7 +425,7 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   <div class="main" id="adminTabTransfer" style="display:none">
     <div class="transfer-panel">
       <div class="tp-title">نقل أرقام من سيلز لسيلز</div>
-      <div class="tp-sub">الأرقام هتتنقل في Supabase وفي Odoo (الـ lead القديم هيتمسح ويتعمل جديد). ملحوظة: بيظهر هنا أرقام النهاردة بس.</div>
+      <div class="tp-sub">الأرقام هتتنقل في Supabase وفي Odoo (الـ lead القديم هيتمسح ويتعمل جديد).</div>
       <div class="admin-filters" style="margin-bottom:16px">
         <span class="af-label">فلتر التاريخ:</span>
         <span class="af-label">من</span>
@@ -432,6 +433,7 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
         <span class="af-label">إلى</span>
         <input type="date" class="af-date" id="tfDateTo"/>
         <button class="af-clear" id="tfClearDate">اليوم</button>
+        <button class="af-clear" id="tfYesterday">أمس</button>
       </div>
       <div class="transfer-form">
         <div class="tf-field">
@@ -484,11 +486,6 @@ const $ = id => document.getElementById(id);
 let currentUser = null, allNumbers = [], activeType = null, selectedPriority = [];
 let hiddenTypes = new Set();
 
-// ─── TODAY-ONLY DATA WINDOW ───
-// كل الاستعلامات بترجع بس الصفوف اللي added_at أو distributed_at بتاعتها النهاردة
-// (بيبدأ من نص الليل بتوقيت الجهاز اللي شغال عليه المتصفح) عشان الموقع يفضل خفيف.
-// added_at و distributed_at متخزنين كـ text بصيغة ISO من غير أجزاء الألف من الثانية
-// (مثال: 2026-06-18T03:40:16Z) فبنشيل الـ milliseconds عشان المقارنة النصية تظبط 100%
 function stripMs(iso) { return iso.replace(/\.\d+Z$/, 'Z'); }
 function todayStartISO() {
   const d = new Date();
@@ -509,7 +506,6 @@ async function loadHiddenTypes() {
   } catch(e){ hiddenTypes = new Set(); }
 }
 
-// يحاول ينفذ الطلب، ولو فشل بسبب شبكة/تايم آوت بيعيد المحاولة مرة واحدة بعد نص ثانية
 async function withRetry(fn, retries=1) {
   try {
     const result = await fn();
@@ -528,25 +524,41 @@ function errMsg(err) {
   return err.message || err.details || err.hint || String(err);
 }
 
-// ─── ADMIN STATE ───
 let adminAllNumbers = [], adminSalesList = [];
-// ─── DISTRIBUTE STATE ───
-let distAssignments = {}; // { salesName: { type, qty } }
-// ─── OVERVIEW STATE ───
-let openSalesCard = null; // name of currently expanded card
+let overviewNumbers = [], transferNumbers = [];
+let distAssignments = {};
+let openSalesCard = null;
 
-function todayStr() { return new Date().toISOString().slice(0,10); }
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function yesterdayStr() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
 function initAdminFilters() {
   $('ovDateFrom').value = todayStr(); $('ovDateTo').value = todayStr();
   $('tfDateFrom').value = todayStr(); $('tfDateTo').value = todayStr();
   $('ovSearch').addEventListener('input', renderAdminOverview);
-  $('ovDateFrom').addEventListener('change', renderAdminOverview);
-  $('ovDateTo').addEventListener('change', renderAdminOverview);
-  $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=todayStr(); $('ovDateTo').value=todayStr(); renderAdminOverview(); });
-  $('tfDateFrom').addEventListener('change', updateTransferPreview);
-  $('tfDateTo').addEventListener('change', updateTransferPreview);
-  $('tfClearDate').addEventListener('click',()=>{ $('tfDateFrom').value=todayStr(); $('tfDateTo').value=todayStr(); updateTransferPreview(); });
+  $('ovDateFrom').addEventListener('change', refreshOverview);
+  $('ovDateTo').addEventListener('change', refreshOverview);
+  $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=todayStr(); $('ovDateTo').value=todayStr(); refreshOverview(); });
+  $('ovYesterday').addEventListener('click',()=>{
+    const y=yesterdayStr();
+    $('ovDateFrom').value=y; $('ovDateTo').value=y;
+    refreshOverview();
+  });
+  $('tfDateFrom').addEventListener('change', refreshTransfer);
+  $('tfDateTo').addEventListener('change', refreshTransfer);
+  $('tfClearDate').addEventListener('click',()=>{ $('tfDateFrom').value=todayStr(); $('tfDateTo').value=todayStr(); refreshTransfer(); });
+  $('tfYesterday').addEventListener('click',()=>{
+    const y=yesterdayStr();
+    $('tfDateFrom').value=y; $('tfDateTo').value=y;
+    refreshTransfer();
+  });
 }
 
 const NETS = {
@@ -606,7 +618,6 @@ function enterApp() {
 async function loadData() {
   showLoading('جارٍ تحميل أرقام النهاردة...');
   await loadHiddenTypes();
-  // بس الأرقام اللي اتضافت النهاردة ولسه معلقة (مبعتتش)
   const {data,error}=await withRetry(()=>sb.from('numbers').select('number,data_type')
     .eq('distributed',false)
     .gte('added_at', todayStartISO())
@@ -738,7 +749,6 @@ async function sendToOdoo() {
     hideLoading();
     if(!res.ok||!result.success){showToast(result.error||'فشل الإرسال','error');$('btnSend').disabled=false;return}
     const nums=source.map(r=>r.number);
-    // ✅ FIX: إضافة فلترة على data_type و distributed عشان منلمسش صفوف من نوع تاني بنفس الرقم
     await sb.from('numbers')
       .update({odoo_sent:true,distributed:true,distributed_at:new Date().toISOString(),salesperson:salespersonName})
       .in('number',nums)
@@ -761,29 +771,65 @@ function enterAdmin() {
   loadAdminData();
 }
 
+// يبني نطاق ISO كامل من تاريخين YYYY-MM-DD (بتوقيت الجهاز المحلي)
+// لو تاريخ فاضي بيوسّع النطاق (من الأول أو للمستقبل) بدل ما يرجّع فاضي
+function dateRangeISO(dateFromStr, dateToStr) {
+  const from = dateFromStr ? new Date(dateFromStr + 'T00:00:00') : new Date('2020-01-01T00:00:00');
+  const to = dateToStr ? new Date(dateToStr + 'T23:59:59.999') : new Date('2100-01-01T00:00:00');
+  return { fromISO: stripMs(from.toISOString()), toISO: stripMs(to.toISOString()) };
+}
+
+// بيجيب من Supabase أي صف اتضاف أو اتوزع خلال النطاق المطلوب (مش النهاردة بس)
+async function fetchNumbersForRange(dateFrom, dateTo) {
+  const { fromISO, toISO } = dateRangeISO(dateFrom, dateTo);
+  return withRetry(()=>sb.from('numbers').select('number,data_type,distributed,odoo_sent,salesperson,distributed_at,added_at')
+    .or(`and(added_at.gte."${fromISO}",added_at.lte."${toISO}"),and(distributed_at.gte."${fromISO}",distributed_at.lte."${toISO}")`));
+}
+
 async function loadAdminData() {
   showLoading('جارٍ تحميل بيانات النهاردة...');
   await loadHiddenTypes();
-  const todayFrom = todayStartISO(), todayTo = todayEndISO();
-  // بس الصفوف اللي اتضافت النهاردة (added_at) أو اتوزعت/اتبعتت النهاردة (distributed_at)
   const [{data:nums,error:e1},{data:sales,error:e2}] = await Promise.all([
-    withRetry(()=>sb.from('numbers').select('number,data_type,distributed,odoo_sent,salesperson,distributed_at,added_at')
-      .or(`and(added_at.gte."${todayFrom}",added_at.lte."${todayTo}"),and(distributed_at.gte."${todayFrom}",distributed_at.lte."${todayTo}")`)),
+    fetchNumbersForRange(todayStr(), todayStr()),
     withRetry(()=>sb.from('sales').select('name').neq('name','admin'))
   ]);
   hideLoading();
   if(e1||e2){showToast('فشل التحميل: '+errMsg(e1||e2),'error');return}
   adminAllNumbers = nums||[];
+  overviewNumbers = adminAllNumbers;
+  transferNumbers = adminAllNumbers;
   adminSalesList = (sales||[]).map(s=>s.name);
   renderAdminOverview();
   renderTransferSelects();
   renderDistributeTab();
 }
 
+// بتتنادى لما يتغير فلتر التاريخ في تاب "نظرة عامة" — بتجيب داتا الفترة المختارة فعلياً من القاعدة
+async function refreshOverview() {
+  const from=$('ovDateFrom').value, to=$('ovDateTo').value;
+  showLoading('جارٍ تحميل بيانات الفترة المحددة...');
+  const {data,error} = await fetchNumbersForRange(from, to);
+  hideLoading();
+  if(error){ showToast('فشل التحميل: '+errMsg(error),'error'); return; }
+  overviewNumbers = data||[];
+  renderAdminOverview();
+}
+
+// بتتنادى لما يتغير فلتر التاريخ في تاب "نقل الأرقام"
+async function refreshTransfer() {
+  const from=$('tfDateFrom').value, to=$('tfDateTo').value;
+  showLoading('جارٍ تحميل بيانات الفترة المحددة...');
+  const {data,error} = await fetchNumbersForRange(from, to);
+  hideLoading();
+  if(error){ showToast('فشل التحميل: '+errMsg(error),'error'); return; }
+  transferNumbers = data||[];
+  updateTransferPreview();
+}
+
 /* ─── OVERVIEW ─── */
 function getOvFiltered() {
   const from=$('ovDateFrom').value, to=$('ovDateTo').value;
-  return adminAllNumbers.filter(r=>{
+  return overviewNumbers.filter(r=>{
     if(!r.distributed||!r.distributed_at) return false;
     const d=r.distributed_at.slice(0,10);
     if(from&&d<from) return false;
@@ -795,13 +841,12 @@ function renderAdminOverview() {
   const search=($('ovSearch').value||'').trim().toLowerCase();
   const filtered=getOvFiltered();
   const from=$('ovDateFrom').value, to=$('ovDateTo').value;
-  const totalAll=adminAllNumbers.length;
+  const totalAll=overviewNumbers.length;
   const sentAll=filtered.length;
   $('adStatTotal').textContent=totalAll;
   $('adStatSent').textContent=sentAll;
-  $('adStatPending').textContent=totalAll-adminAllNumbers.filter(r=>r.distributed).length;
+  $('adStatPending').textContent=totalAll-overviewNumbers.filter(r=>r.distributed).length;
 
-  // group by salesperson -> sent count, and detailed breakdown by (type + exact distributed_at)
   const map={};
   for(const s of adminSalesList) map[s]={sent:0, breakdown:{}};
   for(const r of filtered){
@@ -863,7 +908,6 @@ function renderDistributeTab() {
     return;
   }
   const defaultType = types[0][0];
-  const typeOpts = types.map(([t,c])=>`<option value="${t}">${t} (${c})</option>`).join('');
 
   wrap.innerHTML = adminSalesList.map(name=>{
     const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
@@ -990,16 +1034,7 @@ function renderTransferSelects() {
 function getTransferList() {
   const fromName=$('tfFrom').value, qty=parseInt($('tfQty').value)||0;
   if(!fromName) return [];
-  const dateFrom=$('tfDateFrom').value, dateTo=$('tfDateTo').value;
-  let pool=adminAllNumbers.filter(r=>{
-    if(r.salesperson!==fromName||!r.distributed||!r.odoo_sent) return false;
-    if(dateFrom||dateTo){
-      const d=(r.distributed_at||'').slice(0,10);
-      if(dateFrom&&d<dateFrom) return false;
-      if(dateTo&&d>dateTo) return false;
-    }
-    return true;
-  });
+  let pool=transferNumbers.filter(r=> r.salesperson===fromName && r.distributed && r.odoo_sent);
   return qty>0?pool.slice(0,qty):pool;
 }
 function updateTransferPreview() {
@@ -1068,6 +1103,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
   adminAllNumbers=[];adminSalesList=[];distAssignments={};openSalesCard=null;
+  overviewNumbers=[];transferNumbers=[];
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';

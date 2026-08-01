@@ -159,219 +159,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 .empty-state small{font-size:12px;margin-top:4px;display:block}
 
 /* ═══════════════════════════════════════
-   DISTRIBUTE TAB - SIMPLIFIED / MOBILE
-   ═══════════════════════════════════════ */
-.dist-section{margin-bottom:20px}
-.dist-section .sec-title{font-size:12px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.dist-section .sec-title span{background:#6366f1;color:#fff;border-radius:20px;padding:2px 10px;font-size:11px}
-
-/* compact sales distribute table */
-.dist-table-wrap{background:#1e293b;border-radius:14px;border:1px solid #334155;overflow:hidden;margin-bottom:14px}
-.dist-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(51,65,85,.4)}
-.dist-row:last-child{border-bottom:none}
-.d-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:10px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.d-name{font-size:12.5px;font-weight:800;color:#f1f5f9;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.d-type-sel{background:#0f172a;border:1.5px solid #334155;border-radius:9px;padding:7px 8px;font-size:11.5px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;flex:1 1 84px;min-width:0}
-.d-type-sel:focus{border-color:#6366f1}
-.d-qty-input{width:56px;flex:0 0 56px;background:#0f172a;border:1.5px solid #334155;border-radius:9px;padding:7px 4px;font-size:13px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;outline:none;text-align:center}
-.d-qty-input:focus{border-color:#6366f1}
-.d-status-dot{width:9px;height:9px;border-radius:50%;background:#334155;flex-shrink:0}
-.d-status-dot.on{background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.18)}
-
-/* distribute bar */
-.dist-bar{background:#1e293b;border-radius:14px;border:1px solid #334155;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;bottom:10px}
-.dist-bar-info{display:flex;gap:16px;flex-wrap:wrap}
-.dbi-item{text-align:center}
-.dbi-label{font-size:10px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
-.dbi-val{font-size:19px;font-weight:900}
-.dbi-val.c1{color:#6366f1}
-.dbi-val.c2{color:#10b981}
-.dbi-val.c3{color:#f59e0b}
-.btn-dist-now{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:11px;padding:11px 22px;font-size:13.5px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s,transform .1s;flex:1 1 auto}
-.btn-dist-now:hover{opacity:.9;transform:translateY(-1px)}
-.btn-dist-now:disabled{background:#334155;color:#475569;cursor:not-allowed;transform:none;opacity:1}
-.btn-dist-now:active{transform:translateY(0)}
-
-/* ADMIN — FILTERS BAR */
-.admin-filters{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.af-search{flex:1;min-width:180px;background:#1e293b;border:1.5px solid #334155;border-radius:12px;padding:10px 16px;font-size:14px;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;transition:border-color .2s}
-.af-search::placeholder{color:#475569}
-.af-search:focus{border-color:#6366f1}
-.af-date{background:#1e293b;border:1.5px solid #334155;border-radius:12px;padding:10px 14px;font-size:13px;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;transition:border-color .2s}
-.af-date:focus{border-color:#6366f1}
-.af-clear{background:transparent;border:1px solid #334155;border-radius:10px;padding:9px 14px;font-size:12px;font-family:'Cairo',sans-serif;color:#64748b;cursor:pointer;transition:all .2s;white-space:nowrap}
-.af-clear:hover{border-color:#6366f1;color:#a5b4fc}
-.af-label{font-size:11px;color:#475569;font-weight:700;white-space:nowrap}
-
-/* ADMIN — OVERVIEW TAB */
-.sales-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
-.sales-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;transition:border-color .2s;cursor:pointer}
-.sales-card:hover{border-color:#6366f1}
-.sales-card.open{border-color:#6366f1}
-.sc-name{font-size:15px;font-weight:900;color:#f1f5f9;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.sc-avatar{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0}
-.sc-chevron{margin-right:auto;font-size:12px;color:#475569;transition:transform .2s}
-.sales-card.open .sc-chevron{transform:rotate(180deg);color:#a5b4fc}
-.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.sc-stat{background:#0f172a;border-radius:10px;padding:10px 12px}
-.sc-stat-label{font-size:10px;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.sc-stat-val{font-size:20px;font-weight:900}
-.sc-stat-val.s-total{color:#6366f1}
-.sc-stat-val.s-sent{color:#10b981}
-.sc-details{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #334155}
-.sales-card.open .sc-details{display:block}
-.sc-detail-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:#0f172a;border-radius:9px;margin-bottom:6px;font-size:12px}
-.sc-detail-row:last-child{margin-bottom:0}
-.sc-detail-type{font-weight:800;color:#a5b4fc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sc-detail-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;color:#64748b;font-weight:700}
-.sc-detail-time{color:#f1f5f9;font-family:monospace;font-size:11.5px}
-.sc-detail-qty{background:rgba(16,185,129,.15);color:#6ee7b7;border-radius:20px;padding:1px 8px;font-size:11px}
-.sc-no-details{font-size:12px;color:#475569;text-align:center;padding:8px}
-
-/* ADMIN — TRANSFER TAB */
-.transfer-panel{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:24px;margin-bottom:20px}
-.tp-title{font-size:15px;font-weight:900;color:#f1f5f9;margin-bottom:6px}
-.tp-sub{font-size:12px;color:#475569;margin-bottom:20px}
-.transfer-form{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:end;margin-bottom:20px}
-.tf-field{display:flex;flex-direction:column;gap:6px}
-.tf-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
-.tf-select{background:#0f172a;border:1.5px solid #334155;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;transition:border-color .2s}
-.tf-select:focus{border-color:#6366f1}
-.tf-arrow{font-size:20px;color:#334155;text-align:center;padding-bottom:4px}
-.tf-qty{background:#0f172a;border:1.5px solid #334155;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;outline:none;width:100%;transition:border-color .2s}
-.tf-qty:focus{border-color:#6366f1}
-.transfer-preview{background:#0f172a;border-radius:12px;padding:16px;border:1px solid #334155;margin-bottom:16px;display:none}
-.tp-prev-title{font-size:11px;font-weight:800;color:#6366f1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.tp-prev-nums{display:flex;flex-wrap:wrap;gap:6px;max-height:120px;overflow-y:auto}
-.tp-num-chip{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;color:#94a3b8;font-family:monospace}
-.tp-prev-info{font-size:12px;color:#475569;margin-top:10px}
-.btn-transfer{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:12px;padding:12px 28px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s;width:100%}
-.btn-transfer:hover{opacity:.9}
-.btn-transfer:disabled{background:#334.topbar-left{display:flex;align-items:center;gap:12px}
-.topbar-logo{width:36px;height:36px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.topbar-name{font-size:16px;font-weight:900;color:#f1f5f9}
-.topbar-sub{font-size:11px;color:#64748b;font-weight:600}
-.user-pill{background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);color:#a5b4fc;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800}
-.admin-pill{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25);color:#fcd34d;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800}
-.btn-logout{background:transparent;border:1px solid #334155;border-radius:8px;padding:7px 14px;font-size:12px;font-family:'Cairo',sans-serif;cursor:pointer;color:#64748b;transition:all .2s}
-.btn-logout:hover{border-color:#ef4444;color:#ef4444}
-
-/* ADMIN TABS */
-.admin-tabs{background:#1e293b;border-bottom:1px solid #334155;padding:0 24px;display:flex;gap:4px}
-.atab{padding:14px 20px;font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;color:#64748b;border:none;background:transparent;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s}
-.atab:hover{color:#a5b4fc}
-.atab.active{color:#a5b4fc;border-bottom-color:#6366f1}
-
-/* MAIN */
-.main{max-width:1100px;margin:0 auto;padding:28px 20px}
-
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
-.stat-card{background:#1e293b;border-radius:16px;border:1px solid #1e293b;padding:20px}
-.stat-label{font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.stat-val{font-size:32px;font-weight:900;line-height:1}
-.stat-val.v1{color:#6366f1}
-.stat-val.v2{color:#10b981}
-.stat-val.v3{color:#f59e0b}
-
-/* SECTION */
-.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sec-title{font-size:14px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
-
-/* TYPE CARDS */
-.types-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:28px}
-.type-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.type-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(99,102,241,.08),transparent);opacity:0;transition:opacity .2s}
-.type-card:hover{border-color:#6366f1;transform:translateY(-2px)}
-.type-card:hover::before{opacity:1}
-.type-card.active{border-color:#6366f1;background:#1e2d4a}
-.type-card.active::before{opacity:1}
-.tc-sel{display:none;position:absolute;top:10px;left:10px;background:#6366f1;color:#fff;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:800}
-.type-card.active .tc-sel{display:block}
-.tc-name{font-size:13px;font-weight:800;color:#94a3b8;margin-bottom:12px}
-.tc-num{font-size:44px;font-weight:900;color:#6366f1;line-height:1;margin-bottom:4px}
-.tc-sub{font-size:11px;color:#475569;font-weight:600}
-.tc-bar{height:3px;background:#1e293b;border-radius:3px;margin-top:14px;overflow:hidden}
-.tc-fill{height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:3px}
-
-/* NETWORK CHOOSER */
-.net-chooser{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;margin-bottom:20px}
-.nc-title{font-size:13px;font-weight:800;color:#94a3b8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.nc-sub{font-size:12px;color:#475569;font-weight:600;margin-bottom:16px}
-.nc-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.net-btn{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:10px;border:1.5px solid #334155;cursor:pointer;font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;background:#0f172a;color:#64748b;transition:all .2s;position:relative}
-.net-btn:hover{border-color:#6366f1;color:#a5b4fc}
-.net-btn.sel{background:rgba(99,102,241,.1);border-color:#6366f1;color:#a5b4fc}
-.net-btn .ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.net-btn .ncount{font-size:11px;opacity:.6}
-.net-btn .nrank{position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#6366f1;color:#fff;border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}
-.ndot-voda{background:#ef4444}.ndot-ets{background:#10b981}.ndot-org{background:#f97316}.ndot-we{background:#3b82f6}.ndot-oth{background:#64748b}
-.nb-voda.sel{border-color:#ef4444;background:rgba(239,68,68,.08);color:#fca5a5}
-.nb-ets.sel{border-color:#10b981;background:rgba(16,185,129,.08);color:#6ee7b7}
-.nb-org.sel{border-color:#f97316;background:rgba(249,115,22,.08);color:#fdba74}
-.nb-we.sel{border-color:#3b82f6;background:rgba(59,130,246,.08);color:#93c5fd}
-.nb-oth.sel{border-color:#64748b;background:rgba(100,116,139,.08);color:#94a3b8}
-.nc-priority{background:#0f172a;border-radius:10px;padding:12px 14px;min-height:36px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.nc-pr-label{font-size:11px;color:#475569;font-weight:700;margin-left:4px}
-.pr-chip{display:flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
-.pr-arrow{color:#334155;font-size:14px;font-weight:900}
-.nc-preview{background:#0f172a;border-radius:10px;padding:12px 16px;border:1px solid #334155;display:none}
-.preview-title{font-size:11px;font-weight:800;color:#6366f1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.preview-chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.pchip{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800}
-.pchip-voda{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.2)}
-.pchip-ets{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.2)}
-.pchip-org{background:rgba(249,115,22,.15);color:#fdba74;border:1px solid rgba(249,115,22,.2)}
-.pchip-we{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.2)}
-.pchip-oth{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.2)}
-.p-arrow{color:#334155;font-size:16px}
-
-/* PANEL */
-.panel{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;margin-bottom:16px}
-.panel-head{padding:16px 20px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.panel-title{font-size:15px;font-weight:900;color:#f1f5f9}
-.panel-sub{font-size:12px;color:#475569;margin-top:2px}
-.btn{border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
-.btn-ghost2{background:#0f172a;color:#64748b;border:1px solid #334155}
-.btn-ghost2:hover{color:#f1f5f9;border-color:#475569}
-.btn-send{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 22px;font-size:14px}
-.btn-send:hover{opacity:.9;transform:translateY(-1px)}
-.btn-send:disabled{background:#334155;color:#475569;cursor:not-allowed;transform:none;opacity:1}
-.btn-danger{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);padding:9px 16px;font-size:13px}
-.btn-danger:hover{background:rgba(239,68,68,.25)}
-
-/* TABLE */
-.nums-wrap{max-height:360px;overflow-y:auto}
-.nums-wrap::-webkit-scrollbar{width:4px}
-.nums-wrap::-webkit-scrollbar-track{background:#1e293b}
-.nums-wrap::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
-.nums-table{width:100%;border-collapse:collapse}
-.nums-table th{background:#0f172a;padding:10px 20px;font-size:11px;font-weight:700;color:#475569;text-align:right;border-bottom:1px solid #334155;position:sticky;top:0;text-transform:uppercase;letter-spacing:.5px}
-.nums-table td{padding:10px 20px;font-size:13px;border-bottom:1px solid rgba(51,65,85,.4)}
-.nums-table tr:last-child td{border-bottom:none}
-.nums-table tr:hover td{background:rgba(99,102,241,.05)}
-.ntag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
-.ntag .dot{width:6px;height:6px;border-radius:50%}
-.nt-voda{background:rgba(239,68,68,.12);color:#fca5a5}.nt-voda .dot{background:#ef4444}
-.nt-ets{background:rgba(16,185,129,.12);color:#6ee7b7}.nt-ets .dot{background:#10b981}
-.nt-org{background:rgba(249,115,22,.12);color:#fdba74}.nt-org .dot{background:#f97316}
-.nt-we{background:rgba(59,130,246,.12);color:#93c5fd}.nt-we .dot{background:#3b82f6}
-.nt-oth{background:rgba(100,116,139,.12);color:#94a3b8}.nt-oth .dot{background:#64748b}
-
-/* SEND BAR */
-.send-bar{padding:16px 20px;border-top:1px solid #334155;background:#0f172a;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.sb-info{font-size:13px;color:#475569}
-.sb-info strong{color:#f1f5f9;font-size:18px;font-weight:900}
-.qty-box{display:flex;align-items:center;gap:8px;background:#1e293b;border:1.5px solid #334155;border-radius:10px;padding:8px 14px}
-.qty-box label{font-size:12px;color:#475569;font-weight:700;white-space:nowrap}
-.qty-box input{width:80px;border:none;outline:none;font-size:15px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;background:transparent;text-align:center}
-.qty-box input::placeholder{color:#334155}
-.empty-state{text-align:center;padding:52px 20px;color:#475569}
-.empty-state .icon{font-size:44px;margin-bottom:14px}
-.empty-state p{font-size:14px;font-weight:700;color:#64748b}
-.empty-state small{font-size:12px;margin-top:4px;display:block}
-
-/* ═══════════════════════════════════════
    DISTRIBUTE TAB - NEW
    ═══════════════════════════════════════ */
 .dist-section{margin-bottom:28px}
@@ -429,6 +216,22 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 .af-clear:hover{border-color:#6366f1;color:#a5b4fc}
 .af-label{font-size:11px;color:#475569;font-weight:700;white-space:nowrap}
 
+/* ADMIN — OVERVIEW / LOG TAB */
+.log-table-wrap{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;margin-bottom:16px}
+.log-table{width:100%;border-collapse:collapse}
+.log-table th{background:#0f172a;padding:11px 18px;font-size:11px;font-weight:700;color:#475569;text-align:right;border-bottom:1px solid #334155;text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0}
+.log-table td{padding:11px 18px;border-bottom:1px solid rgba(51,65,85,.4);font-size:13px;vertical-align:middle}
+.log-table tr:last-child td{border-bottom:none}
+.log-table tr:hover td{background:rgba(99,102,241,.04)}
+.log-wrap{max-height:520px;overflow-y:auto}
+.log-wrap::-webkit-scrollbar{width:4px}
+.log-wrap::-webkit-scrollbar-track{background:#1e293b}
+.log-wrap::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
+.log-sales{display:flex;align-items:center;gap:10px;font-weight:800;color:#f1f5f9}
+.log-type{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:3px 12px;font-size:11.5px;font-weight:800;display:inline-block}
+.log-count{font-weight:900;color:#10b981;font-size:14px}
+.log-time{font-family:monospace;color:#64748b;font-size:12.5px}
+
 /* ADMIN — OVERVIEW TAB */
 .sales-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
 .sales-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;transition:border-color .2s}
@@ -441,27 +244,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 .sc-stat-val{font-size:20px;font-weight:900}
 .sc-stat-val.s-total{color:#6366f1}
 .sc-stat-val.s-sent{color:#10b981}
-
-/* ADMIN — TRANSFER TAB */
-.transfer-panel{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:24px;margin-bottom:20px}
-.tp-title{font-size:15px;font-weight:900;color:#f1f5f9;margin-bottom:6px}
-.tp-sub{font-size:12px;color:#475569;margin-bottom:20px}
-.transfer-form{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:end;margin-bottom:20px}
-.tf-field{display:flex;flex-direction:column;gap:6px}
-.tf-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
-.tf-select{background:#0f172a;border:1.5px solid #334155;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;transition:border-color .2s}
-.tf-select:focus{border-color:#6366f1}
-.tf-arrow{font-size:20px;color:#334155;text-align:center;padding-bottom:4px}
-.tf-qty{background:#0f172a;border:1.5px solid #334155;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;outline:none;width:100%;transition:border-color .2s}
-.tf-qty:focus{border-color:#6366f1}
-.transfer-preview{background:#0f172a;border-radius:12px;padding:16px;border:1px solid #334155;margin-bottom:16px;display:none}
-.tp-prev-title{font-size:11px;font-weight:800;color:#6366f1;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-.tp-prev-nums{display:flex;flex-wrap:wrap;gap:6px;max-height:120px;overflow-y:auto}
-.tp-num-chip{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;color:#94a3b8;font-family:monospace}
-.tp-prev-info{font-size:12px;color:#475569;margin-top:10px}
-.btn-transfer{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:12px;padding:12px 28px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s;width:100%}
-.btn-transfer:hover{opacity:.9}
-.btn-transfer:disabled{background:#334155;color:#475569;cursor:not-allowed;opacity:1}
 
 /* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(90px);background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:12px 24px;border-radius:30px;font-size:13px;font-weight:700;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .3s;z-index:9999;white-space:nowrap;font-family:'Cairo',sans-serif}
@@ -490,10 +272,10 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 @media(max-width:600px){
   .stats-row{grid-template-columns:1fr 1fr}.stats-row .stat-card:last-child{grid-column:span 2}
   .types-grid{grid-template-columns:1fr 1fr}.tc-num{font-size:34px}
-  .transfer-form{grid-template-columns:1fr;gap:10px}.tf-arrow{display:none}
   .sales-grid{grid-template-columns:1fr}
   .dist-bar{flex-direction:column;align-items:stretch}
   .btn-dist-now{width:100%}
+  .log-table th:nth-child(4),.log-table td:nth-child(4){display:none}
 }
 </style>
 </head>
@@ -579,19 +361,18 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
     </div>
   </div>
   <div class="admin-tabs">
-    <button class="atab active" data-tab="overview" id="tabOverview">📊 نظرة عامة</button>
+    <button class="atab active" data-tab="overview" id="tabOverview">📋 متابعة السيلز</button>
     <button class="atab" data-tab="distribute" id="tabDistribute">🎯 توزيع الداتا</button>
-    <button class="atab" data-tab="transfer" id="tabTransfer">🔄 نقل الأرقام</button>
   </div>
 
-  <!-- OVERVIEW TAB -->
+  <!-- OVERVIEW / QUALITY LOG TAB -->
   <div class="main" id="adminTabOverview">
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">إجمالي الأرقام</div><div class="stat-val v1" id="adStatTotal">0</div></div>
       <div class="stat-card"><div class="stat-label">تم الإرسال</div><div class="stat-val v2" id="adStatSent">0</div></div>
       <div class="stat-card"><div class="stat-label">متبقي</div><div class="stat-val v3" id="adStatPending">0</div></div>
     </div>
-    <div class="sec-head"><div class="sec-title">أداء كل سيلز</div><button class="btn btn-ghost2" id="btnAdRefresh">🔄 تحديث</button></div>
+    <div class="sec-head"><div class="sec-title">سجل توزيع الداتا على السيلز</div><button class="btn btn-ghost2" id="btnAdRefresh">🔄 تحديث</button></div>
     <div class="admin-filters">
       <input class="af-search" id="ovSearch" placeholder="🔍 ابحث عن سيلز..."/>
       <span class="af-label">من</span>
@@ -600,10 +381,17 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
       <input type="date" class="af-date" id="ovDateTo"/>
       <button class="af-clear" id="ovClearDate">كل الوقت</button>
     </div>
-    <div class="sales-grid" id="salesGrid"></div>
+    <div class="log-table-wrap">
+      <div class="log-wrap">
+        <table class="log-table">
+          <thead><tr><th>السيلز</th><th>نوع الداتا</th><th>عدد الأرقام</th><th>الوقت</th></tr></thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <!-- DISTRIBUTE TAB (NEW) -->
+  <!-- DISTRIBUTE TAB -->
   <div class="main" id="adminTabDistribute" style="display:none">
 
     <!-- Step 1: type selector -->
@@ -653,43 +441,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
       <button class="btn-dist-now" id="btnDistNow" disabled>وزّع الآن 🎯</button>
     </div>
   </div>
-
-  <!-- TRANSFER TAB -->
-  <div class="main" id="adminTabTransfer" style="display:none">
-    <div class="transfer-panel">
-      <div class="tp-title">نقل أرقام من سيلز لسيلز</div>
-      <div class="tp-sub">الأرقام هتتنقل في Supabase وفي Odoo (الـ lead القديم هيتمسح ويتعمل جديد)</div>
-      <div class="admin-filters" style="margin-bottom:16px">
-        <span class="af-label">فلتر التاريخ:</span>
-        <span class="af-label">من</span>
-        <input type="date" class="af-date" id="tfDateFrom"/>
-        <span class="af-label">إلى</span>
-        <input type="date" class="af-date" id="tfDateTo"/>
-        <button class="af-clear" id="tfClearDate">كل الوقت</button>
-      </div>
-      <div class="transfer-form">
-        <div class="tf-field">
-          <div class="tf-label">من سيلز</div>
-          <select class="tf-select" id="tfFrom"><option value="">اختار...</option></select>
-        </div>
-        <div class="tf-arrow">←</div>
-        <div class="tf-field">
-          <div class="tf-label">إلى سيلز</div>
-          <select class="tf-select" id="tfTo"><option value="">اختار...</option></select>
-        </div>
-      </div>
-      <div class="tf-field" style="margin-bottom:16px">
-        <div class="tf-label">كام رقم؟ (فاضي = الكل)</div>
-        <input type="number" class="tf-qty" id="tfQty" min="1" placeholder="الكل"/>
-      </div>
-      <div class="transfer-preview" id="transferPreview">
-        <div class="tp-prev-title">الأرقام اللي هتتنقل</div>
-        <div class="tp-prev-nums" id="transferPreviewNums"></div>
-        <div class="tp-prev-info" id="transferPreviewInfo"></div>
-      </div>
-      <button class="btn-transfer" id="btnTransfer" disabled>نقل الأرقام 🔄</button>
-    </div>
-  </div>
 </div>
 
 <!-- CONFIRM MODAL -->
@@ -727,14 +478,10 @@ function todayStr() { return new Date().toISOString().slice(0,10); }
 
 function initAdminFilters() {
   $('ovDateFrom').value = todayStr(); $('ovDateTo').value = todayStr();
-  $('tfDateFrom').value = todayStr(); $('tfDateTo').value = todayStr();
   $('ovSearch').addEventListener('input', renderAdminOverview);
   $('ovDateFrom').addEventListener('change', renderAdminOverview);
   $('ovDateTo').addEventListener('change', renderAdminOverview);
   $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=''; $('ovDateTo').value=''; renderAdminOverview(); });
-  $('tfDateFrom').addEventListener('change', updateTransferPreview);
-  $('tfDateTo').addEventListener('change', updateTransferPreview);
-  $('tfClearDate').addEventListener('click',()=>{ $('tfDateFrom').value=''; $('tfDateTo').value=''; updateTransferPreview(); });
 }
 
 const NETS = {
@@ -757,6 +504,13 @@ function formatPhone(num) {
   return m ? `+20 ${m[1]} ${m[2]} ${m[3]}` : '+' + num;
 }
 function formatPhonePlus(num) { return '+' + num; }
+function formatDistTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  const date = d.toLocaleDateString('ar-EG', { day: '2-digit', month: '2-digit' });
+  const time = d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+  return `${date} · ${time}`;
+}
 function showToast(msg, type='') {
   const t=$('toast'); t.textContent=msg; t.className='show '+type;
   clearTimeout(t._t); t._t=setTimeout(()=>t.className='',3400);
@@ -950,11 +704,10 @@ async function loadAdminData() {
   adminAllNumbers = nums||[];
   adminSalesList = (sales||[]).map(s=>s.name);
   renderAdminOverview();
-  renderTransferSelects();
   renderDistributeTab();
 }
 
-/* ─── OVERVIEW ─── */
+/* ─── OVERVIEW / QUALITY LOG ─── */
 function getOvFiltered() {
   const from=$('ovDateFrom').value, to=$('ovDateTo').value;
   return adminAllNumbers.filter(r=>{
@@ -968,28 +721,38 @@ function getOvFiltered() {
 function renderAdminOverview() {
   const search=($('ovSearch').value||'').trim().toLowerCase();
   const filtered=getOvFiltered();
-  const from=$('ovDateFrom').value, to=$('ovDateTo').value;
   const totalAll=adminAllNumbers.length;
   const sentAll=filtered.length;
   $('adStatTotal').textContent=totalAll;
   $('adStatSent').textContent=sentAll;
   $('adStatPending').textContent=totalAll-adminAllNumbers.filter(r=>r.distributed).length;
-  const map={};
-  for(const s of adminSalesList) map[s]={sent:0};
-  for(const r of filtered){if(r.salesperson&&map[r.salesperson])map[r.salesperson].sent++;}
-  let entries=adminSalesList.map(name=>({name, sent:map[name]?.sent||0}));
-  if(search) entries=entries.filter(e=>e.name.toLowerCase().includes(search));
-  const dateLabel=from===to&&from?`يوم ${from}`:(from||to)?`${from||'...'} → ${to||'...'}`:'اليوم';
-  const grid=$('salesGrid');
-  if(!entries.length){grid.innerHTML='<div style="color:#475569;padding:20px;font-size:13px">مفيش نتائج</div>';return}
-  grid.innerHTML=entries.map(({name,sent})=>{
-    const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    return `<div class="sales-card">
-      <div class="sc-name"><div class="sc-avatar">${initials}</div>${name}</div>
-      <div class="sc-stats">
-        <div class="sc-stat" style="grid-column:span 2"><div class="sc-stat-label">أرقام أُرسلت — ${dateLabel}</div><div class="sc-stat-val s-sent" style="font-size:28px">${sent}</div></div>
-      </div>
-    </div>`;
+
+  // Group into distribution "batches": نفس السيلز + نفس النوع + نفس وقت التوزيع
+  const groups={};
+  for(const r of filtered){
+    if(!r.salesperson) continue;
+    const type=r.data_type||'غير محدد';
+    const key=`${r.salesperson}|${type}|${r.distributed_at}`;
+    if(!groups[key]) groups[key]={salesperson:r.salesperson,type,time:r.distributed_at,count:0};
+    groups[key].count++;
+  }
+  let entries=Object.values(groups);
+  if(search) entries=entries.filter(e=>e.salesperson.toLowerCase().includes(search));
+  entries.sort((a,b)=> new Date(b.time) - new Date(a.time));
+
+  const body=$('logBody');
+  if(!entries.length){
+    body.innerHTML=`<tr><td colspan="4"><div class="empty-state"><div class="icon">📭</div><p>مفيش عمليات توزيع في الفترة دي</p></div></td></tr>`;
+    return;
+  }
+  body.innerHTML=entries.map(e=>{
+    const initials=e.salesperson.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    return `<tr>
+      <td><div class="log-sales"><div class="d-avatar">${initials}</div>${e.salesperson}</div></td>
+      <td><span class="log-type">${e.type}</span></td>
+      <td><span class="log-count">${e.count} رقم</span></td>
+      <td><span class="log-time">${formatDistTime(e.time)}</span></td>
+    </tr>`;
   }).join('');
 }
 
@@ -1035,9 +798,6 @@ function renderDistSalesTable(undist, typeMap) {
   if(!distSelectedType){ return; }
   const availableForType = undist.filter(r=>(r.data_type||'غير محدد')===distSelectedType);
   const availCount = availableForType.length;
-
-  // build type options
-  const typeOpts = Object.keys(typeMap).map(t=>`<option value="${t}">${t} (${typeMap[t]})</option>`).join('');
 
   const body = $('distSalesBody');
   if(!adminSalesList.length){
@@ -1106,7 +866,7 @@ async function doDistribute() {
 
   showConfirm(
     `تأكيد توزيع ${totalNums} رقم`,
-    `${summary}<br><br>الأرقام هتتحجز وتتبعت على Odoo فوراً.`,
+    `${summary}<br><br>الأرقام هتتحجز وتتبعت على Odoo فوراً عبر كود الـ Cloudflare Worker.`,
     async () => {
       showLoading(`جارٍ توزيع ${totalNums} رقم...`);
       const undist = adminAllNumbers.filter(r=>!r.distributed);
@@ -1133,6 +893,7 @@ async function doDistribute() {
         }));
 
         try {
+          // الإرسال بيتم عن طريق الـ Cloudflare Worker (odoo-proxy3) اللي بيتكلم مع Odoo
           const res = await fetch(`${WORKER_URL}/send-leads`,{
             method:'POST', headers:{'Content-Type':'application/json'},
             body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})
@@ -1163,66 +924,6 @@ async function doDistribute() {
   );
 }
 
-/* ─── TRANSFER ─── */
-function renderTransferSelects() {
-  const from=$('tfFrom'), to=$('tfTo');
-  const opts=adminSalesList.map(n=>`<option value="${n}">${n}</option>`).join('');
-  from.innerHTML='<option value="">اختار...</option>'+opts;
-  to.innerHTML='<option value="">اختار...</option>'+opts;
-}
-function getTransferList() {
-  const fromName=$('tfFrom').value, qty=parseInt($('tfQty').value)||0;
-  if(!fromName) return [];
-  const dateFrom=$('tfDateFrom').value, dateTo=$('tfDateTo').value;
-  let pool=adminAllNumbers.filter(r=>{
-    if(r.salesperson!==fromName||!r.distributed||!r.odoo_sent) return false;
-    if(dateFrom||dateTo){
-      const d=(r.distributed_at||'').slice(0,10);
-      if(dateFrom&&d<dateFrom) return false;
-      if(dateTo&&d>dateTo) return false;
-    }
-    return true;
-  });
-  return qty>0?pool.slice(0,qty):pool;
-}
-function updateTransferPreview() {
-  const list=getTransferList();
-  const prev=$('transferPreview'), numsEl=$('transferPreviewNums'), infoEl=$('transferPreviewInfo');
-  const toName=$('tfTo').value;
-  $('btnTransfer').disabled=!list.length||!toName||$('tfFrom').value===$('tfTo').value;
-  if(!list.length||!$('tfFrom').value){prev.style.display='none';return}
-  prev.style.display='block';
-  numsEl.innerHTML=list.slice(0,50).map(r=>`<span class="tp-num-chip">${formatPhone(r.number)}</span>`).join('');
-  infoEl.textContent=list.length>50?`... و ${list.length-50} رقم أكتر — إجمالي ${list.length} رقم`:`إجمالي ${list.length} رقم`;
-}
-async function doTransfer() {
-  const fromName=$('tfFrom').value, toName=$('tfTo').value;
-  const list=getTransferList();
-  if(!list.length||!fromName||!toName){showToast('اختار من وإلى وتأكد فيه أرقام','error');return}
-  if(fromName===toName){showToast('من وإلى نفس السيلز!','error');return}
-  showConfirm(
-    `نقل ${list.length} رقم`,
-    `هتنقل <strong>${list.length} رقم</strong> من <strong>${fromName}</strong> إلى <strong>${toName}</strong>.<br><br>الـ leads القديمة في Odoo هتتمسح ويتعمل جديدة باسم ${toName}.`,
-    async ()=>{
-      showLoading(`جارٍ نقل ${list.length} رقم...`);
-      try {
-        const leads=list.map(r=>({phone:formatPhonePlus(r.number),name:r.number,data_type:r.data_type||'',salesperson:toName}));
-        await fetch(`${WORKER_URL}/delete-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',phones:list.map(r=>r.number)})});
-        const createRes=await fetch(`${WORKER_URL}/send-leads`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})});
-        const createResult=await createRes.json();
-        if(!createRes.ok||!createResult.success){hideLoading();showToast(createResult.error||'فشل الإنشاء في Odoo','error');return;}
-        const nums=list.map(r=>r.number);
-        await sb.from('numbers').update({salesperson:toName}).in('number',nums);
-        hideLoading();
-        showToast(`✅ تم نقل ${list.length} رقم من ${fromName} إلى ${toName}`,'success');
-        $('tfFrom').value='';$('tfTo').value='';$('tfQty').value='';
-        $('transferPreview').style.display='none';$('btnTransfer').disabled=true;
-        await loadAdminData();
-      } catch(err){hideLoading();showToast('خطأ: '+err.message,'error')}
-    }
-  );
-}
-
 /* ── CONFIRM MODAL ── */
 let _confirmCb=null;
 function showConfirm(title,body,cb){
@@ -1239,7 +940,6 @@ document.querySelectorAll('.atab').forEach(tab=>{
     tab.classList.add('active');
     $('adminTabOverview').style.display=tab.dataset.tab==='overview'?'block':'none';
     $('adminTabDistribute').style.display=tab.dataset.tab==='distribute'?'block':'none';
-    $('adminTabTransfer').style.display=tab.dataset.tab==='transfer'?'block':'none';
   });
 });
 
@@ -1262,13 +962,6 @@ $('btnRefresh').addEventListener('click',loadData);
 $('btnAdRefresh').addEventListener('click',loadAdminData);
 $('btnSend').addEventListener('click',sendToOdoo);
 $('sendQty').addEventListener('input',()=>{if(activeType){updatePreview();showNumbers()}});
-$('tfFrom').addEventListener('change',updateTransferPreview);
-$('tfTo').addEventListener('change',()=>{
-  const from=$('tfFrom').value,to=$('tfTo').value;
-  $('btnTransfer').disabled=!from||!to||from===to||!getTransferList().length;
-});
-$('tfQty').addEventListener('input',updateTransferPreview);
-$('btnTransfer').addEventListener('click',doTransfer);
 $('btnDistNow').addEventListener('click',doDistribute);
 </script>
 </body>

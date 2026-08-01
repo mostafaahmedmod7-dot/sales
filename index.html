@@ -469,7 +469,10 @@ const $ = id => document.getElementById(id);
 let currentUser = null, allNumbers = [], activeType = null, selectedPriority = [];
 
 // ─── ADMIN STATE ───
-let adminAllNumbers = [], adminSalesList = [];
+let adminSalesList = [];
+let adminTotalCount = 0, adminDistributedCount = 0;
+let adminUndistNumbers = []; // undistributed numbers only (for distribute tab)
+let adminLogRows = []; // distributed rows within the selected date range (for log tab)
 // ─── DISTRIBUTE STATE ───
 let distAssignments = {}; // { salesName: { type, qty } }
 let distSelectedType = null;
@@ -478,10 +481,10 @@ function todayStr() { return new Date().toISOString().slice(0,10); }
 
 function initAdminFilters() {
   $('ovDateFrom').value = todayStr(); $('ovDateTo').value = todayStr();
-  $('ovSearch').addEventListener('input', renderAdminOverview);
-  $('ovDateFrom').addEventListener('change', renderAdminOverview);
-  $('ovDateTo').addEventListener('change', renderAdminOverview);
-  $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=''; $('ovDateTo').value=''; renderAdminOverview(); });
+  $('ovSearch').addEventListener('input', renderLogTable);
+  $('ovDateFrom').addEventListener('change', loadOverviewLog);
+  $('ovDateTo').addEventListener('change', loadOverviewLog);
+  $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=''; $('ovDateTo').value=''; loadOverviewLog(); });
 }
 
 const NETS = {
@@ -544,7 +547,7 @@ async function loadData() {
   showLoading('جارٍ تحميل الأرقام...');
   const {data,error}=await sb.from('numbers').select('number,data_type').eq('distributed',false);
   hideLoading();
-  if(error){showToast('فشل التحميل','error');return}
+  if(error){console.error('Supabase load error:',error);showToast('فشل التحميل: '+(error.message||error.code||'خطأ غير معروف'),'error');return}
   allNumbers=data||[];
   renderStats();renderTypes();
   if(activeType){
@@ -695,41 +698,70 @@ function enterAdmin() {
 
 async function loadAdminData() {
   showLoading('جارٍ تحميل البيانات...');
-  const [{data:nums,error:e1},{data:sales,error:e2}] = await Promise.all([
-    sb.from('numbers').select('number,data_type,distributed,odoo_sent,salesperson,distributed_at'),
-    sb.from('sales').select('name').neq('name','admin')
-  ]);
-  hideLoading();
-  if(e1||e2){showToast('فشل التحميل','error');return}
-  adminAllNumbers = nums||[];
-  adminSalesList = (sales||[]).map(s=>s.name);
-  renderAdminOverview();
-  renderDistributeTab();
+  try {
+    const [
+      {count:totalCount, error:e1},
+      {count:distCount, error:e2},
+      {data:undist, error:e3},
+      {data:sales, error:e4}
+    ] = await Promise.all([
+      sb.from('numbers').select('*',{count:'exact',head:true}),
+      sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',true),
+      sb.from('numbers').select('number,data_type').eq('distributed',false),
+      sb.from('sales').select('name').neq('name','admin')
+    ]);
+    hideLoading();
+    if(e1||e2||e3||e4){
+      const err=e1||e2||e3||e4;
+      console.error('Supabase admin load error:',e1,e2,e3,e4);
+      showToast('فشل التحميل: '+(err.message||err.code||'خطأ غير معروف'),'error');
+      return;
+    }
+    adminTotalCount = totalCount||0;
+    adminDistributedCount = distCount||0;
+    adminUndistNumbers = undist||[];
+    adminSalesList = (sales||[]).map(s=>s.name);
+
+    $('adStatTotal').textContent = adminTotalCount;
+    $('adStatPending').textContent = Math.max(0, adminTotalCount - adminDistributedCount);
+
+    renderDistributeTab();
+    await loadOverviewLog();
+  } catch(err) {
+    hideLoading();
+    console.error('Admin load exception:',err);
+    showToast('فشل التحميل: '+err.message,'error');
+  }
 }
 
 /* ─── OVERVIEW / QUALITY LOG ─── */
-function getOvFiltered() {
+// بيسحب بس الأرقام اللي اتوزعت في الفترة المختارة (مش الجدول كله) عشان يبقى سريع
+async function loadOverviewLog() {
+  showLoading('جارٍ تحميل السجل...');
   const from=$('ovDateFrom').value, to=$('ovDateTo').value;
-  return adminAllNumbers.filter(r=>{
-    if(!r.distributed||!r.distributed_at) return false;
-    const d=r.distributed_at.slice(0,10);
-    if(from&&d<from) return false;
-    if(to&&d>to) return false;
-    return true;
-  });
+  let query = sb.from('numbers')
+    .select('salesperson,data_type,distributed_at')
+    .eq('distributed', true)
+    .not('salesperson','is',null);
+  if(from) query = query.gte('distributed_at', from+'T00:00:00');
+  if(to) query = query.lte('distributed_at', to+'T23:59:59.999');
+  const {data, error} = await query;
+  hideLoading();
+  if(error){
+    console.error('Supabase log load error:',error);
+    showToast('فشل تحميل السجل: '+(error.message||error.code||'خطأ غير معروف'),'error');
+    return;
+  }
+  adminLogRows = data||[];
+  $('adStatSent').textContent = adminLogRows.length;
+  renderLogTable();
 }
-function renderAdminOverview() {
+function renderLogTable() {
   const search=($('ovSearch').value||'').trim().toLowerCase();
-  const filtered=getOvFiltered();
-  const totalAll=adminAllNumbers.length;
-  const sentAll=filtered.length;
-  $('adStatTotal').textContent=totalAll;
-  $('adStatSent').textContent=sentAll;
-  $('adStatPending').textContent=totalAll-adminAllNumbers.filter(r=>r.distributed).length;
 
   // Group into distribution "batches": نفس السيلز + نفس النوع + نفس وقت التوزيع
   const groups={};
-  for(const r of filtered){
+  for(const r of adminLogRows){
     if(!r.salesperson) continue;
     const type=r.data_type||'غير محدد';
     const key=`${r.salesperson}|${type}|${r.distributed_at}`;
@@ -759,7 +791,7 @@ function renderAdminOverview() {
 /* ─── DISTRIBUTE TAB ─── */
 function renderDistributeTab() {
   // Build type chips from undistributed numbers
-  const undist = adminAllNumbers.filter(r=>!r.distributed);
+  const undist = adminUndistNumbers;
   const typeMap = {};
   for(const r of undist){ const t=r.data_type||'غير محدد'; typeMap[t]=(typeMap[t]||0)+1; }
   const types = Object.entries(typeMap);
@@ -848,8 +880,7 @@ function updateDistBar(availCount) {
   for(const [, asgn] of Object.entries(distAssignments)){
     if(asgn.qty>0){ totalAssigned+=asgn.qty; salesCount++; }
   }
-  const undist = adminAllNumbers.filter(r=>!r.distributed);
-  const typeCount = distSelectedType ? undist.filter(r=>(r.data_type||'غير محدد')===distSelectedType).length : 0;
+  const typeCount = distSelectedType ? adminUndistNumbers.filter(r=>(r.data_type||'غير محدد')===distSelectedType).length : 0;
   $('distTotalAssigned').textContent = totalAssigned;
   $('distTotalRemaining').textContent = Math.max(0, typeCount - totalAssigned);
   $('distSalesCount').textContent = salesCount;
@@ -869,7 +900,7 @@ async function doDistribute() {
     `${summary}<br><br>الأرقام هتتحجز وتتبعت على Odoo فوراً عبر كود الـ Cloudflare Worker.`,
     async () => {
       showLoading(`جارٍ توزيع ${totalNums} رقم...`);
-      const undist = adminAllNumbers.filter(r=>!r.distributed);
+      const undist = adminUndistNumbers;
 
       // pool per type
       const typePool = {};
@@ -950,7 +981,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
-  adminAllNumbers=[];adminSalesList=[];distAssignments={};distSelectedType=null;
+  adminSalesList=[];adminUndistNumbers=[];adminLogRows=[];adminTotalCount=0;adminDistributedCount=0;distAssignments={};distSelectedType=null;
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';

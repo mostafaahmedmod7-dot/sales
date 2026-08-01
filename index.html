@@ -234,8 +234,23 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 
 /* ADMIN — OVERVIEW TAB */
 .sales-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
-.sales-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;transition:border-color .2s}
+.sales-card{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:20px;transition:border-color .2s;cursor:pointer}
 .sales-card:hover{border-color:#6366f1}
+.sales-card.open{border-color:#6366f1}
+.sc-name{font-size:15px;font-weight:900;color:#f1f5f9;display:flex;align-items:center;gap:10px}
+.sc-chevron{margin-right:auto;font-size:12px;color:#475569;transition:transform .2s}
+.sales-card.open .sc-chevron{transform:rotate(180deg);color:#a5b4fc}
+.sc-summary{font-size:12px;color:#64748b;margin-top:6px;margin-right:42px}
+.sc-summary strong{color:#10b981;font-weight:900;font-size:13px}
+.sc-details{display:none;margin-top:14px;padding-top:14px;border-top:1px solid #334155}
+.sales-card.open .sc-details{display:block}
+.sc-detail-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;background:#0f172a;border-radius:9px;margin-bottom:6px;font-size:12.5px}
+.sc-detail-row:last-child{margin-bottom:0}
+.sc-detail-type{font-weight:800;color:#a5b4fc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-detail-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.sc-detail-qty{background:rgba(16,185,129,.15);color:#6ee7b7;border-radius:20px;padding:2px 10px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.sc-detail-time{color:#f1f5f9;font-family:monospace;font-size:12px;min-width:70px;text-align:left}
+.sc-no-details{font-size:12px;color:#475569;text-align:center;padding:8px}
 .sc-name{font-size:15px;font-weight:900;color:#f1f5f9;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .sc-avatar{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0}
 .sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -368,27 +383,25 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   <!-- OVERVIEW / QUALITY LOG TAB -->
   <div class="main" id="adminTabOverview">
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">إجمالي الأرقام</div><div class="stat-val v1" id="adStatTotal">0</div></div>
-      <div class="stat-card"><div class="stat-label">تم الإرسال</div><div class="stat-val v2" id="adStatSent">0</div></div>
-      <div class="stat-card"><div class="stat-label">متبقي</div><div class="stat-val v3" id="adStatPending">0</div></div>
+      <div class="stat-card"><div class="stat-label">اتوزع النهاردة</div><div class="stat-val v2" id="adStatToday">0</div></div>
+      <div class="stat-card"><div class="stat-label">اتوزع امبارح</div><div class="stat-val v3" id="adStatYesterday">0</div></div>
+      <div class="stat-card"><div class="stat-label">متبقي (لسه هيتوزع)</div><div class="stat-val v1" id="adStatPending">0</div></div>
     </div>
-    <div class="sec-head"><div class="sec-title">سجل توزيع الداتا على السيلز</div><button class="btn btn-ghost2" id="btnAdRefresh">🔄 تحديث</button></div>
+    <div class="sec-head">
+      <div class="sec-title">سجل توزيع الداتا على السيلز <span id="logRangeCount" style="color:#475569;font-weight:600;text-transform:none;font-size:12px"></span></div>
+      <button class="btn btn-ghost2" id="btnAdRefresh">🔄 تحديث</button>
+    </div>
     <div class="admin-filters">
       <input class="af-search" id="ovSearch" placeholder="🔍 ابحث عن سيلز..."/>
+      <button class="af-clear" id="ovQuickToday">📅 اليوم</button>
+      <button class="af-clear" id="ovQuickYesterday">📅 امبارح</button>
       <span class="af-label">من</span>
       <input type="date" class="af-date" id="ovDateFrom"/>
       <span class="af-label">إلى</span>
       <input type="date" class="af-date" id="ovDateTo"/>
       <button class="af-clear" id="ovClearDate">كل الوقت</button>
     </div>
-    <div class="log-table-wrap">
-      <div class="log-wrap">
-        <table class="log-table">
-          <thead><tr><th>السيلز</th><th>نوع الداتا</th><th>عدد الأرقام</th><th>الوقت</th></tr></thead>
-          <tbody id="logBody"></tbody>
-        </table>
-      </div>
-    </div>
+    <div class="sales-grid" id="logSalesGrid"></div>
   </div>
 
   <!-- DISTRIBUTE TAB -->
@@ -470,7 +483,6 @@ let currentUser = null, allNumbers = [], activeType = null, selectedPriority = [
 
 // ─── ADMIN STATE ───
 let adminSalesList = [];
-let adminTotalCount = 0, adminDistributedCount = 0;
 let adminUndistNumbers = []; // undistributed numbers only (for distribute tab)
 let adminLogRows = []; // distributed rows within the selected date range (for log tab)
 // ─── DISTRIBUTE STATE ───
@@ -478,6 +490,7 @@ let distAssignments = {}; // { salesName: { type, qty } }
 let distSelectedType = null;
 
 function todayStr() { return new Date().toISOString().slice(0,10); }
+function yesterdayStr() { const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
 
 function initAdminFilters() {
   $('ovDateFrom').value = todayStr(); $('ovDateTo').value = todayStr();
@@ -485,6 +498,8 @@ function initAdminFilters() {
   $('ovDateFrom').addEventListener('change', loadOverviewLog);
   $('ovDateTo').addEventListener('change', loadOverviewLog);
   $('ovClearDate').addEventListener('click',()=>{ $('ovDateFrom').value=''; $('ovDateTo').value=''; loadOverviewLog(); });
+  $('ovQuickToday').addEventListener('click',()=>{ const t=todayStr(); $('ovDateFrom').value=t; $('ovDateTo').value=t; loadOverviewLog(); });
+  $('ovQuickYesterday').addEventListener('click',()=>{ const y=yesterdayStr(); $('ovDateFrom').value=y; $('ovDateTo').value=y; loadOverviewLog(); });
 }
 
 const NETS = {
@@ -513,6 +528,15 @@ function formatDistTime(iso) {
   const date = d.toLocaleDateString('ar-EG', { day: '2-digit', month: '2-digit' });
   const time = d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
   return `${date} · ${time}`;
+}
+function formatTime12(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  let h = d.getHours();
+  const m = d.getMinutes();
+  const ampm = h >= 12 ? 'pm' : 'am';
+  h = h % 12; if (h === 0) h = 12;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')} ${ampm}`;
 }
 function showToast(msg, type='') {
   const t=$('toast'); t.textContent=msg; t.className='show '+type;
@@ -699,31 +723,32 @@ function enterAdmin() {
 async function loadAdminData() {
   showLoading('جارٍ تحميل البيانات...');
   try {
+    const today = todayStr(), yesterday = yesterdayStr();
     const [
-      {count:totalCount, error:e1},
-      {count:distCount, error:e2},
-      {data:undist, error:e3},
-      {data:sales, error:e4}
+      {count:pendingCount, error:e1},
+      {count:todayCount, error:e2},
+      {count:yestCount, error:e3},
+      {data:undist, error:e4},
+      {data:sales, error:e5}
     ] = await Promise.all([
-      sb.from('numbers').select('*',{count:'exact',head:true}),
-      sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',true),
+      sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',false),
+      sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',true).gte('distributed_at', today+'T00:00:00').lte('distributed_at', today+'T23:59:59.999'),
+      sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',true).gte('distributed_at', yesterday+'T00:00:00').lte('distributed_at', yesterday+'T23:59:59.999'),
       sb.from('numbers').select('number,data_type').eq('distributed',false),
       sb.from('sales').select('name').neq('name','admin')
     ]);
     hideLoading();
-    if(e1||e2||e3||e4){
-      const err=e1||e2||e3||e4;
-      console.error('Supabase admin load error:',e1,e2,e3,e4);
+    if(e1||e2||e3||e4||e5){
+      const err=e1||e2||e3||e4||e5;
+      console.error('Supabase admin load error:',e1,e2,e3,e4,e5);
       showToast('فشل التحميل: '+(err.message||err.code||'خطأ غير معروف'),'error');
       return;
     }
-    adminTotalCount = totalCount||0;
-    adminDistributedCount = distCount||0;
+    $('adStatPending').textContent = pendingCount||0;
+    $('adStatToday').textContent = todayCount||0;
+    $('adStatYesterday').textContent = yestCount||0;
     adminUndistNumbers = undist||[];
     adminSalesList = (sales||[]).map(s=>s.name);
-
-    $('adStatTotal').textContent = adminTotalCount;
-    $('adStatPending').textContent = Math.max(0, adminTotalCount - adminDistributedCount);
 
     renderDistributeTab();
     await loadOverviewLog();
@@ -753,39 +778,67 @@ async function loadOverviewLog() {
     return;
   }
   adminLogRows = data||[];
-  $('adStatSent').textContent = adminLogRows.length;
+  $('logRangeCount').textContent = adminLogRows.length ? `(${adminLogRows.length} رقم في الفترة دي)` : '';
   renderLogTable();
 }
+let logOpenSales = new Set(); // keeps track of which sales boxes are expanded across re-renders
+
 function renderLogTable() {
   const search=($('ovSearch').value||'').trim().toLowerCase();
 
   // Group into distribution "batches": نفس السيلز + نفس النوع + نفس وقت التوزيع
-  const groups={};
+  const bySales={};
   for(const r of adminLogRows){
     if(!r.salesperson) continue;
     const type=r.data_type||'غير محدد';
-    const key=`${r.salesperson}|${type}|${r.distributed_at}`;
-    if(!groups[key]) groups[key]={salesperson:r.salesperson,type,time:r.distributed_at,count:0};
-    groups[key].count++;
+    if(!bySales[r.salesperson]) bySales[r.salesperson]={};
+    const batchKey=`${type}|${r.distributed_at}`;
+    if(!bySales[r.salesperson][batchKey]) bySales[r.salesperson][batchKey]={type,time:r.distributed_at,count:0};
+    bySales[r.salesperson][batchKey].count++;
   }
-  let entries=Object.values(groups);
-  if(search) entries=entries.filter(e=>e.salesperson.toLowerCase().includes(search));
-  entries.sort((a,b)=> new Date(b.time) - new Date(a.time));
 
-  const body=$('logBody');
-  if(!entries.length){
-    body.innerHTML=`<tr><td colspan="4"><div class="empty-state"><div class="icon">📭</div><p>مفيش عمليات توزيع في الفترة دي</p></div></td></tr>`;
+  let names=Object.keys(bySales);
+  if(search) names=names.filter(n=>n.toLowerCase().includes(search));
+
+  // sort sales by their latest batch time (most recently active first)
+  const withLatest = names.map(name=>{
+    const batches=Object.values(bySales[name]).sort((a,b)=> new Date(b.time)-new Date(a.time));
+    const total=batches.reduce((s,b)=>s+b.count,0);
+    return {name, batches, total, latest: batches[0]?.time};
+  });
+  withLatest.sort((a,b)=> new Date(b.latest||0) - new Date(a.latest||0));
+
+  const grid=$('logSalesGrid');
+  if(!withLatest.length){
+    grid.innerHTML=`<div style="grid-column:1/-1"><div class="empty-state"><div class="icon">📭</div><p>مفيش عمليات توزيع في الفترة دي</p></div></div>`;
     return;
   }
-  body.innerHTML=entries.map(e=>{
-    const initials=e.salesperson.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    return `<tr>
-      <td><div class="log-sales"><div class="d-avatar">${initials}</div>${e.salesperson}</div></td>
-      <td><span class="log-type">${e.type}</span></td>
-      <td><span class="log-count">${e.count} رقم</span></td>
-      <td><span class="log-time">${formatDistTime(e.time)}</span></td>
-    </tr>`;
+
+  grid.innerHTML=withLatest.map(({name,batches,total})=>{
+    const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const isOpen=logOpenSales.has(name);
+    const rows=batches.map(b=>`
+      <div class="sc-detail-row">
+        <span class="sc-detail-type">${b.type}</span>
+        <div class="sc-detail-meta">
+          <span class="sc-detail-qty">${b.count} رقم</span>
+          <span class="sc-detail-time">${formatTime12(b.time)}</span>
+        </div>
+      </div>`).join('');
+    return `<div class="sales-card ${isOpen?'open':''}" data-sales="${name}">
+      <div class="sc-name"><div class="d-avatar">${initials}</div>${name}<span class="sc-chevron">▾</span></div>
+      <div class="sc-summary"><strong>${total} رقم</strong> — في ${batches.length} دفعة</div>
+      <div class="sc-details">${rows || '<div class="sc-no-details">مفيش تفاصيل</div>'}</div>
+    </div>`;
   }).join('');
+
+  grid.querySelectorAll('.sales-card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const name=card.dataset.sales;
+      if(logOpenSales.has(name)) logOpenSales.delete(name); else logOpenSales.add(name);
+      card.classList.toggle('open');
+    });
+  });
 }
 
 /* ─── DISTRIBUTE TAB ─── */
@@ -981,7 +1034,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
-  adminSalesList=[];adminUndistNumbers=[];adminLogRows=[];adminTotalCount=0;adminDistributedCount=0;distAssignments={};distSelectedType=null;
+  adminSalesList=[];adminUndistNumbers=[];adminLogRows=[];distAssignments={};distSelectedType=null;
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';

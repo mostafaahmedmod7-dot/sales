@@ -857,14 +857,20 @@ async function loadManageTab() {
   const salesSel=$('mgmtSales');
   salesSel.innerHTML='<option value="">كل السيلز</option>'+adminSalesList.map(n=>`<option value="${n}">${n}</option>`).join('');
 
-  // قائمة أنواع الداتا (نجيبها من الجدول كله)
+  // قائمة أنواع الداتا (بنجيبها بنفس فلاتر distributed المستخدمة في باقي الصفحة عشان الـ RLS)
   showLoading('جارٍ تحميل الأنواع...');
-  const {data, error} = await sb.from('numbers').select('data_type');
+  const [{data:d1,error:e1},{data:d2,error:e2}] = await Promise.all([
+    sb.from('numbers').select('data_type').eq('distributed', true),
+    sb.from('numbers').select('data_type').eq('distributed', false)
+  ]);
   hideLoading();
-  if(!error){
+  if(e1||e2){
+    console.error('Manage types load error:', e1, e2);
+    showToast('فشل تحميل أنواع الداتا: '+((e1||e2).message||(e1||e2).code||'خطأ غير معروف'),'error');
+  } else {
     const set=new Set();
-    for(const r of (data||[])) set.add(r.data_type||'غير محدد');
-    mgmtTypesList=[...set];
+    for(const r of [...(d1||[]),...(d2||[])]) set.add(r.data_type||'غير محدد');
+    mgmtTypesList=[...set].sort();
     const typeSel=$('mgmtType');
     typeSel.innerHTML='<option value="">كل الأنواع</option>'+mgmtTypesList.map(t=>`<option value="${t}">${t}</option>`).join('');
   }

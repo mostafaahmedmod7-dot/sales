@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>بوابة السيلز</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -528,12 +528,15 @@ function formatDistTime(iso) {
   const time = d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
   return `${date} · ${time}`;
 }
-function formatDistTimeEN(iso) {
+function formatDateEN(iso) {
   if (!iso) return '—';
   const d = new Date(iso);
-  const date = d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  const time = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
-  return `${date} ${time}`;
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+function formatTimeEN(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 function formatTime12(iso) {
   if (!iso) return '—';
@@ -1002,22 +1005,48 @@ async function fetchAllMatchingForExport() {
   return all;
 }
 
+function buildStyledSheet(headers, rows) {
+  const aoa = [headers, ...rows];
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  const thin = { style:'thin', color:{ rgb:'CBD5E1' } };
+  const border = { top:thin, bottom:thin, left:thin, right:thin };
+  for (let R = range.s.r; R <= range.e.r; R++) {
+    for (let C = range.s.c; C <= range.e.c; C++) {
+      const addr = XLSX.utils.encode_cell({ r:R, c:C });
+      if (!ws[addr]) continue;
+      const isHeader = R === 0;
+      ws[addr].s = {
+        font: isHeader ? { bold:true, color:{ rgb:'FFFFFF' } } : { color:{ rgb:'1E293B' } },
+        fill: isHeader ? { fgColor:{ rgb:'6366F1' } } : { fgColor:{ rgb: R % 2 === 0 ? 'F1F5F9' : 'FFFFFF' } },
+        alignment: { horizontal:'center', vertical:'center' },
+        border
+      };
+    }
+  }
+  ws['!rows'] = aoa.map(()=>({ hpx: 22 }));
+  return ws;
+}
+
 async function exportManageData() {
   if(!mgmtTotalCount) return;
   $('btnMgmtExport').disabled=true;
   showLoading(`جارٍ تجهيز نسخة إكسيل من ${mgmtTotalCount} رقم...`);
   try {
     const rows = await fetchAllMatchingForExport();
-    const sheetData = rows.map(r => ({
-      'الرقم': formatPhonePlus(r.number),
-      'النوع': r.data_type||'غير محدد',
-      'السيلز': r.salesperson||'—',
-      'الحالة': r.distributed?'موزع':'لسه',
-      'تاريخ التوزيع': formatDistTimeEN(r.distributed_at)
-    }));
-    const ws = XLSX.utils.json_to_sheet(sheetData);
-    ws['!cols'] = [{wch:16},{wch:18},{wch:18},{wch:10},{wch:20}];
+    const headers = ['الرقم','النوع','السيلز','الحالة','التاريخ','الوقت'];
+    const aoaRows = rows.map(r => [
+      formatPhonePlus(r.number),
+      r.data_type||'غير محدد',
+      r.salesperson||'—',
+      r.distributed?'موزع':'لسه',
+      formatDateEN(r.distributed_at),
+      formatTimeEN(r.distributed_at)
+    ]);
+    const ws = buildStyledSheet(headers, aoaRows);
+    ws['!cols'] = [{wch:16},{wch:18},{wch:18},{wch:10},{wch:14},{wch:12}];
     const wb = XLSX.utils.book_new();
+    wb.Workbook = { Views: [{ RTL:true }] };
     XLSX.utils.book_append_sheet(wb, ws, 'باكاب');
     const typeLabel = $('mgmtType').value || 'all-types';
     XLSX.writeFile(wb, `${typeLabel}-backup.xlsx`);

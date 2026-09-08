@@ -865,28 +865,28 @@ function initManageFilters() {
   });
 }
 
+let mgmtTypesLoaded = false; // نجيب قائمة الأنواع مرة واحدة بس طول الجلسة
+
 // بيتنفذ أول ما التاب يتفتح: بيعمر قوائم السيلز والأنواع، وبعدين يجيب أول نتائج
 async function loadManageTab() {
   // قائمة السيلز (من الأدمن ديتا اللي اتحملت قبل كده)
   const salesSel=$('mgmtSales');
   salesSel.innerHTML='<option value="">كل السيلز</option>'+adminSalesList.map(n=>`<option value="${n}">${n}</option>`).join('');
 
-  // قائمة أنواع الداتا (بنجيبها بنفس فلاتر distributed المستخدمة في باقي الصفحة عشان الـ RLS)
-  showLoading('جارٍ تحميل الأنواع...');
-  const [{data:d1,error:e1},{data:d2,error:e2}] = await Promise.all([
-    sb.from('numbers').select('data_type').eq('distributed', true),
-    sb.from('numbers').select('data_type').eq('distributed', false)
-  ]);
-  hideLoading();
-  if(e1||e2){
-    console.error('Manage types load error:', e1, e2);
-    showToast('فشل تحميل أنواع الداتا: '+((e1||e2).message||(e1||e2).code||'خطأ غير معروف'),'error');
-  } else {
-    const set=new Set();
-    for(const r of [...(d1||[]),...(d2||[])]) set.add(r.data_type||'غير محدد');
-    mgmtTypesList=[...set].sort();
-    const typeSel=$('mgmtType');
-    typeSel.innerHTML='<option value="">كل الأنواع</option>'+mgmtTypesList.map(t=>`<option value="${t}">${t}</option>`).join('');
+  if(!mgmtTypesLoaded){
+    // قائمة أنواع الداتا — استعلام واحد خفيف (RPC) بدل مسح الجدول كامل مرتين
+    showLoading('جارٍ تحميل الأنواع...');
+    const {data, error} = await sb.rpc('get_distinct_data_types');
+    hideLoading();
+    if(error){
+      console.error('Manage types load error:', error);
+      showToast('فشل تحميل أنواع الداتا: '+(error.message||error.code||'خطأ غير معروف'),'error');
+    } else {
+      mgmtTypesList=(data||[]).map(r=>r.data_type||'غير محدد').sort();
+      const typeSel=$('mgmtType');
+      typeSel.innerHTML='<option value="">كل الأنواع</option>'+mgmtTypesList.map(t=>`<option value="${t}">${t}</option>`).join('');
+      mgmtTypesLoaded=true;
+    }
   }
   await searchManageData();
 }
@@ -1003,7 +1003,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
   adminSalesList=[];adminLogRows=[];
-  mgmtTypesList=[];mgmtRows=[];mgmtTotalCount=0;mgmtTabLoaded=false;
+  mgmtTypesList=[];mgmtRows=[];mgmtTotalCount=0;mgmtTabLoaded=false;mgmtTypesLoaded=false;
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';

@@ -280,7 +280,7 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   .mgmt-bar{flex-direction:column;align-items:stretch}
   .btn-del-now{width:100%}
   .log-table th:nth-child(4),.log-table td:nth-child(4){display:none}
-  .mgmt-table th:nth-child(4),.mgmt-table td:nth-child(4){display:none}
+  .mgmt-table th:nth-child(3),.mgmt-table td:nth-child(3){display:none}
 }
 </style>
 </head>
@@ -373,8 +373,8 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   <!-- OVERVIEW / QUALITY LOG TAB -->
   <div class="main" id="adminTabOverview">
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">اتوزع النهاردة</div><div class="stat-val v2" id="adStatToday">0</div></div>
-      <div class="stat-card"><div class="stat-label">اتوزع امبارح</div><div class="stat-val v3" id="adStatYesterday">0</div></div>
+      <div class="stat-card"><div class="stat-label" id="adStatTodayLabel">اتوزع النهاردة</div><div class="stat-val v2" id="adStatToday">0</div></div>
+      <div class="stat-card"><div class="stat-label" id="adStatYesterdayLabel">اتوزع امبارح</div><div class="stat-val v3" id="adStatYesterday">0</div></div>
       <div class="stat-card"><div class="stat-label">متبقي (لسه هيتوزع)</div><div class="stat-val v1" id="adStatPending">0</div></div>
     </div>
     <div class="sec-head">
@@ -433,8 +433,8 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
     <div class="panel">
       <div class="mgmt-table-wrap">
         <table class="mgmt-table">
-          <thead><tr><th>#</th><th>الرقم</th><th>النوع</th><th>السيلز</th><th>الحالة</th><th>تاريخ التوزيع</th></tr></thead>
-          <tbody id="mgmtBody"><tr><td colspan="6" style="text-align:center;padding:32px;color:#475569">اختار فلتر أو دوس بحث لعرض النتائج</td></tr></tbody>
+          <thead><tr><th>#</th><th>النوع</th><th>السيلز</th><th>الحالة</th><th>تاريخ التوزيع</th></tr></thead>
+          <tbody id="mgmtBody"><tr><td colspan="5" style="text-align:center;padding:32px;color:#475569">اختار فلتر أو دوس بحث لعرض النتائج</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -754,23 +754,37 @@ async function loadAdminData() {
 }
 
 /* ─── OVERVIEW / QUALITY LOG ─── */
-// بيسحب بس الأرقام اللي اتوزعت في الفترة المختارة (مش الجدول كله) عشان يبقى سريع
+// بيسحب بس عدد الأرقام اللي اتوزعت في الفترة المختارة (بدون تفاصيل الأرقام نفسها) عشان يبقى خفيف وسريع
 async function loadOverviewLog() {
   showLoading('جارٍ تحميل السجل...');
   const from=$('ovDateFrom').value, to=$('ovDateTo').value;
+
+  // Update the two stat cards' labels + values based on the selected date range
+  const rangeLabel = (from && to && from===to) ? (from===todayStr() ? 'اتوزع النهاردة' : `اتوزع يوم ${from}`)
+    : (from||to) ? 'اتوزع في الفترة المحددة' : 'اتوزع (كل الوقت)';
+  $('adStatTodayLabel').textContent = rangeLabel;
+
+  let countQuery = sb.from('numbers').select('*',{count:'exact',head:true})
+    .eq('distributed', true).not('salesperson','is',null);
+  if(from) countQuery = countQuery.gte('distributed_at', from+'T00:00:00');
+  if(to) countQuery = countQuery.lte('distributed_at', to+'T23:59:59.999');
+
+  // Grouped rows for the per-salesperson breakdown below — still no phone numbers, just type + time
   let query = sb.from('numbers')
     .select('salesperson,data_type,distributed_at')
     .eq('distributed', true)
     .not('salesperson','is',null);
   if(from) query = query.gte('distributed_at', from+'T00:00:00');
   if(to) query = query.lte('distributed_at', to+'T23:59:59.999');
-  const {data, error} = await query;
+
+  const [{count, error:ce}, {data, error}] = await Promise.all([countQuery, query]);
   hideLoading();
-  if(error){
-    console.error('Supabase log load error:',error);
-    showToast('فشل تحميل السجل: '+(error.message||error.code||'خطأ غير معروف'),'error');
+  if(error||ce){
+    console.error('Supabase log load error:',error||ce);
+    showToast('فشل تحميل السجل: '+((error||ce).message||(error||ce).code||'خطأ غير معروف'),'error');
     return;
   }
+  $('adStatToday').textContent = count||0;
   adminLogRows = data||[];
   $('logRangeCount').textContent = adminLogRows.length ? `(${adminLogRows.length} رقم في الفترة دي)` : '';
   renderLogTable();
@@ -892,7 +906,8 @@ function buildManageQuery(base) {
 
 async function searchManageData() {
   showLoading('جارٍ البحث...');
-  let q=sb.from('numbers').select('number,data_type,salesperson,distributed,distributed_at',{count:'exact'});
+  // ملحوظة: مبنجيبش عمود الرقم نفسه هنا خالص — بنجيب بس الأعمدة المعروضة في الجدول، ده بيخلي الاستعلام أخف بكتير
+  let q=sb.from('numbers').select('data_type,salesperson,distributed,distributed_at',{count:'exact'});
   q=buildManageQuery(q);
   q=q.order('distributed_at',{ascending:false, nullsFirst:false}).limit(MGMT_ROW_LIMIT);
   const {data, count, error}=await q;
@@ -919,7 +934,7 @@ function renderManageTable() {
 
   const body=$('mgmtBody');
   if(!mgmtRows.length){
-    body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:#475569">مفيش نتائج مطابقة</td></tr>';
+    body.innerHTML='<tr><td colspan="5" style="text-align:center;padding:32px;color:#475569">مفيش نتائج مطابقة</td></tr>';
     return;
   }
   body.innerHTML=mgmtRows.map((r,i)=>{
@@ -928,7 +943,6 @@ function renderManageTable() {
       : `<span class="mgmt-status st-pend">لسه</span>`;
     return `<tr>
       <td style="color:#334155;font-size:11px">${i+1}</td>
-      <td style="font-family:monospace;color:#94a3b8">${formatPhone(r.number)}</td>
       <td>${r.data_type||'غير محدد'}</td>
       <td>${r.salesperson||'—'}</td>
       <td>${statusHtml}</td>

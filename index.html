@@ -528,6 +528,13 @@ function formatDistTime(iso) {
   const time = d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
   return `${date} · ${time}`;
 }
+function formatDistTimeEN(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  const date = d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const time = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true });
+  return `${date} ${time}`;
+}
 function formatTime12(iso) {
   if (!iso) return '—';
   const d = new Date(iso);
@@ -1006,14 +1013,14 @@ async function exportManageData() {
       'النوع': r.data_type||'غير محدد',
       'السيلز': r.salesperson||'—',
       'الحالة': r.distributed?'موزع':'لسه',
-      'تاريخ التوزيع': formatDistTime(r.distributed_at)
+      'تاريخ التوزيع': formatDistTimeEN(r.distributed_at)
     }));
     const ws = XLSX.utils.json_to_sheet(sheetData);
     ws['!cols'] = [{wch:16},{wch:18},{wch:18},{wch:10},{wch:20}];
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'باكاب');
-    const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
-    XLSX.writeFile(wb, `backup-numbers-${stamp}.xlsx`);
+    const typeLabel = $('mgmtType').value || 'all-types';
+    XLSX.writeFile(wb, `${typeLabel}-backup.xlsx`);
     hideLoading();
     showToast(`✅ اتصدّر ${rows.length} رقم في ملف الإكسيل`,'success');
   } catch(err){

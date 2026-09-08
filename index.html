@@ -237,11 +237,50 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 .btn-modal-cancel{background:#0f172a;border:1px solid #334155;color:#64748b;border-radius:10px;padding:10px 22px;font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;cursor:pointer}
 .btn-modal-confirm{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;cursor:pointer}
 
+/* MANAGE DATA TAB */
+.mgmt-section{margin-bottom:24px}
+.mgmt-filters{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;background:#1e293b;border:1px solid #334155;border-radius:16px;padding:16px}
+.mgmt-field{display:flex;flex-direction:column;gap:5px}
+.mgmt-field label{font-size:11px;color:#475569;font-weight:700}
+.mgmt-select,.mgmt-date{background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;transition:border-color .2s;min-width:150px}
+.mgmt-select:focus,.mgmt-date:focus{border-color:#6366f1}
+.mgmt-quick-row{display:flex;gap:8px;align-items:flex-end}
+.mgmt-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.mgmt-count{font-size:14px;color:#64748b;font-weight:700}
+.mgmt-count strong{color:#f1f5f9;font-size:20px;font-weight:900}
+.mgmt-cap-note{font-size:11.5px;color:#f59e0b;font-weight:700}
+.mgmt-table-wrap{max-height:440px;overflow-y:auto}
+.mgmt-table-wrap::-webkit-scrollbar{width:4px}
+.mgmt-table-wrap::-webkit-scrollbar-track{background:#1e293b}
+.mgmt-table-wrap::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
+.mgmt-table{width:100%;border-collapse:collapse}
+.mgmt-table th{background:#0f172a;padding:10px 18px;font-size:11px;font-weight:700;color:#475569;text-align:right;border-bottom:1px solid #334155;position:sticky;top:0;text-transform:uppercase;letter-spacing:.5px}
+.mgmt-table td{padding:9px 18px;font-size:13px;border-bottom:1px solid rgba(51,65,85,.4)}
+.mgmt-table tr:last-child td{border-bottom:none}
+.mgmt-table tr:hover td{background:rgba(99,102,241,.05)}
+.mgmt-status{font-size:11px;font-weight:800;padding:2px 10px;border-radius:20px;display:inline-block}
+.mgmt-status.st-dist{background:rgba(16,185,129,.15);color:#6ee7b7}
+.mgmt-status.st-pend{background:rgba(245,158,11,.15);color:#fcd34d}
+.mgmt-bar{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px}
+.mgmt-bar-info{display:flex;gap:28px;flex-wrap:wrap}
+.dbi-item{text-align:center}
+.dbi-label{font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.dbi-val{font-size:24px;font-weight:900}
+.dbi-val.c1{color:#6366f1}
+.dbi-val.c3{color:#f59e0b}
+.btn-del-now{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;border-radius:12px;padding:13px 32px;font-size:15px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s,transform .1s}
+.btn-del-now:hover{opacity:.9;transform:translateY(-1px)}
+.btn-del-now:disabled{background:#334155;color:#475569;cursor:not-allowed;transform:none;opacity:1}
+.btn-del-now:active{transform:translateY(0)}
+
 @media(max-width:600px){
   .stats-row{grid-template-columns:1fr 1fr}.stats-row .stat-card:last-child{grid-column:span 2}
   .types-grid{grid-template-columns:1fr 1fr}.tc-num{font-size:34px}
   .sales-grid{grid-template-columns:1fr}
+  .mgmt-bar{flex-direction:column;align-items:stretch}
+  .btn-del-now{width:100%}
   .log-table th:nth-child(4),.log-table td:nth-child(4){display:none}
+  .mgmt-table th:nth-child(4),.mgmt-table td:nth-child(4){display:none}
 }
 </style>
 </head>
@@ -328,6 +367,7 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   </div>
   <div class="admin-tabs">
     <button class="atab active" data-tab="overview" id="tabOverview">📋 متابعة السيلز</button>
+    <button class="atab" data-tab="manage" id="tabManage">🗂️ إدارة الداتا</button>
   </div>
 
   <!-- OVERVIEW / QUALITY LOG TAB -->
@@ -352,6 +392,62 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
       <button class="af-clear" id="ovClearDate">كل الوقت</button>
     </div>
     <div class="sales-grid" id="logSalesGrid"></div>
+  </div>
+
+  <!-- MANAGE DATA TAB -->
+  <div class="main" id="adminTabManage" style="display:none">
+    <div class="mgmt-section">
+      <div class="sec-title" style="margin-bottom:14px">فلاتر البحث</div>
+      <div class="mgmt-filters">
+        <div class="mgmt-field">
+          <label>السيلز</label>
+          <select class="mgmt-select" id="mgmtSales"><option value="">كل السيلز</option></select>
+        </div>
+        <div class="mgmt-field">
+          <label>نوع الداتا</label>
+          <select class="mgmt-select" id="mgmtType"><option value="">كل الأنواع</option></select>
+        </div>
+        <div class="mgmt-field">
+          <label>الحالة</label>
+          <select class="mgmt-select" id="mgmtStatus">
+            <option value="">الكل</option>
+            <option value="distributed">موزع</option>
+            <option value="pending">لسه</option>
+          </select>
+        </div>
+        <div class="mgmt-field"><label>من</label><input type="date" class="mgmt-date" id="mgmtDateFrom"/></div>
+        <div class="mgmt-field"><label>إلى</label><input type="date" class="mgmt-date" id="mgmtDateTo"/></div>
+        <div class="mgmt-quick-row">
+          <button class="af-clear" id="mgmtQuickToday">📅 اليوم</button>
+          <button class="af-clear" id="mgmtQuickYesterday">📅 امبارح</button>
+          <button class="af-clear" id="mgmtClearAll">🔄 مسح الفلاتر</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mgmt-summary">
+      <div class="mgmt-count">النتائج المطابقة: <strong id="mgmtCount">0</strong></div>
+      <div class="mgmt-cap-note" id="mgmtCapNote" style="display:none"></div>
+    </div>
+
+    <div class="panel">
+      <div class="mgmt-table-wrap">
+        <table class="mgmt-table">
+          <thead><tr><th>#</th><th>الرقم</th><th>النوع</th><th>السيلز</th><th>الحالة</th><th>تاريخ التوزيع</th></tr></thead>
+          <tbody id="mgmtBody"><tr><td colspan="6" style="text-align:center;padding:32px;color:#475569">اختار فلتر أو دوس بحث لعرض النتائج</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mgmt-bar">
+      <div class="mgmt-bar-info">
+        <div class="dbi-item">
+          <div class="dbi-label">إجمالي المطابق</div>
+          <div class="dbi-val c1" id="mgmtTotalMatch">0</div>
+        </div>
+      </div>
+      <button class="btn-del-now" id="btnMgmtDelete" disabled>امسح كل المطابق 🗑️</button>
+    </div>
   </div>
 </div>
 
@@ -383,6 +479,12 @@ let currentUser = null, allNumbers = [], activeType = null, selectedPriority = [
 // ─── ADMIN STATE ───
 let adminSalesList = [];
 let adminLogRows = []; // distributed rows within the selected date range (for log tab)
+// ─── MANAGE DATA TAB STATE ───
+let mgmtTypesList = [];
+let mgmtRows = [];
+let mgmtTotalCount = 0;
+let mgmtTabLoaded = false;
+const MGMT_ROW_LIMIT = 500;
 
 function todayStr() { return new Date().toISOString().slice(0,10); }
 function yesterdayStr() { const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
@@ -612,6 +714,7 @@ function enterAdmin() {
   $('loginScreen').style.display='none';
   $('adminScreen').style.display='block';
   initAdminFilters();
+  initManageFilters();
   loadAdminData();
 }
 
@@ -732,6 +835,126 @@ function renderLogTable() {
   });
 }
 
+/* ─── MANAGE DATA TAB ─── */
+function initManageFilters() {
+  $('mgmtSales').addEventListener('change', searchManageData);
+  $('mgmtType').addEventListener('change', searchManageData);
+  $('mgmtStatus').addEventListener('change', searchManageData);
+  $('mgmtDateFrom').addEventListener('change', searchManageData);
+  $('mgmtDateTo').addEventListener('change', searchManageData);
+  $('mgmtQuickToday').addEventListener('click',()=>{ const t=todayStr(); $('mgmtDateFrom').value=t; $('mgmtDateTo').value=t; searchManageData(); });
+  $('mgmtQuickYesterday').addEventListener('click',()=>{ const y=yesterdayStr(); $('mgmtDateFrom').value=y; $('mgmtDateTo').value=y; searchManageData(); });
+  $('mgmtClearAll').addEventListener('click',()=>{
+    $('mgmtSales').value=''; $('mgmtType').value=''; $('mgmtStatus').value='';
+    $('mgmtDateFrom').value=''; $('mgmtDateTo').value='';
+    searchManageData();
+  });
+}
+
+// بيتنفذ أول ما التاب يتفتح: بيعمر قوائم السيلز والأنواع، وبعدين يجيب أول نتائج
+async function loadManageTab() {
+  // قائمة السيلز (من الأدمن ديتا اللي اتحملت قبل كده)
+  const salesSel=$('mgmtSales');
+  salesSel.innerHTML='<option value="">كل السيلز</option>'+adminSalesList.map(n=>`<option value="${n}">${n}</option>`).join('');
+
+  // قائمة أنواع الداتا (نجيبها من الجدول كله)
+  showLoading('جارٍ تحميل الأنواع...');
+  const {data, error} = await sb.from('numbers').select('data_type');
+  hideLoading();
+  if(!error){
+    const set=new Set();
+    for(const r of (data||[])) set.add(r.data_type||'غير محدد');
+    mgmtTypesList=[...set];
+    const typeSel=$('mgmtType');
+    typeSel.innerHTML='<option value="">كل الأنواع</option>'+mgmtTypesList.map(t=>`<option value="${t}">${t}</option>`).join('');
+  }
+  await searchManageData();
+}
+
+function buildManageQuery(base) {
+  const salesperson=$('mgmtSales').value, type=$('mgmtType').value, status=$('mgmtStatus').value;
+  const from=$('mgmtDateFrom').value, to=$('mgmtDateTo').value;
+  let q=base;
+  if(salesperson) q=q.eq('salesperson', salesperson);
+  if(type) q=(type==='غير محدد') ? q.is('data_type', null) : q.eq('data_type', type);
+  if(status==='distributed') q=q.eq('distributed', true);
+  if(status==='pending') q=q.eq('distributed', false);
+  if(from) q=q.gte('distributed_at', from+'T00:00:00');
+  if(to) q=q.lte('distributed_at', to+'T23:59:59.999');
+  return q;
+}
+
+async function searchManageData() {
+  showLoading('جارٍ البحث...');
+  let q=sb.from('numbers').select('number,data_type,salesperson,distributed,distributed_at',{count:'exact'});
+  q=buildManageQuery(q);
+  q=q.order('distributed_at',{ascending:false, nullsFirst:false}).limit(MGMT_ROW_LIMIT);
+  const {data, count, error}=await q;
+  hideLoading();
+  if(error){
+    console.error('Manage search error:', error);
+    showToast('فشل البحث: '+(error.message||error.code||'خطأ غير معروف'),'error');
+    return;
+  }
+  mgmtRows=data||[];
+  mgmtTotalCount=count||0;
+  renderManageTable();
+}
+
+function renderManageTable() {
+  $('mgmtCount').textContent=mgmtTotalCount;
+  $('mgmtTotalMatch').textContent=mgmtTotalCount;
+  $('btnMgmtDelete').disabled=mgmtTotalCount===0;
+  const capNote=$('mgmtCapNote');
+  if(mgmtTotalCount>MGMT_ROW_LIMIT){
+    capNote.style.display='block';
+    capNote.textContent=`⚠️ بيتعرض أول ${MGMT_ROW_LIMIT} نتيجة بس — المسح هيشمل كل الـ ${mgmtTotalCount} برضه`;
+  } else capNote.style.display='none';
+
+  const body=$('mgmtBody');
+  if(!mgmtRows.length){
+    body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:#475569">مفيش نتائج مطابقة</td></tr>';
+    return;
+  }
+  body.innerHTML=mgmtRows.map((r,i)=>{
+    const statusHtml=r.distributed
+      ? `<span class="mgmt-status st-dist">موزع</span>`
+      : `<span class="mgmt-status st-pend">لسه</span>`;
+    return `<tr>
+      <td style="color:#334155;font-size:11px">${i+1}</td>
+      <td style="font-family:monospace;color:#94a3b8">${formatPhone(r.number)}</td>
+      <td>${r.data_type||'غير محدد'}</td>
+      <td>${r.salesperson||'—'}</td>
+      <td>${statusHtml}</td>
+      <td style="font-family:monospace;color:#64748b;font-size:12px">${formatDistTime(r.distributed_at)}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function doManageDelete() {
+  if(!mgmtTotalCount) return;
+  const salesperson=$('mgmtSales').value||'كل السيلز', type=$('mgmtType').value||'كل الأنواع', status=$('mgmtStatus').value;
+  const statusTxt = status==='distributed'?'موزع':status==='pending'?'لسه':'أي حالة';
+  const from=$('mgmtDateFrom').value, to=$('mgmtDateTo').value;
+  const rangeTxt = (from||to) ? `من ${from||'البداية'} إلى ${to||'دلوقتي'}` : 'كل الأوقات';
+
+  showConfirm(
+    `تأكيد مسح ${mgmtTotalCount} رقم نهائيًا`,
+    `السيلز: <strong>${salesperson}</strong><br>النوع: <strong>${type}</strong><br>الحالة: <strong>${statusTxt}</strong><br>الفترة: ${rangeTxt}<br><br>⚠️ الأرقام دي هتتمسح نهائي من قاعدة البيانات ومش هترجع تاني.`,
+    async ()=>{
+      showLoading(`جارٍ مسح ${mgmtTotalCount} رقم...`);
+      let q=sb.from('numbers').delete();
+      q=buildManageQuery(q);
+      const {error}=await q;
+      hideLoading();
+      if(error){ console.error('Manage delete error:',error); showToast('فشل المسح: '+(error.message||error.code||'خطأ غير معروف'),'error'); return; }
+      showToast(`✅ اتمسح ${mgmtTotalCount} رقم`,'success');
+      await loadManageTab();
+      await loadAdminData();
+    }
+  );
+}
+
 /* ── CONFIRM MODAL ── */
 let _confirmCb=null;
 function showConfirm(title,body,cb){
@@ -741,6 +964,17 @@ function showConfirm(title,body,cb){
 $('btnModalCancel').addEventListener('click',()=>$('confirmModal').classList.remove('show'));
 $('btnModalConfirm').addEventListener('click',()=>{$('confirmModal').classList.remove('show');if(_confirmCb)_confirmCb()});
 
+/* ── ADMIN TABS ── */
+document.querySelectorAll('.atab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    $('adminTabOverview').style.display=tab.dataset.tab==='overview'?'block':'none';
+    $('adminTabManage').style.display=tab.dataset.tab==='manage'?'block':'none';
+    if(tab.dataset.tab==='manage' && !mgmtTabLoaded){ mgmtTabLoaded=true; loadManageTab(); }
+  });
+});
+
 /* ── EVENTS ── */
 $('btnLogin').addEventListener('click',doLogin);
 $('inputPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -749,6 +983,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
   adminSalesList=[];adminLogRows=[];
+  mgmtTypesList=[];mgmtRows=[];mgmtTotalCount=0;mgmtTabLoaded=false;
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';
@@ -760,6 +995,7 @@ $('btnRefresh').addEventListener('click',loadData);
 $('btnAdRefresh').addEventListener('click',loadAdminData);
 $('btnSend').addEventListener('click',sendToOdoo);
 $('sendQty').addEventListener('input',()=>{if(activeType){updatePreview();showNumbers()}});
+$('btnMgmtDelete').addEventListener('click',doManageDelete);
 </script>
 </body>
 </html>

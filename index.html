@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>بوابة السيلز</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -446,6 +447,7 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
           <div class="dbi-val c1" id="mgmtTotalMatch">0</div>
         </div>
       </div>
+      <button class="btn btn-ghost2" id="btnMgmtExport" disabled>📥 تصدير Excel (باكاب)</button>
       <button class="btn-del-now" id="btnMgmtDelete" disabled>امسح كل المطابق 🗑️</button>
     </div>
   </div>
@@ -926,6 +928,7 @@ function renderManageTable() {
   $('mgmtCount').textContent=mgmtTotalCount;
   $('mgmtTotalMatch').textContent=mgmtTotalCount;
   $('btnMgmtDelete').disabled=mgmtTotalCount===0;
+  $('btnMgmtExport').disabled=mgmtTotalCount===0;
   const capNote=$('mgmtCapNote');
   if(mgmtTotalCount>MGMT_ROW_LIMIT){
     capNote.style.display='block';
@@ -975,6 +978,52 @@ async function doManageDelete() {
   );
 }
 
+/* ─── EXPORT TO EXCEL (نسخة احتياطية قبل المسح) ─── */
+async function fetchAllMatchingForExport() {
+  const PAGE=1000;
+  let all=[], from=0;
+  while(true){
+    let q=sb.from('numbers').select('number,data_type,salesperson,distributed,distributed_at');
+    q=buildManageQuery(q);
+    q=q.order('distributed_at',{ascending:false, nullsFirst:false}).range(from, from+PAGE-1);
+    const {data, error}=await q;
+    if(error) throw error;
+    all=all.concat(data||[]);
+    if(!data || data.length<PAGE) break;
+    from+=PAGE;
+  }
+  return all;
+}
+
+async function exportManageData() {
+  if(!mgmtTotalCount) return;
+  $('btnMgmtExport').disabled=true;
+  showLoading(`جارٍ تجهيز نسخة إكسيل من ${mgmtTotalCount} رقم...`);
+  try {
+    const rows = await fetchAllMatchingForExport();
+    const sheetData = rows.map(r => ({
+      'الرقم': formatPhonePlus(r.number),
+      'النوع': r.data_type||'غير محدد',
+      'السيلز': r.salesperson||'—',
+      'الحالة': r.distributed?'موزع':'لسه',
+      'تاريخ التوزيع': formatDistTime(r.distributed_at)
+    }));
+    const ws = XLSX.utils.json_to_sheet(sheetData);
+    ws['!cols'] = [{wch:16},{wch:18},{wch:18},{wch:10},{wch:20}];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'باكاب');
+    const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+    XLSX.writeFile(wb, `backup-numbers-${stamp}.xlsx`);
+    hideLoading();
+    showToast(`✅ اتصدّر ${rows.length} رقم في ملف الإكسيل`,'success');
+  } catch(err){
+    hideLoading();
+    console.error('Export error:', err);
+    showToast('فشل التصدير: '+(err.message||'خطأ غير معروف'),'error');
+  }
+  $('btnMgmtExport').disabled=mgmtTotalCount===0;
+}
+
 /* ── CONFIRM MODAL ── */
 let _confirmCb=null;
 function showConfirm(title,body,cb){
@@ -1016,6 +1065,7 @@ $('btnAdRefresh').addEventListener('click',loadAdminData);
 $('btnSend').addEventListener('click',sendToOdoo);
 $('sendQty').addEventListener('input',()=>{if(activeType){updatePreview();showNumbers()}});
 $('btnMgmtDelete').addEventListener('click',doManageDelete);
+$('btnMgmtExport').addEventListener('click',exportManageData);
 </script>
 </body>
 </html>

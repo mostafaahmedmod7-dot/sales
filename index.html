@@ -158,53 +158,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
 .empty-state p{font-size:14px;font-weight:700;color:#64748b}
 .empty-state small{font-size:12px;margin-top:4px;display:block}
 
-/* ═══════════════════════════════════════
-   DISTRIBUTE TAB - NEW
-   ═══════════════════════════════════════ */
-.dist-section{margin-bottom:28px}
-.dist-section .sec-title{font-size:13px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.dist-section .sec-title span{background:#6366f1;color:#fff;border-radius:20px;padding:2px 10px;font-size:11px}
-
-/* type selector row */
-.dist-types-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.dist-type-chip{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:20px;border:1.5px solid #334155;background:#1e293b;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:800;color:#64748b;transition:all .2s}
-.dist-type-chip:hover{border-color:#6366f1;color:#a5b4fc}
-.dist-type-chip.sel{border-color:#6366f1;background:#1e2d4a;color:#a5b4fc}
-.dist-type-chip .tc{font-size:11px;background:#0f172a;border-radius:20px;padding:2px 8px;color:#475569}
-.dist-type-chip.sel .tc{background:rgba(99,102,241,.2);color:#a5b4fc}
-
-/* sales distribute table */
-.dist-table-wrap{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;margin-bottom:16px}
-.dist-table{width:100%;border-collapse:collapse}
-.dist-table th{background:#0f172a;padding:11px 18px;font-size:11px;font-weight:700;color:#475569;text-align:right;border-bottom:1px solid #334155;text-transform:uppercase;letter-spacing:.5px}
-.dist-table td{padding:10px 18px;border-bottom:1px solid rgba(51,65,85,.4);font-size:13px;vertical-align:middle}
-.dist-table tr:last-child td{border-bottom:none}
-.dist-table tr:hover td{background:rgba(99,102,241,.04)}
-.d-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:11px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
-.d-name-cell{display:flex;align-items:center;gap:10px}
-.d-type-sel{background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:7px 12px;font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;cursor:pointer;transition:border-color .2s;min-width:130px}
-.d-type-sel:focus{border-color:#6366f1}
-.d-qty-input{width:90px;background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:7px 10px;font-size:14px;font-weight:900;font-family:'Cairo',sans-serif;color:#6366f1;outline:none;text-align:center;transition:border-color .2s}
-.d-qty-input:focus{border-color:#6366f1}
-.d-status{font-size:11px;font-weight:800}
-.d-status.pending{color:#475569}
-.d-status.ready{color:#10b981}
-.d-status.sent{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.25);border-radius:20px;padding:2px 10px}
-
-/* distribute bar */
-.dist-bar{background:#1e293b;border-radius:16px;border:1px solid #334155;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.dist-bar-info{display:flex;gap:28px;flex-wrap:wrap}
-.dbi-item{text-align:center}
-.dbi-label{font-size:11px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.dbi-val{font-size:24px;font-weight:900}
-.dbi-val.c1{color:#6366f1}
-.dbi-val.c2{color:#10b981}
-.dbi-val.c3{color:#f59e0b}
-.btn-dist-now{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:12px;padding:13px 32px;font-size:15px;font-weight:900;font-family:'Cairo',sans-serif;cursor:pointer;transition:opacity .2s,transform .1s}
-.btn-dist-now:hover{opacity:.9;transform:translateY(-1px)}
-.btn-dist-now:disabled{background:#334155;color:#475569;cursor:not-allowed;transform:none;opacity:1}
-.btn-dist-now:active{transform:translateY(0)}
-
 /* ADMIN — FILTERS BAR */
 .admin-filters{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
 .af-search{flex:1;min-width:180px;background:#1e293b;border:1.5px solid #334155;border-radius:12px;padding:10px 16px;font-size:14px;font-family:'Cairo',sans-serif;color:#f1f5f9;outline:none;transition:border-color .2s}
@@ -288,8 +241,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   .stats-row{grid-template-columns:1fr 1fr}.stats-row .stat-card:last-child{grid-column:span 2}
   .types-grid{grid-template-columns:1fr 1fr}.tc-num{font-size:34px}
   .sales-grid{grid-template-columns:1fr}
-  .dist-bar{flex-direction:column;align-items:stretch}
-  .btn-dist-now{width:100%}
   .log-table th:nth-child(4),.log-table td:nth-child(4){display:none}
 }
 </style>
@@ -377,7 +328,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
   </div>
   <div class="admin-tabs">
     <button class="atab active" data-tab="overview" id="tabOverview">📋 متابعة السيلز</button>
-    <button class="atab" data-tab="distribute" id="tabDistribute">🎯 توزيع الداتا</button>
   </div>
 
   <!-- OVERVIEW / QUALITY LOG TAB -->
@@ -402,57 +352,6 @@ body{font-family:'Cairo',sans-serif;background:#0f172a;color:#f1f5f9;min-height:
       <button class="af-clear" id="ovClearDate">كل الوقت</button>
     </div>
     <div class="sales-grid" id="logSalesGrid"></div>
-  </div>
-
-  <!-- DISTRIBUTE TAB -->
-  <div class="main" id="adminTabDistribute" style="display:none">
-
-    <!-- Step 1: type selector -->
-    <div class="dist-section">
-      <div class="sec-title">الداتا المتاحة <span id="distTotalBadge">0 رقم</span></div>
-      <div class="dist-types-row" id="distTypesRow">
-        <div style="color:#475569;font-size:13px;padding:8px 0">جارٍ التحميل...</div>
-      </div>
-    </div>
-
-    <!-- Step 2: sales table -->
-    <div class="dist-section">
-      <div class="sec-title" style="margin-bottom:14px">توزيع على السيلز</div>
-      <div class="dist-table-wrap">
-        <table class="dist-table">
-          <thead>
-            <tr>
-              <th>اسم السيلز</th>
-              <th>النوع</th>
-              <th>العدد</th>
-              <th>الحالة</th>
-            </tr>
-          </thead>
-          <tbody id="distSalesBody">
-            <tr><td colspan="4" style="text-align:center;padding:32px;color:#475569;font-size:13px">اختار نوع داتا الأول</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Bottom action bar -->
-    <div class="dist-bar">
-      <div class="dist-bar-info">
-        <div class="dbi-item">
-          <div class="dbi-label">المعين</div>
-          <div class="dbi-val c1" id="distTotalAssigned">0</div>
-        </div>
-        <div class="dbi-item">
-          <div class="dbi-label">المتبقي</div>
-          <div class="dbi-val c3" id="distTotalRemaining">0</div>
-        </div>
-        <div class="dbi-item">
-          <div class="dbi-label">عدد السيلز</div>
-          <div class="dbi-val c2" id="distSalesCount">0</div>
-        </div>
-      </div>
-      <button class="btn-dist-now" id="btnDistNow" disabled>وزّع الآن 🎯</button>
-    </div>
   </div>
 </div>
 
@@ -483,11 +382,7 @@ let currentUser = null, allNumbers = [], activeType = null, selectedPriority = [
 
 // ─── ADMIN STATE ───
 let adminSalesList = [];
-let adminUndistNumbers = []; // undistributed numbers only (for distribute tab)
 let adminLogRows = []; // distributed rows within the selected date range (for log tab)
-// ─── DISTRIBUTE STATE ───
-let distAssignments = {}; // { salesName: { type, qty } }
-let distSelectedType = null;
 
 function todayStr() { return new Date().toISOString().slice(0,10); }
 function yesterdayStr() { const d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); }
@@ -728,29 +623,25 @@ async function loadAdminData() {
       {count:pendingCount, error:e1},
       {count:todayCount, error:e2},
       {count:yestCount, error:e3},
-      {data:undist, error:e4},
       {data:sales, error:e5}
     ] = await Promise.all([
       sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',false),
       sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',true).gte('distributed_at', today+'T00:00:00').lte('distributed_at', today+'T23:59:59.999'),
       sb.from('numbers').select('*',{count:'exact',head:true}).eq('distributed',true).gte('distributed_at', yesterday+'T00:00:00').lte('distributed_at', yesterday+'T23:59:59.999'),
-      sb.from('numbers').select('number,data_type').eq('distributed',false),
       sb.from('sales').select('name').neq('name','admin')
     ]);
     hideLoading();
-    if(e1||e2||e3||e4||e5){
-      const err=e1||e2||e3||e4||e5;
-      console.error('Supabase admin load error:',e1,e2,e3,e4,e5);
+    if(e1||e2||e3||e5){
+      const err=e1||e2||e3||e5;
+      console.error('Supabase admin load error:',e1,e2,e3,e5);
       showToast('فشل التحميل: '+(err.message||err.code||'خطأ غير معروف'),'error');
       return;
     }
     $('adStatPending').textContent = pendingCount||0;
     $('adStatToday').textContent = todayCount||0;
     $('adStatYesterday').textContent = yestCount||0;
-    adminUndistNumbers = undist||[];
     adminSalesList = (sales||[]).map(s=>s.name);
 
-    renderDistributeTab();
     await loadOverviewLog();
   } catch(err) {
     hideLoading();
@@ -841,173 +732,6 @@ function renderLogTable() {
   });
 }
 
-/* ─── DISTRIBUTE TAB ─── */
-function renderDistributeTab() {
-  // Build type chips from undistributed numbers
-  const undist = adminUndistNumbers;
-  const typeMap = {};
-  for(const r of undist){ const t=r.data_type||'غير محدد'; typeMap[t]=(typeMap[t]||0)+1; }
-  const types = Object.entries(typeMap);
-  const totalUndist = undist.length;
-
-  $('distTotalBadge').textContent = `${totalUndist} رقم متاح`;
-
-  const row = $('distTypesRow');
-  if(!types.length){
-    row.innerHTML='<div style="color:#475569;font-size:13px;padding:8px 0">مفيش أرقام متبقية</div>';
-    return;
-  }
-
-  // pick first type if none selected
-  if(!distSelectedType || !typeMap[distSelectedType]) {
-    distSelectedType = types[0][0];
-  }
-
-  row.innerHTML = types.map(([name,count])=>`
-    <button class="dist-type-chip ${distSelectedType===name?'sel':''}" data-type="${name}">
-      <span>${name}</span><span class="tc">${count}</span>
-    </button>`).join('');
-
-  row.querySelectorAll('.dist-type-chip').forEach(chip=>{
-    chip.addEventListener('click',()=>{
-      distSelectedType = chip.dataset.type;
-      distAssignments = {};
-      renderDistributeTab();
-    });
-  });
-
-  renderDistSalesTable(undist, typeMap);
-}
-
-function renderDistSalesTable(undist, typeMap) {
-  if(!distSelectedType){ return; }
-  const availableForType = undist.filter(r=>(r.data_type||'غير محدد')===distSelectedType);
-  const availCount = availableForType.length;
-
-  const body = $('distSalesBody');
-  if(!adminSalesList.length){
-    body.innerHTML='<tr><td colspan="4" style="text-align:center;padding:24px;color:#475569">مفيش سيلز</td></tr>';
-    return;
-  }
-
-  body.innerHTML = adminSalesList.map(name=>{
-    const initials = name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const asgn = distAssignments[name] || {};
-    const selectedType = asgn.type || distSelectedType;
-    const qty = asgn.qty || '';
-    const status = asgn.qty>0 ? `<span class="d-status ready">✓ جاهز (${asgn.qty})</span>` : `<span class="d-status pending">—</span>`;
-
-    const opts = Object.keys(typeMap).map(t=>`<option value="${t}" ${selectedType===t?'selected':''}>${t} (${typeMap[t]})</option>`).join('');
-
-    return `<tr>
-      <td><div class="d-name-cell"><div class="d-avatar">${initials}</div><span>${name}</span></div></td>
-      <td><select class="d-type-sel" data-sales="${name}" onchange="distSetType(this)">${opts}</select></td>
-      <td><input class="d-qty-input" type="number" min="1" placeholder="الكل" data-sales="${name}" value="${qty}" oninput="distSetQty(this)"/></td>
-      <td>${status}</td>
-    </tr>`;
-  }).join('');
-
-  updateDistBar(availCount);
-}
-
-function distSetType(sel) {
-  const name = sel.dataset.sales;
-  if(!distAssignments[name]) distAssignments[name]={};
-  distAssignments[name].type = sel.value;
-  updateDistBar();
-}
-function distSetQty(inp) {
-  const name = inp.dataset.sales;
-  if(!distAssignments[name]) distAssignments[name]={};
-  const v = parseInt(inp.value)||0;
-  distAssignments[name].qty = v;
-  // update status cell inline
-  const row = inp.closest('tr');
-  const statusCell = row.querySelector('td:last-child');
-  if(v>0) statusCell.innerHTML=`<span class="d-status ready">✓ جاهز (${v})</span>`;
-  else statusCell.innerHTML=`<span class="d-status pending">—</span>`;
-  updateDistBar();
-}
-function updateDistBar(availCount) {
-  let totalAssigned = 0, salesCount = 0;
-  for(const [, asgn] of Object.entries(distAssignments)){
-    if(asgn.qty>0){ totalAssigned+=asgn.qty; salesCount++; }
-  }
-  const typeCount = distSelectedType ? adminUndistNumbers.filter(r=>(r.data_type||'غير محدد')===distSelectedType).length : 0;
-  $('distTotalAssigned').textContent = totalAssigned;
-  $('distTotalRemaining').textContent = Math.max(0, typeCount - totalAssigned);
-  $('distSalesCount').textContent = salesCount;
-  $('btnDistNow').disabled = totalAssigned === 0;
-}
-
-async function doDistribute() {
-  const entries = Object.entries(distAssignments).filter(([,a])=>a.qty>0);
-  if(!entries.length){ showToast('حدد كمية لسيلز واحد على الأقل','error'); return; }
-
-  // build summary for modal
-  const summary = entries.map(([name,a])=>`<strong>${name}</strong>: ${a.qty} رقم (${a.type||distSelectedType})`).join('<br>');
-  const totalNums = entries.reduce((s,[,a])=>s+a.qty,0);
-
-  showConfirm(
-    `تأكيد توزيع ${totalNums} رقم`,
-    `${summary}<br><br>الأرقام هتتحجز وتتبعت على Odoo فوراً عبر كود الـ Cloudflare Worker.`,
-    async () => {
-      showLoading(`جارٍ توزيع ${totalNums} رقم...`);
-      const undist = adminUndistNumbers;
-
-      // pool per type
-      const typePool = {};
-      for(const r of undist){
-        const t=r.data_type||'غير محدد';
-        if(!typePool[t]) typePool[t]=[];
-        typePool[t].push(r);
-      }
-
-      let allOk=true, totalSent=0;
-
-      for(const [salesName, asgn] of entries){
-        const typeName = asgn.type || distSelectedType;
-        const pool = typePool[typeName] || [];
-        const slice = pool.splice(0, asgn.qty); // remove from pool so next sales gets fresh
-        if(!slice.length) continue;
-
-        const leads = slice.map(r=>({
-          phone:formatPhonePlus(r.number), name:r.number,
-          data_type:r.data_type||'', salesperson:salesName
-        }));
-
-        try {
-          // الإرسال بيتم عن طريق الـ Cloudflare Worker (odoo-proxy3) اللي بيتكلم مع Odoo
-          const res = await fetch(`${WORKER_URL}/send-leads`,{
-            method:'POST', headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({username:'khalidahmmed209@gmail.com',password:'123',leads})
-          });
-          const result = await res.json();
-          if(!res.ok||!result.success){ allOk=false; showToast(`فشل إرسال ${salesName}: ${result.error}`,'error'); continue; }
-
-          const nums = slice.map(r=>r.number);
-          // ✅ FIX: إضافة فلترة على data_type و distributed لنفس السبب
-          await sb.from('numbers')
-            .update({
-              odoo_sent:true, distributed:true,
-              distributed_at:new Date().toISOString(), salesperson:salesName
-            })
-            .in('number',nums)
-            .eq('data_type',typeName)
-            .eq('distributed',false);
-
-          totalSent += slice.length;
-        } catch(err){ allOk=false; showToast(`خطأ في ${salesName}: ${err.message}`,'error'); }
-      }
-
-      hideLoading();
-      if(totalSent>0) showToast(`✅ تم توزيع ${totalSent} رقم على ${entries.length} سيلز`,'success');
-      distAssignments={};
-      await loadAdminData();
-    }
-  );
-}
-
 /* ── CONFIRM MODAL ── */
 let _confirmCb=null;
 function showConfirm(title,body,cb){
@@ -1017,16 +741,6 @@ function showConfirm(title,body,cb){
 $('btnModalCancel').addEventListener('click',()=>$('confirmModal').classList.remove('show'));
 $('btnModalConfirm').addEventListener('click',()=>{$('confirmModal').classList.remove('show');if(_confirmCb)_confirmCb()});
 
-/* ── ADMIN TABS ── */
-document.querySelectorAll('.atab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    $('adminTabOverview').style.display=tab.dataset.tab==='overview'?'block':'none';
-    $('adminTabDistribute').style.display=tab.dataset.tab==='distribute'?'block':'none';
-  });
-});
-
 /* ── EVENTS ── */
 $('btnLogin').addEventListener('click',doLogin);
 $('inputPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
@@ -1034,7 +748,7 @@ $('inputName').addEventListener('keydown',e=>{if(e.key==='Enter')$('inputPasswor
 
 function doLogout(){
   currentUser=null;allNumbers=[];activeType=null;selectedPriority=[];
-  adminSalesList=[];adminUndistNumbers=[];adminLogRows=[];distAssignments={};distSelectedType=null;
+  adminSalesList=[];adminLogRows=[];
   ['appScreen','adminScreen'].forEach(id=>$(id).style.display='none');
   $('loginScreen').style.display='flex';
   $('numbersPanel').style.display='none';$('netChooserPanel').style.display='none';
@@ -1046,7 +760,6 @@ $('btnRefresh').addEventListener('click',loadData);
 $('btnAdRefresh').addEventListener('click',loadAdminData);
 $('btnSend').addEventListener('click',sendToOdoo);
 $('sendQty').addEventListener('input',()=>{if(activeType){updatePreview();showNumbers()}});
-$('btnDistNow').addEventListener('click',doDistribute);
 </script>
 </body>
 </html>
